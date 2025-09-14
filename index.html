@@ -3,285 +3,205 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fiestas del Motín 2025 - Aranjuez</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>DrupalCamp 2025 - Programa</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    :root { --bs-primary: #212121; --bs-primary-rgb: 33,33,33; }
-    .no-result { display: none; text-align:center; font-style:italic; color:#666; }
-    .filter-btn.active { opacity:1; }
-    .card-body p { margin-bottom: 0.25rem; }
+    body { background-color: #f8f9fa; scroll-behavior: smooth; }
+    .card { border-radius: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+    .time-block { font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; }
+    .activity { background: #ffe9c6; border-radius: 1rem; padding: 1rem; }
+    section { padding-top: 5rem; }
+    .search-info { font-size: 0.9rem; color: #666; }
   </style>
 </head>
-<body class="bg-light text-dark">
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">DrupalCamp 2025</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="#dia19">Día 19</a></li>
+          <li class="nav-item"><a class="nav-link" href="#dia20">Día 20</a></li>
+        </ul>
+        <form class="d-flex">
+          <input id="searchInput" class="form-control" type="search" placeholder="Buscar charla..." aria-label="Buscar">
+        </form>
+      </div>
+    </div>
+  </nav>
 
-<header class="bg-primary text-white py-4 mb-4 shadow">
-  <div class="container text-center">
-    <h1 class="display-4 fw-bold">Fiestas del Motín 2025</h1>
-    <p class="lead">Aranjuez · Declaradas de Interés Turístico Internacional</p>
+  <div class="container py-5">
+    <h1 class="mb-4 text-center">📅 Programa DrupalCamp 2025</h1>
+    <p class="text-center search-info">Usa el buscador para encontrar ponencias por título, ponente o tema.</p>
+
+    <!-- Día 19 -->
+    <section id="dia19">
+      <h2 class="text-center mb-4">🗓️ Día 19 de septiembre</h2>
+
+      <!-- 13:00 -->
+      <h3 class="time-block">13:00</h3>
+      <div class="row g-4">
+        <!-- Charla 1 -->
+        <div class="col-md-6 col-lg-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Transformando la búsqueda de contenido en Drupal con Asistentes IA</h5>
+              <p><strong>Auditorio: Balidea</strong></p>
+              <p>Ponente: gxleano</p>
+              <span class="badge bg-danger">Avanzado</span>
+              <span class="badge bg-primary">Site-Building</span>
+              <span class="badge bg-warning text-dark">IA</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <!-- Charla 2 -->
+        <div class="col-md-6 col-lg-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Accesibilidad web: esencial para algunos, útil para todos</h5>
+              <p><strong>Sala 1: Hiberus</strong></p>
+              <p>Ponente: Oriol Rocabert</p>
+              <span class="badge bg-success">Todos</span>
+              <span class="badge bg-info text-dark">Accesibilidad</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <!-- Charla 3 -->
+        <div class="col-md-6 col-lg-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Drush Avanzado: Comandos Poco Usados y Personalizados en Drupal</h5>
+              <p><strong>Sala 2: AED</strong></p>
+              <p>Ponentes: David Ortega / JaviLagos</p>
+              <span class="badge bg-success">Todos</span>
+              <span class="badge bg-secondary">Backend</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <!-- Charla 4 -->
+        <div class="col-md-6 col-lg-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">DDEV Aljibe: entorno de desarrollo local completo (II)</h5>
+              <p><strong>Sala Talleres</strong></p>
+              <p>Ponente: Ricardo Sanz</p>
+              <span class="badge bg-primary">Principiante</span>
+              <span class="badge bg-dark">DevOps</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14:00 -->
+      <h3 class="time-block">14:00</h3>
+      <div class="activity text-center">🍽️ Comida</div>
+
+      <!-- 15:00 -->
+      <h3 class="time-block">15:00</h3>
+      <div class="row g-4">
+        <!-- Aquí irían todas las cards de 15:00 (IA como Acelerador, Git, Architecting Drupal, Cocinando I) -->
+      </div>
+
+      <!-- 16:00 -->
+      <h3 class="time-block">16:00</h3>
+      <div class="row g-4">
+        <!-- Aquí irían todas las cards de 16:00 -->
+      </div>
+
+      <!-- 17:00 -->
+      <h3 class="time-block">17:00</h3>
+      <div class="row g-4">
+        <!-- Aquí irían todas las cards de 17:00 -->
+      </div>
+
+      <!-- 17:50 -->
+      <h3 class="time-block">17:50</h3>
+      <div class="activity text-center">📸 Foto de grupo en la plaza central del Gaiás</div>
+
+      <!-- 21:00 -->
+      <h3 class="time-block">21:00</h3>
+      <div class="activity text-center">🎉 Cena</div>
+    </section>
+
+    <!-- Día 20 -->
+    <section id="dia20">
+      <h2 class="text-center mb-4">🗓️ Día 20 de septiembre</h2>
+
+      <!-- 13:00 -->
+      <h3 class="time-block">13:00</h3>
+      <div class="row g-4">
+        <!-- Charla 1 -->
+        <div class="col-md-6 col-lg-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">El camino hacia la implementación del soporte multilingüe en Drupal CMS</h5>
+              <p><strong>Auditorio: Balidea</strong></p>
+              <p>Ponentes: Yolanda Gorriz / Jose Reyero</p>
+              <span class="badge bg-success">Todos</span>
+              <span class="badge bg-primary">Drupal CMS</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <!-- Aquí irían las demás charlas de 13:00 -->
+      </div>
+
+      <!-- 14:00 -->
+      <h3 class="time-block">14:00</h3>
+      <div class="activity text-center">🍽️ Comida</div>
+
+      <!-- 15:00 -->
+      <h3 class="time-block">15:00</h3>
+      <div class="row g-4">
+        <!-- Aquí irían todas las cards de 15:00 -->
+      </div>
+
+      <!-- 16:00 -->
+      <h3 class="time-block">16:00</h3>
+      <div class="row g-4">
+        <!-- Aquí irían todas las cards de 16:00 -->
+      </div>
+
+      <!-- 17:00 -->
+      <h3 class="time-block">17:00</h3>
+      <div class="activity text-center">👋 Sesión de despedida</div>
+
+      <!-- 17:30 -->
+      <h3 class="time-block">17:30</h3>
+      <div class="activity text-center">📣 Asamblea AED</div>
+    </section>
   </div>
-</header>
 
-<main class="container">
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Buscador -->
-  <section class="mb-4">
-    <div class="input-group shadow-sm mb-3">
-      <span class="input-group-text bg-primary text-white">🔍</span>
-      <input type="text" id="searchInput" class="form-control" placeholder="Buscar eventos...">
-    </div>
+  <!-- Buscador JS -->
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    searchInput.addEventListener("keyup", function () {
+      let filter = searchInput.value.toLowerCase();
+      let cards = document.getElementsByClassName("card-container");
 
-    <div class="d-flex flex-wrap gap-2 mb-3">
-      <button class="btn btn-outline-dark btn-sm filter-btn active" data-filter="all">Todos</button>
-      <button class="btn btn-outline-dark btn-sm filter-btn" data-filter="mercado">Mercado</button>
-      <button class="btn btn-outline-dark btn-sm filter-btn" data-filter="música">Música</button>
-      <button class="btn btn-outline-dark btn-sm filter-btn" data-filter="infantil">Infantil</button>
-      <button class="btn btn-outline-dark btn-sm filter-btn" data-filter="deportes">Deportes</button>
-      <button class="btn btn-outline-dark btn-sm filter-btn" data-filter="toros">Toros</button>
-      <button class="btn btn-outline-dark btn-sm filter-btn" data-filter="otros">Otros</button>
-    </div>
-
-    <p id="noResultMsg" class="no-result mt-3">No se han encontrado eventos.</p>
-  </section>
-
-  <!-- Jueves y Viernes se incluirían aquí (como en el ejemplo anterior) -->
-
-  <!-- Sábado 6 septiembre -->
-  <section class="mb-5" aria-labelledby="sabado">
-    <h2 id="sabado" class="mb-4 text-dark">Sábado 6 de septiembre</h2>
-
-    <article class="card mb-3 shadow-sm" data-category="infantil">
-      <div class="card-body">
-        <h3 class="h5 card-title">10:00 H. LA FIESTA DE LOS BARRIOS - Barrio La Montaña</h3>
-        <p>Chocolate con churros. Castillos hinchables. Fiesta de la espuma. Ambientación musical. Tradicional paella solidaria.</p>
-        <p><strong>LUGAR:</strong> Calle Córdoba</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="infantil">
-      <div class="card-body">
-        <h3 class="h5 card-title">10:00 H. Barrio de AGFA</h3>
-        <p>Chocolate con churros. Castillos hinchables. Fiesta de la espuma. Ambientación musical.</p>
-        <p><strong>LUGAR:</strong> C/ Libertad</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="infantil">
-      <div class="card-body">
-        <h3 class="h5 card-title">10:00 H. Glorieta del Clavel</h3>
-        <p>Chocolate con churros. Castillos hinchables. Fiesta de la espuma. Ambientación musical. Al mediodía, bocadillo gigante de 30 metros y sangría.</p>
-        <p><strong>LUGAR:</strong> Glorieta del Clavel</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="infantil">
-      <div class="card-body">
-        <h3 class="h5 card-title">10:00 H. Barrio de Las Aves</h3>
-        <p>Chocolate con churros. Castillos hinchables. Fiesta de la espuma. Ambientación musical.</p>
-        <p><strong>LUGAR:</strong> C/ Zorzales con C/ Verderón</p>
-        <p><strong>ORGANIZAN:</strong> Asociación Glorieta del Clavel, Mancomunidad de Las Aves, Asociación por la Urbanización de La Montaña Aranjuez, vecindad de AGFA y Ayuntamiento de Aranjuez</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="deportes">
-      <div class="card-body">
-        <h3 class="h5 card-title">10:30 H. ACTIVIDAD DEPORTIVA - NINE FITNESS ARANJUEZ</h3>
-        <p>De 10:30 a 11:30 H. COMBAT – ATTACK. De 11:30 a 12:30 H. ZUMBA.</p>
-        <p><strong>LUGAR:</strong> Plaza de la Constitución</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="mercado infantil">
-      <div class="card-body">
-        <h3 class="h5 card-title">11:00 a 14:00 H y 18:00 a 00:00 H. MERCADO GOYESCO DE ARANJUEZ</h3>
-        <p>Variedad de puestos en artesanía y alimentación artesana. Talleres demostrativos y participativos para niños, pintacaras y zona de actividades infantiles. Todos gratuitos.</p>
-        <p><strong>LUGAR:</strong> Paseo del Jardín de Isabel II (Crta. Andalucía)</p>
-        <p><strong>ORGANIZA:</strong> Carpetana Mercados Temáticos</p>
-        <p><strong>COLABORA:</strong> Ayuntamiento de Aranjuez y Patrimonio Nacional</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="música">
-      <div class="card-body">
-        <h3 class="h5 card-title">13:00 H. V FERIA GOYESCA LOS TOMATES DE ARANJUEZ</h3>
-        <p>Amenización con pasacalles. Restaurantes participantes: Estrella de Belén, Aguatinta, La Espada, Almíbar, Casa José, El Rana Verde, Tapería Postas, Matilde.</p>
-        <p><strong>ORGANIZA:</strong> AHERO</p>
-        <p><strong>COLABORA:</strong> Ayuntamiento de Aranjuez y Asociación de Productores de la Huerta de Aranjuez</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="música">
-      <div class="card-body">
-        <h3 class="h5 card-title">18:00 a 21:00 H. TARDEO EN ARANJUEZ</h3>
-        <p>Con los DJs Jorge Gómez, Dani Palacios y Norba Deejay.</p>
-        <p><strong>LUGAR:</strong> C/ Infantas</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="toros">
-      <div class="card-body">
-        <h3 class="h5 card-title">18:30 H. CORRIDA DE TOROS GOYESCA</h3>
-        <p>6 toros de D. Juan Manuel Criado para Morante de la Puebla, Juan Ortega y Pablo Aguado.</p>
-        <p><strong>LUGAR:</strong> Bicentenaria Plaza de Toros de Aranjuez</p>
-        <p><strong>ORGANIZA:</strong> Circuitos Taurinos</p>
-        <p><strong>COLABORA:</strong> Ayuntamiento de Aranjuez</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="música">
-      <div class="card-body">
-        <h3 class="h5 card-title">19:30 a 22:30 H. ¡LOS MAYORES TE INVITAN A BAILAR!</h3>
-        <p>Salsódromo</p>
-        <p><strong>LUGAR:</strong> Plaza de Abastos (junto al Centro Cultural Isabel de Farnesio)</p>
-        <p><strong>ORGANIZA:</strong> Delegación de Mayores, Convenio Mayores en Soledad</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="música">
-      <div class="card-body">
-        <h3 class="h5 card-title">22:00 H. ACTUACIÓN GRUPO MUSICAL PERRO GRIS</h3>
-        <p><strong>LUGAR:</strong> Plaza de la Constitución</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="otros música">
-      <div class="card-body">
-        <h3 class="h5 card-title">21:30 H. NOMBRAMIENTO AMOTINADO MAYOR 2025</h3>
-        <p>A la Agencia de Seguridad y Emergencias Madrid 112 (ASEM 112).</p>
-        <p><strong>LUGAR:</strong> Plaza de Parejas</p>
-        <p><strong>COLABORA:</strong> Patrimonio Nacional</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="otros música">
-      <div class="card-body">
-        <h3 class="h5 card-title">22:00 H. ESCENIFICACIÓN DEL MOTÍN DE ARANJUEZ</h3>
-        <p><strong>DIRECCIÓN:</strong> YLLANA</p>
-        <p><strong>LUGAR:</strong> Plaza de Parejas</p>
-        <p><strong>COLABORA:</strong> Patrimonio Nacional</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="música">
-      <div class="card-body">
-        <h3 class="h5 card-title">00:00 H. ACTUACIÓN DE OBK</h3>
-        <p><strong>LUGAR:</strong> Plaza de San Antonio (Mariblanca)</p>
-        <p><strong>COLABORA:</strong> Patrimonio Nacional</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="música">
-      <div class="card-body">
-        <h3 class="h5 card-title">00:00 H. ACTUACIÓN DJ ÁLEX MARTINI Y RESIDENTES</h3>
-        <p>Con Rafa DJ, Luis DJ, David Mata DJ y DJ Chechu.</p>
-        <p><strong>LUGAR:</strong> Raso de la Estrella</p>
-        <p><strong>COLABORA:</strong> Patrimonio Nacional</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="música">
-      <div class="card-body">
-        <h3 class="h5 card-title">01:00 H. ACTUACIÓN ORQUESTA XTASIS</h3>
-        <p><strong>LUGAR:</strong> C/ Infantas</p>
-      </div>
-    </article>
-
-  </section>
-
-  <!-- Domingo 7 septiembre -->
-  <section class="mb-5" aria-labelledby="domingo">
-    <h2 id="domingo" class="mb-4 text-dark">Domingo 7 de septiembre</h2>
-
-    <article class="card mb-3 shadow-sm" data-category="deportes">
-      <div class="card-body">
-        <h3 class="h5 card-title">11:00 H. 44 EDICIÓN DEL DESCENSO PIRATA DEL TAJO</h3>
-        <p><strong>COLABORA:</strong> Confederación Hidrográfica del Tajo, Club Escuela de Piragüismo Aranjuez y Asociación Amigos del Descenso Pirata del Tajo</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="mercado infantil">
-      <div class="card-body">
-        <h3 class="h5 card-title">11:00 a 14:00 H y 18:00 a 00:00 H. MERCADO GOYESCO DE ARANJUEZ</h3>
-        <p>Variedad de puestos en artesanía y alimentación artesana. Talleres demostrativos y participativos para niños, pintacaras y zona de actividades infantiles. Todos gratuitos.</p>
-        <p><strong>LUGAR:</strong> Paseo del Jardín de Isabel II (Crta. Andalucía)</p>
-        <p><strong>ORGANIZA:</strong> Carpetana Mercados Temáticos</p>
-        <p><strong>COLABORA:</strong> Ayuntamiento de Aranjuez y Patrimonio Nacional</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="música">
-      <div class="card-body">
-        <h3 class="h5 card-title">13:00 H. V FERIA GOYESCA LOS TOMATES DE ARANJUEZ</h3>
-        <p>Amenización con pasacalles. Restaurantes participantes: Estrella de Belén, Aguatinta, La Espada, Almíbar, Casa José, El Rana Verde, Tapería Postas, Matilde.</p>
-        <p><strong>ORGANIZA:</strong> AHERO</p>
-        <p><strong>COLABORA:</strong> Ayuntamiento de Aranjuez y Asociación de Productores de la Huerta de Aranjuez</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="música">
-      <div class="card-body">
-        <h3 class="h5 card-title">21:00 H. ACTUACIÓN ESCUELA DE DANZA LA AURORA</h3>
-        <p>Espectáculo lleno de variedades, fruto del trabajo de alumnos y profesores. Cierra con “El caballero de la triste figura”.</p>
-        <p><strong>LUGAR:</strong> Plaza de la Constitución</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="otros">
-      <div class="card-body">
-        <h3 class="h5 card-title">23:00 H. EXHIBICIÓN DE FUEGOS ARTIFICIALES</h3>
-        <p><strong>LUGAR:</strong> Carretera Madrid-Aranjuez (junto a la Glorieta de Fernando VI) - Recinto Ferial</p>
-      </div>
-    </article>
-
-    <article class="card mb-3 shadow-sm" data-category="otros">
-      <div class="card-body">
-        <p><strong>DÍA DEL NIÑO:</strong> Miércoles 3 septiembre. Atracciones a precios populares.</p>
-        <p><strong>HORA SIN RUIDO:</strong> Todos los días 19:00 a 21:00 h.</p>
-        <p>El Ayuntamiento de Aranjuez agradece a todas las asociaciones, colectivos, empresas, artistas, cuerpos de seguridad, voluntarios y trabajadores municipales que han hecho posible este completo programa.</p>
-        <p>Gracias a la colaboración ciudadana y a entidades como Patrimonio Nacional, las Fiestas del Motín 2025, declaradas de Interés Turístico Nacional en 1990 y de Interés Turístico Internacional en 2014, vuelven a ofrecer un amplio abanico de actividades que combinan cultura, música, historia y diversión.</p>
-      </div>
-    </article>
-
-  </section>
-
-</main>
-
-<footer class="bg-dark text-white py-3 mt-5 text-center">
-  <p class="mb-0">Información propiedad del Ayuntamiento de Aranjuez</p>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-const searchInput = document.getElementById("searchInput");
-const filterButtons = document.querySelectorAll(".filter-btn");
-const cards = document.querySelectorAll("article.card");
-const noResultMsg = document.getElementById("noResultMsg");
-let activeFilter = "all";
-
-function filterEvents() {
-  let searchTerm = searchInput.value.toLowerCase();
-  let found = false;
-  cards.forEach(card => {
-    let text = card.innerText.toLowerCase();
-    let categories = card.dataset.category.split(" ");
-    let matchSearch = text.includes(searchTerm);
-    let matchFilter = activeFilter === "all" || categories.includes(activeFilter);
-    if(matchSearch && matchFilter){ card.style.display=""; found=true;}
-    else { card.style.display="none";}
-  });
-  noResultMsg.style.display = found ? "none" : "block";
-}
-
-searchInput.addEventListener("keyup", filterEvents);
-filterButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    activeFilter = btn.dataset.filter;
-    filterButtons.forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    filterEvents();
-  });
-});
-filterEvents();
-</script>
-
+      for (let i = 0; i < cards.length; i++) {
+        let card = cards[i];
+        let text = card.innerText.toLowerCase();
+        if (text.includes(filter)) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+      }
+    });
+  </script>
 </body>
 </html>
+

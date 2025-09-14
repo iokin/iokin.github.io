@@ -1,29 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DrupalCamp 2025 - Programa</title>
-  <!-- Bootstrap CSS -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DrupalCamp 2025 — Programa Día 19 y 20</title>
+  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body { background-color: #f8f9fa; scroll-behavior: smooth; }
-    .card { border-radius: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
-    .time-block { font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; }
-    .activity { background: #ffe9c6; border-radius: 1rem; padding: 1rem; }
-    section { padding-top: 5rem; }
-    .search-info { font-size: 0.9rem; color: #666; }
+    body {
+      background-color: #f8f9fa;
+      scroll-behavior: smooth;
+      padding-top: 70px; /* espacio para navbar fijo */
+    }
+    .card {
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .time-block {
+      font-weight: bold;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .activity {
+      background: #ffe9c6;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .card-container {
+      /* para esconder o mostrar según filtro */
+      display: block;
+    }
+    .search-info {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
   </style>
 </head>
 <body>
+
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">DrupalCamp 2025</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav me-auto">
           <li class="nav-item"><a class="nav-link" href="#dia19">Día 19</a></li>
           <li class="nav-item"><a class="nav-link" href="#dia20">Día 20</a></li>
@@ -35,19 +59,132 @@
     </div>
   </nav>
 
-  <div class="container py-5">
-    <h1 class="mb-4 text-center">📅 Programa DrupalCamp 2025</h1>
-    <p class="text-center search-info">Usa el buscador para encontrar ponencias por título, ponente o tema.</p>
+  <div class="container">
+    <h1 class="text-center mb-4">📅 Programa DrupalCamp Spain 2025</h1>
+    <p class="text-center search-info">Busca por título, ponente, tema, sala, o nivel. (Global: Día 19 y Día 20)</p>
 
-    <!-- Día 19 -->
+    <!-- === Día 19 === -->
     <section id="dia19">
       <h2 class="text-center mb-4">🗓️ Día 19 de septiembre</h2>
+
+      <!-- 09:00 -->
+      <h3 class="time-block">09:00</h3>
+      <div class="row g-4">
+        <div class="col-md-12 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Registro - Recogida de acreditaciones</h5>
+              <p><strong>General</strong></p>
+              <p>Todos los asistentes</p>
+              <p><em>Idioma: —</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 09:30 -->
+      <h3 class="time-block">09:30</h3>
+      <div class="row g-4">
+        <div class="col-md-12 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Sesión de bienvenida</h5>
+              <p><strong>General</strong></p>
+              <p>Todos los asistentes</p>
+              <p><em>Idioma: —</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10:00 -->
+      <h3 class="time-block">10:00</h3>
+      <div class="row g-4">
+        <div class="col-md-12 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">How to make open source profitable</h5>
+              <p><strong>Auditorio: Balidea</strong></p>
+              <p>Ponente: Anastasiia Zvenigorodskaia</p>
+              <span class="badge bg-success">Todos</span>
+              <span class="badge bg-secondary">Comunidad</span>
+              <p class="mt-2"><em>Idioma: Inglés</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11:30 -->
+      <h3 class="time-block">11:30</h3>
+      <div class="row g-4">
+        <div class="col-md-12 activity text-center">
+          ☕ Café
+        </div>
+      </div>
+
+      <!-- 12:00 -->
+      <h3 class="time-block">12:00</h3>
+      <div class="row g-4">
+        <!-- Auditorio -->
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Drupal e IA hacen cositas</h5>
+              <p><strong>Auditorio: Balidea</strong></p>
+              <p>Ponente: Manuel Bermúdez</p>
+              <span class="badge bg-primary">Principiante</span>
+              <span class="badge bg-warning text-dark">IA</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <!-- Sala 1 -->
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Drupal Commerce: Como crear flujos de compra complejos y personalizables sin picar código</h5>
+              <p><strong>Sala 1: Hiberus</strong></p>
+              <p>Ponente: Manuel Egío</p>
+              <span class="badge bg-success">Todos</span>
+              <span class="badge bg-primary">Site-Building</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <!-- Sala 2 -->
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Creating Legacy in Tech: passing the test of time</h5>
+              <p><strong>Sala 2: AED</strong></p>
+              <p>Ponente: hernani</p>
+              <span class="badge bg-secondary">Intermedio</span>
+              <span class="badge bg-info text-dark">Backend</span>
+              <span class="badge bg-light text-dark">Innovación</span>
+              <p class="mt-2"><em>Idioma: Inglés</em></p>
+            </div>
+          </div>
+        </div>
+        <!-- Sala Talleres -->
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">DDEV Aljibe: entorno de desarrollo local completo</h5>
+              <p><strong>Sala Talleres</strong></p>
+              <p>Ponente: Ricardo Sanz</p>
+              <span class="badge bg-primary">Principiante</span>
+              <span class="badge bg-dark">DevOps</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- 13:00 -->
       <h3 class="time-block">13:00</h3>
       <div class="row g-4">
-        <!-- Charla 1 -->
-        <div class="col-md-6 col-lg-3 card-container">
+        <!-- Auditorio -->
+        <div class="col-md-3 card-container">
           <div class="card h-100">
             <div class="card-body">
               <h5 class="card-title">Transformando la búsqueda de contenido en Drupal con Asistentes IA</h5>
@@ -60,8 +197,8 @@
             </div>
           </div>
         </div>
-        <!-- Charla 2 -->
-        <div class="col-md-6 col-lg-3 card-container">
+        <!-- Sala 1 -->
+        <div class="col-md-3 card-container">
           <div class="card h-100">
             <div class="card-body">
               <h5 class="card-title">Accesibilidad web: esencial para algunos, útil para todos</h5>
@@ -73,8 +210,8 @@
             </div>
           </div>
         </div>
-        <!-- Charla 3 -->
-        <div class="col-md-6 col-lg-3 card-container">
+        <!-- Sala 2 -->
+        <div class="col-md-3 card-container">
           <div class="card h-100">
             <div class="card-body">
               <h5 class="card-title">Drush Avanzado: Comandos Poco Usados y Personalizados en Drupal</h5>
@@ -86,11 +223,11 @@
             </div>
           </div>
         </div>
-        <!-- Charla 4 -->
-        <div class="col-md-6 col-lg-3 card-container">
+        <!-- Sala Talleres: vuelve el mismo que a las 12:00 en Talleres (DDEV Aljibe) -->
+        <div class="col-md-3 card-container">
           <div class="card h-100">
             <div class="card-body">
-              <h5 class="card-title">DDEV Aljibe: entorno de desarrollo local completo (II)</h5>
+              <h5 class="card-title">DDEV Aljibe: entorno de desarrollo local completo</h5>
               <p><strong>Sala Talleres</strong></p>
               <p>Ponente: Ricardo Sanz</p>
               <span class="badge bg-primary">Principiante</span>
@@ -103,105 +240,213 @@
 
       <!-- 14:00 -->
       <h3 class="time-block">14:00</h3>
-      <div class="activity text-center">🍽️ Comida</div>
+      <div class="row g-4">
+        <div class="col-md-12 activity text-center">
+          🍽️ Comida
+        </div>
+      </div>
 
       <!-- 15:00 -->
       <h3 class="time-block">15:00</h3>
       <div class="row g-4">
-        <!-- Aquí irían todas las cards de 15:00 (IA como Acelerador, Git, Architecting Drupal, Cocinando I) -->
-      </div>
-
-      <!-- 16:00 -->
-      <h3 class="time-block">16:00</h3>
-      <div class="row g-4">
-        <!-- Aquí irían todas las cards de 16:00 -->
-      </div>
-
-      <!-- 17:00 -->
-      <h3 class="time-block">17:00</h3>
-      <div class="row g-4">
-        <!-- Aquí irían todas las cards de 17:00 -->
-      </div>
-
-      <!-- 17:50 -->
-      <h3 class="time-block">17:50</h3>
-      <div class="activity text-center">📸 Foto de grupo en la plaza central del Gaiás</div>
-
-      <!-- 21:00 -->
-      <h3 class="time-block">21:00</h3>
-      <div class="activity text-center">🎉 Cena</div>
-    </section>
-
-    <!-- Día 20 -->
-    <section id="dia20">
-      <h2 class="text-center mb-4">🗓️ Día 20 de septiembre</h2>
-
-      <!-- 13:00 -->
-      <h3 class="time-block">13:00</h3>
-      <div class="row g-4">
-        <!-- Charla 1 -->
-        <div class="col-md-6 col-lg-3 card-container">
+        <div class="col-md-3 card-container">
           <div class="card h-100">
             <div class="card-body">
-              <h5 class="card-title">El camino hacia la implementación del soporte multilingüe en Drupal CMS</h5>
+              <h5 class="card-title">IA como Acelerador de Desarrollo en Proyectos Drupal: Incrementando Productividad y Rentabilidad</h5>
               <p><strong>Auditorio: Balidea</strong></p>
-              <p>Ponentes: Yolanda Gorriz / Jose Reyero</p>
-              <span class="badge bg-success">Todos</span>
-              <span class="badge bg-primary">Drupal CMS</span>
+              <p>Ponente: Robert Menetray</p>
+              <span class="badge bg-warning text-dark">Intermedio</span>
+              <span class="badge bg-success">Gestión de proyectos</span>
+              <span class="badge bg-secondary">Backend</span>
+              <span class="badge bg-warning text-dark">IA</span>
               <p class="mt-2"><em>Idioma: Español</em></p>
             </div>
           </div>
         </div>
-        <!-- Aquí irían las demás charlas de 13:00 -->
-      </div>
-
-      <!-- 14:00 -->
-      <h3 class="time-block">14:00</h3>
-      <div class="activity text-center">🍽️ Comida</div>
-
-      <!-- 15:00 -->
-      <h3 class="time-block">15:00</h3>
-      <div class="row g-4">
-        <!-- Aquí irían todas las cards de 15:00 -->
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Ups!... Me volví a equivocar. Git al rescate</h5>
+              <p><strong>Sala 1: Hiberus</strong></p>
+              <p>Ponente: Wendy Baltodano</p>
+              <span class="badge bg-primary">Principiante</span>
+              <span class="badge bg-secondary">Backend</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Architecting Drupal hosting: Navigating Cloud-Native Realities and Strategic Choices for Performance & DevOps</h5>
+              <p><strong>Sala 2: AED</strong></p>
+              <p>Ponente: Pedro González Serrano (NITEMAN)</p>
+              <span class="badge bg-warning text-dark">Intermedio</span>
+              <span class="badge bg-dark">DevOps</span>
+              <p class="mt-2"><em>Idioma: Inglés</em></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">"Cocinando Drupal CMS": Creación de una receta desde cero, estilo estrella Michelin</h5>
+              <p><strong>Sala Talleres</strong></p>
+              <p>Ponentes: Francisco Ruiz-Alejos / Julián Valero</p>
+              <span class="badge bg-primary">Principiante</span>
+              <span class="badge bg-warning text-dark">IA</span>
+              <span class="badge bg-secondary">Drupal CMS</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 16:00 -->
       <h3 class="time-block">16:00</h3>
       <div class="row g-4">
-        <!-- Aquí irían todas las cards de 16:00 -->
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Usando Cursor AI para refactorizar código legacy: Un ejemplo práctico.</h5>
+              <p><strong>Auditorio: Balidea</strong></p>
+              <p>Ponente: Isaac Pavon</p>
+              <span class="badge bg-primary">Principiante</span>
+              <span class="badge bg-info text-dark">Frontend</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Gestión de archivos y medias en Drupal</h5>
+              <p><strong>Sala 1: Hiberus</strong></p>
+              <p>Ponente: Luis Ruiz Peidró</p>
+              <span class="badge bg-primary">Principiante</span>
+              <span class="badge bg-secondary">Backend</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Livin' on the Edge: HTTP más allá del servidor web</h5>
+              <p><strong>Sala 2: AED</strong></p>
+              <p>Ponente: jonhattan</p>
+              <span class="badge bg-success">Todos</span>
+              <span class="badge bg-dark">DevOps</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">"Cocinando Drupal CMS": Creación de una receta desde cero, estilo estrella Michelin</h5>
+              <p><strong>Sala Talleres</strong></p>
+              <p>Ponentes: Francisco Ruiz-Alejos / Julián Valero</p>
+              <span class="badge bg-primary">Principiante</span>
+              <span class="badge bg-warning text-dark">IA</span>
+              <span class="badge bg-secondary">Drupal CMS</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 17:00 -->
       <h3 class="time-block">17:00</h3>
-      <div class="activity text-center">👋 Sesión de despedida</div>
+      <div class="row g-4">
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">¿Y si en vez de ponerle un chat a tu web... dejas que la IA la lea?</h5>
+              <p><strong>Auditorio: Balidea</strong></p>
+              <p>Ponente: Dani Loureiro</p>
+              <span class="badge bg-success">Todos</span>
+              <span class="badge bg-warning text-dark">IA</span>
+              <span class="badge bg-secondary">Backend</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Contribuciones Sostenibles en Drupal: Del Esfuerzo Individual a la Estrategia de Agencia</h5>
+              <p><strong>Sala 1: Hiberus</strong></p>
+              <p>Ponente: Pedro Cambra</p>
+              <span class="badge bg-success">Todos</span>
+              <span class="badge bg-primary">Comunidad</span>
+              <span class="badge bg-warning text-dark">Gestión de proyectos</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 card-container">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Monitoriza Drupal con Prometheus y Grafana</h5>
+              <p><strong>Sala 2: AED</strong></p>
+              <p>Ponente: forges82</p>
+              <span class="badge bg-warning text-dark">Intermedio</span>
+              <span class="badge bg-dark">DevOps</span>
+              <span class="badge bg-success">Rendimiento</span>
+              <p class="mt-2"><em>Idioma: Español</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <!-- 17:30 -->
-      <h3 class="time-block">17:30</h3>
-      <div class="activity text-center">📣 Asamblea AED</div>
+      <!-- 17:50 -->
+      <h3 class="time-block">17:50</h3>
+      <div class="row g-4">
+        <div class="col-md-12 activity text-center">
+          📸 Foto de grupo en la plaza central del Gaiás
+        </div>
+      </div>
+
+      <!-- 21:00 -->
+      <h3 class="time-block">21:00</h3>
+      <div class="row g-4">
+        <div class="col-md-12 activity text-center">
+          🎉 Cena
+        </div>
+      </div>
+
     </section>
+
+    <!-- === Día 20 === -->
+    <section id="dia20">
+      <h2 class="text-center mb-4">🗓️ Día 20 de septiembre</h2>
+      <!-- Aquí irían todas las sesiones del día 20, puedes copiarlas igual que hice con el día 19 -->
+      <p class="text-center">Contenido del Día 20 pendiente de completar.</p>
+    </section>
+
   </div>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Buscador JS -->
+  <!-- Buscador JS global -->
   <script>
-    const searchInput = document.getElementById("searchInput");
-    searchInput.addEventListener("keyup", function () {
-      let filter = searchInput.value.toLowerCase();
-      let cards = document.getElementsByClassName("card-container");
-
-      for (let i = 0; i < cards.length; i++) {
-        let card = cards[i];
-        let text = card.innerText.toLowerCase();
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+      const filter = this.value.toLowerCase();
+      const containers = document.getElementsByClassName('card-container');
+      for (let i = 0; i < containers.length; i++) {
+        const c = containers[i];
+        // tomar todo el texto visible de la card
+        const text = c.innerText.toLowerCase();
         if (text.includes(filter)) {
-          card.style.display = "";
+          c.style.display = '';
         } else {
-          card.style.display = "none";
+          c.style.display = 'none';
         }
       }
     });
   </script>
+
 </body>
 </html>
-

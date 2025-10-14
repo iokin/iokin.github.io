@@ -1,0 +1,94 @@
+body {
+  font-family: "Segoe UI", Roboto, sans-serif;
+  margin: 0;
+  background: #f8f9fa;
+  color: #333;
+}
+
+header {
+  background: white;
+  text-align: center;
+  padding: 10px 0;
+  border-bottom: 2px solid #ddd;
+  font-weight: 600;
+}
+
+.schedule {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.day {
+  margin-bottom: 30px;
+}
+
+.day h2 {
+  text-transform: capitalize;
+  font-size: 1.1em;
+  color: #b00;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 4px;
+}
+
+.day h2 span {
+  color: #777;
+  font-weight: normal;
+  margin-left: 8px;
+  font-size: 0.9em;
+}
+
+.class-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  margin-top: 12px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.time {
+  font-size: 0.9em;
+  font-weight: bold;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.info h3 {
+  font-size: 0.95em;
+  margin: 0 0 3px;
+}
+
+.info p {
+  margin: 2px 0;
+  font-size: 0.85em;
+  color: #555;
+}
+
+.teachers {
+  color: #444;
+  font-size: 0.8em;
+}
+
+/* Colores de etiquetas */
+.green { background: #7ed957; }
+.blue { background: #6ba8e5; }
+.pink { background: #f784ad; }
+.yellow { background: #d9db57; }
+.red { background: #e57373; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .class-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .time {
+    margin-bottom: 6px;
+  }
+}

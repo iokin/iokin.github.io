@@ -1,93 +1,183 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Festival ARANCINE 2025 – Programación Oficial</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Scouts - Grupo Ejemplo</title>
+  <meta name="description" content="Página oficial del grupo de scouts - actividades, calendario, fotos y contacto." />
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
   <style>
-    body {
-      background-color: #121212;
-      color: #f1f1f1;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    a.nav-link, .navbar-brand {
-      color: #f1f1f1 !important;
-    }
-    h1, h2, h3 {
-      color: #f5c542;
-    }
-    section {
-      padding: 60px 0;
-    }
-    .content-box {
-      background-color: #181818;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-    footer {
-      background-color: #1e1e1e;
-      padding: 20px 0;
-      text-align: center;
-      color: #b0b0b0;
+    /* Reset ligero */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial}
+    a{color:inherit;text-decoration:none}
+
+    /* Layout */
+    .container{max-width:1100px;margin:0 auto;padding:1rem}
+    header{background:linear-gradient(135deg,#2b6cb0,#48bb78);color:white;padding:1rem 0}
+    .brand{display:flex;align-items:center;gap:.75rem}
+    .logo{width:56px;height:56px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-weight:700}
+
+    nav{margin-top:.5rem}
+    nav ul{display:flex;gap:1rem;flex-wrap:wrap;list-style:none;padding:0;margin:0}
+    .btn{background:white;color:#0f172a;padding:.45rem .8rem;border-radius:8px;font-weight:600}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr;gap:1rem;align-items:center;padding:2rem 0}
+    .hero h1{margin:0;font-size:2rem}
+    .lead{color:#e6f8ff}
+
+    /* Sections */
+    section{padding:1.5rem 0;border-top:1px solid #eef2f7}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+
+    .card{background:white;padding:1rem;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,.06)}
+    .event-time{font-weight:700;color:#1f2937}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem}
+    .gallery img{width:100%;height:120px;object-fit:cover;border-radius:8px}
+
+    /* Footer */
+    footer{padding:1rem 0;color:#334155}
+
+    /* Responsive tweaks */
+    @media(min-width:800px){
+      .hero{grid-template-columns:1fr 420px}
+      .hero h1{font-size:2.6rem}
     }
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <header>
     <div class="container">
-      <a class="navbar-brand" href="#inicio">ARANCINE 2025</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#programacion">Programación</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+      <div class="brand">
+        <div class="logo">SG</div>
+        <div>
+          <div style="font-weight:800">Grupo Scouts Ejemplo</div>
+          <small>aventura · servicio · compañerismo</small>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#about">Sobre nosotros</a></li>
+          <li><a href="#events">Actividades</a></li>
+          <li><a href="#gallery">Galería</a></li>
+          <li><a href="#contact" class="btn">Contacto</a></li>
         </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <h1 id="hero-title">¡Bienvenidos al Grupo Scouts Ejemplo!</h1>
+        <p class="lead">Acampadas, actividades educativas y proyectos en la comunidad. Únete y vive la experiencia.</p>
+        <p>
+          <a class="btn" href="#events">Próximas actividades</a>
+          <a href="#contact" style="margin-left:.6rem;">Hazte voluntario</a>
+        </p>
       </div>
-    </div>
-  </nav>
 
-  <section id="inicio" class="text-center">
-    <div class="container mt-5 pt-5">
-      <h1 class="display-5 fw-bold mb-4">Festival ARANCINE 2025 – Programación Oficial</h1>
-      <p class="lead">Del 30 de octubre al 8 de noviembre de 2025<br>Toda nuestra programación es de acceso gratuito, sujeta a disponibilidad hasta completar aforo.</p>
-    </div>
-  </section>
+      <aside class="card" aria-label="Datos rápidos">
+        <h3>Datos rápidos</h3>
+        <p><strong>Reuniones:</strong> Sábados 17:00 - 19:00</p>
+        <p><strong>Lugar:</strong> Casa de la Juventud</p>
+        <p><strong>Contacto:</strong> scouts@ejemplo.es</p>
+      </aside>
+    </section>
 
-  <section id="programacion">
-    <div class="container">
-      <h2 class="mb-4">Programación completa</h2>
-      <div class="content-box">
-        <p style="white-space: pre-line;">El Festival
-Del 30 de octubre al 8 de noviembre de 2025
-Toda nuestra programación es de acceso gratuito, sujeta a disponibilidad hasta completar aforo.
+    <section id="about">
+      <h2>Sobre nosotros</h2>
+      <p>Somos un grupo local de scouts centrado en el crecimiento personal, la vida al aire libre y el servicio comunitario. Trabajamos por edades y ofrecemos rutas de progresión para todas las etapas.</p>
 
-Diez días para celebrar el cine y la cultura en Aranjuez
-Un año más, ARANCINE vuelve a llenar de luz, emoción y cultura los rincones más emblemáticos de Aranjuez. Durante 10 intensos días, del 30 de octubre al 8 de noviembre, la ciudad se convertirá de nuevo en un gran plató donde el cine dialoga con la música, el teatro, la danza, las rutas y los talleres.
-
-(… resto del texto completo …)
-
-Porque ARANCINE no solo se ve… se vive. 🍿✨</p>
+      <div class="grid" style="margin-top:1rem">
+        <div class="card">
+          <h4>Valores</h4>
+          <ul>
+            <li>Respeto</li>
+            <li>Solidaridad</li>
+            <li>Responsabilidad</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Qué hacemos</h4>
+          <p>Excursiones, talleres, servicio comunitario y seguridad al aire libre.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="contacto" class="text-center">
-    <div class="container">
+    <section id="events">
+      <h2>Próximas actividades</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="event-time">08 Nov 2025 — Excursión al Pico Verde</div>
+          <p>Salida desde la Casa de la Juventud a las 09:00. Nivel: medio. Llevar mochila y comida para el día.</p>
+        </article>
+        <article class="card">
+          <div class="event-time">22 Nov 2025 — Taller de primeros auxilios</div>
+          <p>Impartido por voluntarios certificados. Obligatoria inscripción previa.</p>
+        </article>
+        <article class="card">
+          <div class="event-time">06 Dic 2025 — Noche de patrullas</div>
+          <p>Acampada local con actividades por grupos. Plazas limitadas.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <h2>Galería</h2>
+      <div class="gallery">
+        <img alt="Acampada junto al lago" src="https://images.unsplash.com/photo-1508264165352-cf3f21bd20b7?auto=format&fit=crop&w=800&q=60">
+        <img alt="Patrulla caminando" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=60">
+        <img alt="Taller en grupo" src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=800&q=60">
+        <img alt="Fogata nocturna" src="https://images.unsplash.com/photo-1471115853179-bb1d604434e0?auto=format&fit=crop&w=800&q=60">
+      </div>
+    </section>
+
+    <section id="contact">
       <h2>Contacto</h2>
-      <p>Festival ARANCINE – Aranjuez (Madrid, España)</p>
-      <p>Sigue todas las novedades en nuestras redes sociales oficiales.</p>
-    </div>
-  </section>
+      <div class="grid">
+        <div class="card">
+          <h4>Escríbenos</h4>
+          <form id="contact-form">
+            <label for="name">Nombre</label><br>
+            <input id="name" name="name" required style="width:100%;padding:.5rem;margin:.4rem 0;border-radius:6px;border:1px solid #d1d5db">
+
+            <label for="email">Email</label><br>
+            <input id="email" type="email" name="email" required style="width:100%;padding:.5rem;margin:.4rem 0;border-radius:6px;border:1px solid #d1d5db">
+
+            <label for="message">Mensaje</label><br>
+            <textarea id="message" name="message" rows="4" style="width:100%;padding:.5rem;margin:.4rem 0;border-radius:6px;border:1px solid #d1d5db"></textarea>
+
+            <button type="submit" class="btn">Enviar</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h4>Ubicación</h4>
+          <p>Casa de la Juventud — Avenida Central, 12</p>
+          <h4>Redes</h4>
+          <p><a href="#">Facebook</a> · <a href="#">Instagram</a></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
 
   <footer>
-    <p>Desarrollado por un amante del cine 🎥 – © 2025 ARANCINE</p>
+    <div class="container">
+      <small>© 2025 Grupo Scouts Ejemplo · Hecho con cariño</small>
+    </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Formulario simple: evita envío real (ejemplo)
+    document.getElementById('contact-form').addEventListener('submit',function(e){
+      e.preventDefault();
+      alert('Gracias — este formulario es un ejemplo. Conecta aquí un servicio de envío.');
+    });
+  </script>
 </body>
 </html>

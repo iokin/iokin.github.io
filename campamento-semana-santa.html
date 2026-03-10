@@ -188,7 +188,7 @@
     .nota-forms strong { color: var(--naranja); }
 
     /* ── CTA BUTTON ── */
-    .cta-wrap { text-align: center; margin-bottom: 36px; }
+    .cta-wrap { text-align: center; margin-bottom: 36px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
     .cta-btn {
       display: inline-block;
       background: var(--verde);
@@ -203,6 +203,16 @@
       box-shadow: 0 4px 18px rgba(45,106,79,.25);
     }
     .cta-btn:hover { background: var(--verde-claro); transform: translateY(-2px); }
+    .cta-btn--pdf {
+      background: var(--tierra);
+      box-shadow: 0 4px 18px rgba(139,94,60,.25);
+    }
+    .cta-btn--pdf:hover { background: var(--naranja); }
+    .cta-btn--albergue {
+      background: #3a7d44;
+      box-shadow: 0 4px 18px rgba(58,125,68,.25);
+    }
+    .cta-btn--albergue:hover { background: var(--verde-claro); }
 
     /* ── FOOTER ── */
     .footer {
@@ -243,7 +253,7 @@
     <div class="info-block">
       <div class="info-pill">
         <div class="label">📍 Lugar</div>
-        <div class="value">Albergue de los Abedules<br/><small style="font-size:.85rem;color:#777">Bustarviejo</small></div>
+        <div class="value"><a href="https://share.google/Ko4zweH6FdlieP3e5" target="_blank" style="color:var(--tierra);text-decoration:none;border-bottom:1.5px dotted var(--tierra);">Albergue de los Abedules</a><br/><small style="font-size:.85rem;color:#777">Bustarviejo</small></div>
       </div>
       <div class="info-pill">
         <div class="label">💚 Precio Asociados</div>
@@ -328,6 +338,12 @@
     <div class="cta-wrap">
       <a class="cta-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSf9fsDyN0IRjI0E2t-LXXtd312iBIDcT-pQyXluGTPFgFdjGw/viewform?usp=publish-editor" target="_blank">
         📝 Abrir formulario de inscripción
+      </a>
+      <a class="cta-btn cta-btn--pdf" href="autorizacion-campa-semsamta2026.pdf" target="_blank" download>
+        📄 Descargar autorización
+      </a>
+      <a class="cta-btn cta-btn--albergue" href="https://share.google/Ko4zweH6FdlieP3e5" target="_blank">
+        🌲 Ver el albergue
       </a>
     </div>
 

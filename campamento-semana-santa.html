@@ -221,6 +221,35 @@
     }
     .cta-btn--albergue:hover { background: var(--verde-claro); }
 
+    /* ── DOCUMENTOS ── */
+    .doc-list {
+      list-style: none;
+      margin-bottom: 36px;
+    }
+    .doc-list li {
+      border: 1.5px solid #e0ddd4;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .doc-list li:hover {
+      border-color: var(--verde-claro);
+      box-shadow: 0 2px 12px rgba(45,106,79,.1);
+    }
+    .doc-list a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      text-decoration: none;
+      color: var(--texto);
+    }
+    .doc-list .doc-icon { font-size: 1.4rem; min-width: 32px; text-align: center; }
+    .doc-list .doc-info { flex: 1; }
+    .doc-list .doc-name { font-weight: 600; font-size: 0.95rem; color: var(--verde); }
+    .doc-list .doc-desc { font-size: 0.8rem; color: #888; margin-top: 2px; }
+    .doc-list .doc-arrow { color: #ccc; font-size: 1rem; }
+
     /* ── FOOTER ── */
     .footer {
       background: var(--verde);
@@ -353,6 +382,51 @@
         🌲 Ver el albergue
       </a>
     </div>
+
+    <!-- DOCUMENTOS -->
+    <div class="section-title">📁 Documentos</div>
+    <ul class="doc-list">
+      <li>
+        <a href="DossierSS2026.pdf" target="_blank" download>
+          <span class="doc-icon">📘</span>
+          <span class="doc-info">
+            <div class="doc-name">Dossier Semana Santa 2026</div>
+            <div class="doc-desc">Toda la información del campamento</div>
+          </span>
+          <span class="doc-arrow">↓</span>
+        </a>
+      </li>
+      <li>
+        <a href="autorizacion-generica-rgpd.pdf" target="_blank" download>
+          <span class="doc-icon">✍️</span>
+          <span class="doc-info">
+            <div class="doc-name">Autorización genérica RGPD</div>
+            <div class="doc-desc">Autorización y protección de datos</div>
+          </span>
+          <span class="doc-arrow">↓</span>
+        </a>
+      </li>
+      <li>
+        <a href="FichaMedica-rgpd.pdf" target="_blank" download>
+          <span class="doc-icon">🏥</span>
+          <span class="doc-info">
+            <div class="doc-name">Ficha médica RGPD</div>
+            <div class="doc-desc">Información médica del participante</div>
+          </span>
+          <span class="doc-arrow">↓</span>
+        </a>
+      </li>
+      <li>
+        <a href="NormativaPagosAsistencia23.pdf" target="_blank" download>
+          <span class="doc-icon">📄</span>
+          <span class="doc-info">
+            <div class="doc-name">Normativa de pagos y asistencia</div>
+            <div class="doc-desc">Condiciones de pago y asistencia</div>
+          </span>
+          <span class="doc-arrow">↓</span>
+        </a>
+      </li>
+    </ul>
 
   </div><!-- /card -->
 

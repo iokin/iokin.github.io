@@ -1,0 +1,278 @@
+/* ------------------ VARIABLES ------------------ */
+:root {
+  /* Tipografías */
+  --font-primary: 'Nunito', sans-serif;       /* body, subtítulos, cards */
+  --font-secondary: 'Quicksand', sans-serif;  /* títulos hero y cards */
+
+  /* Colores */
+  --color-primary: #6f42c1;       /* morado principal */
+  --color-primary-dark: #5930a0;  /* hover */
+  --color-secondary: rgba(255, 255, 255, 0.15); /* botones secundarios hero */
+  --color-secondary-hover: rgba(255, 255, 255, 0.3);
+  --color-text-light: #ffffff;    /* textos sobre hero */
+  --color-text-dark: #222222;     /* textos cards */
+  --color-card-bg: #ffffff;       /* fondo de cards */
+  --color-card-shadow: rgba(0,0,0,0.08);
+  --color-card-shadow-hover: rgba(0,0,0,0.12);
+  --color-overlay: rgba(0,0,0,0.45);
+
+  /* Tamaños */
+  --font-size-pretitle: 24px;
+  --font-size-title: clamp(32px, 5vw, 64px);
+  --font-size-subtitle: clamp(16px, 2vw, 20px);
+  --font-size-btn: 16px;
+  --font-size-card-branch: 16px;
+  --font-size-card-name: 26px;
+  --font-size-card-age: 15px;
+  --font-size-card-roles: 16px;
+
+  /* Espaciado */
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 28px;
+  --border-radius-pill: 999px;
+  --border-radius-card: 16px;
+}
+
+/* ------------------ HEADER ------------------ */
+header {
+  background-color: #623f8f; /* morado oscuro header */
+}
+
+/* ------------------ CAROUSEL ------------------ */
+.carousel-item {
+  min-height: 260px;
+  height: 100vh;
+  position: relative;
+}
+
+.d-block.w-100 {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Overlay oscuro */
+.carousel-bg--shadow {
+  position: absolute;
+  inset: 0;
+  background: var(--color-overlay);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ------------------ CLAIM / HERO ------------------ */
+.carousel-claim {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-text-light);
+  text-align: center;
+  z-index: 2;
+  font-family: var(--font-primary);
+  
+}
+
+/* Pretitle */
+.carousel-item--pretitle {
+  font-size: var(--font-size-pretitle);
+  letter-spacing: 2px;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Title principal */
+.carousel-item--title {
+  font-size: var(--font-size-title);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: var(--spacing-md);
+  font-family: var(--font-secondary);
+}
+
+/* Subtitle */
+.carousel-item--subtitle {
+  font-size: var(--font-size-subtitle);
+  
+  line-height: 1.5;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Botones del hero */
+.carousel-item--actions {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ------------------ BOTONES ------------------ */
+/* Botón principal */
+.btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-text-light);
+  padding: 12px 28px;
+  font-size: var(--font-size-btn);
+  font-weight: 600;
+  border-radius: var(--border-radius-pill);
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+/* Botón secundario */
+.btn-secondary {
+  background-color: var(--color-secondary);
+  border-color: rgba(255,255,255,0.3);
+  color: var(--color-text-light);
+  padding: 12px 28px;
+  font-size: var(--font-size-btn);
+  font-weight: 600;
+  border-radius: var(--border-radius-pill);
+  transition: all 0.25s ease;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: var(--color-secondary-hover);
+  border-color: rgba(255,255,255,0.5);
+}
+
+/* Contenedor de las info cards */
+.info-cards .col-6 {
+  display: flex;
+  align-items: center; /* centra verticalmente icono y texto */
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius-card);
+  padding: var(--spacing-md);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  gap: var(--spacing-lg); /* espacio entre icono y texto */
+}
+
+/* Hover sutil */
+.info-cards .col-6:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+/* Icono */
+.info-cards i {
+  font-size: 2rem; /* tamaño destacado */
+  color: var(--color-primary);
+  flex-shrink: 0; /* evita que se encoja */
+}
+
+/* Texto de la card */
+.info-card-text {
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Mobile: vertical stack */
+@media (max-width: 576px) {
+  .info-cards .col-6 {
+    flex-direction: row; /* sigue horizontal, o si quieres vertical: column */
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+.section-title {
+  
+  margin-bottom: var(--spacing-lg);
+
+}
+
+
+/* ------------------ CARDS / UNIDADES ------------------ */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+}
+
+.card {
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius-card);
+  padding: var(--spacing-lg);
+  box-shadow: 0 10px 25px var(--color-card-shadow);
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 35px var(--color-card-shadow-hover);
+}
+
+.card-branch {
+  font-size: var(--font-size-card-branch);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  margin-bottom: var(--spacing-xs);
+}
+
+.card-name {
+  font-size: var(--font-size-card-name);
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text-dark);
+}
+
+.card-age {
+  font-size: var(--font-size-card-age);
+  font-weight: 600;
+  margin-bottom: var(--spacing-xs);
+  color: #444;
+}
+
+.card-roles {
+  font-size: var(--font-size-card-roles);
+  color: #666;
+}
+
+/* ------------------ RESPONSIVE ------------------ */
+@media (max-width: 576px) {
+  .carousel-claim {
+    padding: 0 6%;
+  }
+
+  .carousel-item--actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .carousel-item--actions .btn {
+    width: 100%;
+  }
+}
+
+/* Margen negativo para secciones full-width dentro de contenedor */
+.mx-n5 {
+  margin-left: calc(-1 * var(--bs-gutter-x, 1.5rem));
+  margin-right: calc(-1 * var(--bs-gutter-x, 1.5rem));
+}
+
+/* Hover effect para cards */
+.hover-card {
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(111, 66, 193, 0.15) !important;
+  border-color: var(--color-primary);
+}

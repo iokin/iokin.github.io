@@ -513,3 +513,23 @@ a:nth-child(6) .card-header { background: var(--color-branch-kraal); }
   color: var(--color-text-light) !important;
   font-weight: 500;
 }
+
+@media (max-width: 991.98px) {
+  #navbarMenu {
+    position: fixed;   /* Sale del flujo normal del documento */
+    inset: 0;          /* Ocupa toda la pantalla */
+    z-index: 1050;     /* Por encima de todo */
+
+    /* Oculto visualmente pero sin que Bootstrap lo rompa */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+
+  #navbarMenu.show {   /* Bootstrap añade .show al abrir */
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}

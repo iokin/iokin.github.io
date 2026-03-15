@@ -405,6 +405,10 @@ header {
   gap: var(--spacing-lg);
   padding: var(--spacing-lg);
 }
+
+.cards-container a {
+  text-decoration: none;
+}
 .card {
   background: var(--color-card-bg);
   border-radius: var(--border-radius-card);

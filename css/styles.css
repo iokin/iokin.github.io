@@ -465,6 +465,8 @@ a:nth-child(4) .card-header { background: var(--color-branch-red); }
 a:nth-child(5) .card-header { background: var(--color-branch-clan); }
 a:nth-child(6) .card-header { background: var(--color-branch-kraal); }
 
+
+
 /* ------------------ RESPONSIVE ------------------ */
 @media (max-width: 576px) {
   .carousel-claim {

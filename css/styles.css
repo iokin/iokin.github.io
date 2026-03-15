@@ -38,7 +38,19 @@
   --spacing-lg: 28px;
   --border-radius-pill: 999px;
   --border-radius-card: 16px;
+
+  /* Unidades */
+
+  --color-branch-camada: #EBB256;
+--color-branch-manada: #67A560;
+--color-branch-tropa: #F77246;
+--color-branch-red: #7A3147;
+--color-branch-clan: #C64C5C;
+--color-branch-kraal: #3B5CBD;
+--color-branch-kraal-alt: #3C3D97;
 }
+
+
 
 /* ------------------ global styles ------------------ */
 .header-logo-button {
@@ -393,47 +405,65 @@ header {
   gap: var(--spacing-lg);
   padding: var(--spacing-lg);
 }
-
 .card {
   background: var(--color-card-bg);
   border-radius: var(--border-radius-card);
-  padding: var(--spacing-lg);
   box-shadow: 0 10px 25px var(--color-card-shadow);
   text-align: center;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
 }
-
 .card:hover {
   transform: translateY(-6px);
   box-shadow: 0 16px 35px var(--color-card-shadow-hover);
+}
+
+.card-header {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: none;
+}
+.card-content {
+  padding: var(--spacing-lg);
 }
 
 .card-branch {
   font-size: var(--font-size-card-branch);
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #888;
-  margin-bottom: var(--spacing-xs);
+  color: white;
+  margin: 0;
+  font-weight: 600;
 }
-
 .card-name {
   font-size: var(--font-size-card-name);
-  font-weight: 700;
+  font-weight: 500;
   margin-bottom: var(--spacing-sm);
   color: var(--color-text-dark);
 }
-
 .card-age {
   font-size: var(--font-size-card-age);
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: var(--spacing-xs);
   color: #444;
+  background-color: var(--color-grey-light);
+  padding: 6px 10px;
+  border-radius: 6px;
+  width: fit-content;
+  margin: 0 auto var(--spacing-sm);
 }
-
 .card-roles {
   font-size: var(--font-size-card-roles);
   color: #666;
+  font-weight: 500;
 }
+
+/* Colores por rama */
+a:nth-child(1) .card-header { background: var(--color-branch-camada); }
+a:nth-child(2) .card-header { background: var(--color-branch-manada); }
+a:nth-child(3) .card-header { background: var(--color-branch-tropa); }
+a:nth-child(4) .card-header { background: var(--color-branch-red); }
+a:nth-child(5) .card-header { background: var(--color-branch-clan); }
+a:nth-child(6) .card-header { background: var(--color-branch-kraal); }
 
 /* ------------------ RESPONSIVE ------------------ */
 @media (max-width: 576px) {

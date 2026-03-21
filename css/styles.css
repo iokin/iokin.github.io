@@ -249,6 +249,25 @@ iframe {
   font-weight: 400;
 }
 
+.section-separator {
+  opacity: 1;border-radius: 60px;border: solid;max-width: 40px;border-color: #6f42c1;margin: 0 auto;
+}
+
+.contact-list {
+  background-color: var(--color-card-bg);
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.title-contact {
+  text-align: left;
+  font-size: 20px;
+  padding-left: 12px;
+  margin-top: 16px;
+  border-left: solid 4px #6f42c1;
+}
+
 /* ------------------ HEADER ------------------ */
 header {
   background-color: #623f8f; /* morado oscuro header */
@@ -274,6 +293,58 @@ header {
   z-index: 1;
   pointer-events: none;
 }
+
+.floating-logo {
+  position: absolute;
+  top: -50px;                    /* borde superior del .container */
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);  /* sube el logo la mitad de su altura */
+  z-index: 99;
+}
+
+#quienes-somos .container {
+  position: relative;
+  padding-top: 30px;
+}
+
+#monitores {
+  border-top: 6px solid #0a319e;
+  border-bottom: 6px solid #ef1700;
+}
+
+.monitores-destacados {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 8px;
+  }
+
+  .monitores-destacados img {
+    width: 80px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 50% !important;;
+    border: 2px solid #ffffff;
+    box-shadow: 0 6px 20px rgba(91, 45, 142, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+
+
+  /* Móvil */
+  @media (min-width: 576px) {
+    .monitores-destacados {
+      gap: 24px;
+    }
+
+    .monitores-destacados img {
+      width: 100px;
+      height: 100px;
+    }
+  }
 
 /* ------------------ CLAIM / HERO ------------------ */
 .carousel-claim {

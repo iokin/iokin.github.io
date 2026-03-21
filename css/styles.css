@@ -35,7 +35,7 @@
   --spacing-xs: 8px;
   --spacing-sm: 12px;
   --spacing-md: 16px;
-  --spacing-lg: 28px;
+  --spacing-lg: 20px;
   --border-radius-pill: 999px;
   --border-radius-card: 16px;
 
@@ -227,6 +227,16 @@ iframe {
   height: 260px;
   margin-bottom: 16px;
   border: solid 2px var(--color-primary);
+}
+
+.info-cards {
+    padding: 0;
+  }
+
+@media (max-width: 576px) {
+  .info-cards {
+    padding: 12px;
+  }
 }
 
 .info-cards > div {

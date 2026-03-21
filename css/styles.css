@@ -27,7 +27,7 @@
   --font-size-subtitle: clamp(16px, 2vw, 20px);
   --font-size-btn: 16px;
   --font-size-card-branch: 16px;
-  --font-size-card-name: 26px;
+  --font-size-card-name: 20px;
   --font-size-card-age: 15px;
   --font-size-card-roles: 16px;
 
@@ -48,7 +48,18 @@
 --color-branch-clan: #C64C5C;
 --color-branch-kraal: #3B5CBD;
 --color-branch-kraal-alt: #3C3D97;
+
+/* Horizontal, más suave */
+--color-brand-gradient-h: linear-gradient(90deg, #1A2F6E 0%, #C8221E 50%, #F5C400 100%);
+
+/* Solo azul → rojo (más sobrio) */
+--color-brand-gradient-dark: linear-gradient(135deg, #1A2F6E, #C8221E);
+
+/* Rojo → amarillo (más cálido) */
+--color-brand-gradient-warm: linear-gradient(135deg, #C8221E, #F5C400);
 }
+
+
 
 
 
@@ -309,8 +320,13 @@ header {
 }
 
 #monitores {
-  border-top: 6px solid #0a319e;
-  border-bottom: 6px solid #ef1700;
+  
+  border-bottom: 6px solid transparent;
+  
+background: linear-gradient(white, white) padding-box,
+            
+            linear-gradient(90deg, #1A2F6E, #C8221E, #F5C400) border-box;
+border-top: 6px solid transparent;
 }
 
 .monitores-destacados {
@@ -543,12 +559,12 @@ header {
 }
 
 /* Colores por rama */
-a:nth-child(1) .card-header { background: var(--color-branch-camada); }
-a:nth-child(2) .card-header { background: var(--color-branch-manada); }
-a:nth-child(3) .card-header { background: var(--color-branch-tropa); }
-a:nth-child(4) .card-header { background: var(--color-branch-red); }
-a:nth-child(5) .card-header { background: var(--color-branch-clan); }
-a:nth-child(6) .card-header { background: var(--color-branch-kraal); }
+a:nth-child(1) .card-header { background: linear-gradient(135deg, #EBB256, #D4845A); } /* amarillo → naranja terracota */
+a:nth-child(2) .card-header { background: linear-gradient(135deg, #67A560, #4A8A7A); } /* verde → verde azulado */
+a:nth-child(3) .card-header { background: linear-gradient(135deg, #F77246, #E84E6A); } /* naranja → rosa coral */
+a:nth-child(4) .card-header { background: linear-gradient(135deg, #7A3147, #3D2A5C); } /* burdeos → púrpura oscuro */
+a:nth-child(5) .card-header { background: linear-gradient(135deg, #C64C5C, #7A3147); } /* rosa → burdeos */
+a:nth-child(6) .card-header { background: linear-gradient(135deg, #3B5CBD, #3C3D97); } /* azul → azul índigo */
 
 
 
@@ -589,6 +605,13 @@ a:nth-child(6) .card-header { background: var(--color-branch-kraal); }
 
 
 /* Ajustes para el footer */
+
+footer {
+  position: relative;
+  z-index: 1;
+  padding: 44px 12px !important;
+  
+}
 
 .nav-link {
   color: var(--color-text-light) !important;

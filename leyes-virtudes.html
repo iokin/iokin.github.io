@@ -20,6 +20,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+          <button class="overlay-close-btn" id="menuClose" aria-label="Cerrar menú">✕</button>
           <ul class="navbar-nav ms-auto">
             <li class="nav-item"><a class="nav-link" href="quienes-somos.html">Quiénes somos</a></li>
             <li class="nav-item"><a class="nav-link" href="monitores.html">Monitores</a></li>
@@ -125,11 +126,51 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-dark text-white">  <div class="container text-center">
-      <p class="mb-0">&copy; 2026 Asociación Scout "Raso de la Estrella" - Aranjuez</p>
-    </div>
+  <footer class="bg-dark text-light text-center">
+<ul class="rrss" aria-label="Barra de redes sociales">
+  <li>
+    <a href="https://www.facebook.com/ScoutRasoDeLaEstrella" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+      <img
+        src="/media/rrss/facebook.svg"
+        alt="Facebook"
+        width="22" height="22"
+        role="img"
+      ><span class="visually-hidden">Facebook</span> 
+    </a>
+  </li>
+  <li>
+    <a href="https://www.youtube.com/channel/UCnqCWp_Wsh57F7HTFH0f3PA?view_as=subscriber" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+      <img
+        src="/media/rrss/youtube.svg"
+        alt="YouTube"
+        width="22" height="22"
+        role="img"
+      ><span class="visually-hidden">Youtube</span> 
+    </a>
+  </li>
+  <li>
+    <a href="https://twitter.com/Scout_Raso" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+      <img
+        src="/media/rrss/twitter.svg"
+        alt="Twitter"
+        width="22" height="22"
+        role="img"
+      ><span class="visually-hidden">Twitter</span> 
+    </a>
+  </li><li>
+    <a href="https://www.flickr.com/" target="_blank" rel="noopener noreferrer" aria-label="Flickr">
+      <img src="/media/rrss/flickr.svg" alt="Flickr" width="22" height="22" role="img"><span class="visually-hidden">Flickr</span> 
+    </a>
+  </li><li>
+  <a href="https://www.instagram.com/scoutrasodelaestrella/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+    <img src="/media/rrss/instagram.svg" alt="" width="22" height="22" role="img">
+    <span class="visually-hidden">Instagram</span>
+  </a>
+</li>
+</ul>  <p class="mb-0">&copy; 2026 Asociación Scout "Raso de la Estrella" - Aranjuez</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/overlay-menu.js"></script>
 </body>
 </html>

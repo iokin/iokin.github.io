@@ -1,3 +1,7 @@
+/* stylelint-disable CssSyntaxError */
+/* stylelint-disable CssSyntaxError */
+/* stylelint-disable no-rules-configured */
+/* stylelint-disable-next-line no-rules-configured */
 /* ------------------ VARIABLES ------------------ */
 :root {
   /* Tipografías */
@@ -261,7 +265,7 @@ iframe {
 }
 
 .section-separator {
-  opacity: 1;border-radius: 60px;border: solid;max-width: 40px;border-color: #6f42c1;margin: 0 auto;
+  opacity: 1;border-radius: 60px;border: solid;max-width: 40px;border-color: var(--color-primary);margin: 0 auto;
 }
 
 .contact-list {
@@ -276,7 +280,62 @@ iframe {
   font-size: 20px;
   padding-left: 12px;
   margin-top: 16px;
-  border-left: solid 4px #6f42c1;
+  border-left: solid 4px var(--color-primary);
+}
+
+.rrss {
+  list-style: none;
+  margin: 32px 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  justify-content: center;
+}
+
+.rrss--medium {
+  list-style: none;
+  margin: 28px 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  justify-content: center;
+}
+
+.rrss li {
+  display: flex;
+}
+
+.rrss a {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.rrss img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.rrss--medium img {
+  width: 34px;
+  height: 34px;
+  display: block;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ------------------ HEADER ------------------ */

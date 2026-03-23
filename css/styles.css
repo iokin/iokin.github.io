@@ -378,6 +378,11 @@ header {
   padding-top: 30px;
 }
 
+.card-img-top {
+  max-width: 160px;
+  border-radius: 100%;
+}
+
 #monitores {
   
   border-bottom: 6px solid transparent;

@@ -41,6 +41,12 @@
       min-height: 80px;
     }
 
+    /* El logo flotante no hereda la opacidad de la sección */
+    .floating-logo {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
     /* Placeholder para el iframe del mapa */
     .map-placeholder {
       width: 100%;
@@ -336,7 +342,7 @@
               </li>
               <li class="contact-item d-flex align-items-center mb-2">
                 <span class="contact-icon me-2"></span>
-                <span>scoutrasodelaestrella@gmail.com</span>
+                <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cab9a9a5bfbeb8abb9a5aeafa6abafb9beb8afa6a6ab8aada7aba3a6e4a9a5a7">[email&#160;protected]</a></span>
               </li>
             </ul>
           </div>
@@ -382,7 +388,7 @@
     <p class="mb-0">© Asociación Scout "Raso de la estrella" - Todos los derechos reservados</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/js/overlay-menu.js"></script>
 
   <script>
@@ -440,7 +446,6 @@
     const mapObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // Carga el iframe copiando data-src a src
           mapFrame.src = mapFrame.dataset.src;
           mapFrame.style.display = 'block';
           mapPlaceholder.style.display = 'none';
@@ -448,11 +453,14 @@
         }
       });
     }, {
-      rootMargin: '300px' // el mapa empieza a cargarse 300px antes
+      rootMargin: '400px'
     });
 
-    if (mapFrame) {
-      mapObserver.observe(mapFrame);
+    // Observamos la sección de contacto: siempre tiene dimensiones reales en el DOM.
+    // No el iframe (display:none) ni el placeholder (puede verse afectado por opacity:0 del reveal).
+    const contactSection = document.getElementById('contacto-text');
+    if (contactSection) {
+      mapObserver.observe(contactSection);
     }
   </script>
 </body>

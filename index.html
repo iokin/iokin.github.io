@@ -41,12 +41,6 @@
       min-height: 80px;
     }
 
-    /* El logo flotante no hereda la opacidad de la sección */
-    .floating-logo {
-      opacity: 1 !important;
-      transform: none !important;
-    }
-
     /* Placeholder para el iframe del mapa */
     .map-placeholder {
       width: 100%;
@@ -164,10 +158,9 @@
     </section>
 
     <!-- SECTION 2: QUIÉNES SOMOS — reveal con animación -->
-    <section id="quienes-somos" class="quienes-somos py-5 bg-light reveal">
-      <div class="container">
-        <div class="floating-logo">
-          <!-- Logo pequeño: lazy nativo (img pequeña, no crítica) -->
+    <section id="quienes-somos" class="quienes-somos py-5 bg-light">
+      <!-- El logo flota entre secciones con position absolute: queda FUERA del reveal -->
+      <div class="floating-logo">
           <img
             src="media/logo-scout-raso-estrella--tiny.png"
             alt="Logo Asociación Scout Raso de la estrella"
@@ -175,6 +168,7 @@
             loading="lazy"
             style="max-width: 120px;">
         </div>
+      <div class="container reveal">
         <h2 class="section-title text-center">Quiénes somos</h2>
         <hr class="section-separator mb-4">
         <div class="row align-items-center">

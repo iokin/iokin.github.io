@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fiestas en el Zerrillo 2026 · Por un Mundo Mejor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:   #1a2f5e;
+      --blue:   #2563a8;
+      --sky:    #7ec8e3;
+      --coral:  #e8514a;
+      --yellow: #f5c842;
+      --orange: #f4884a;
+      --pink:   #f07ab0;
+      --white:  #ffffff;
+      --offwhite: #f8faff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--offwhite);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* ── WAVES SVG helper ── */
+    .wave-top, .wave-bottom {
+      display: block;
+      width: 100%;
+      line-height: 0;
+    }
+
+    /* ════════════════════════════════
+       HERO
+    ════════════════════════════════ */
+    #hero {
+      background: var(--white);
+      position: relative;
+      padding: 3rem 1rem 0;
+      text-align: center;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 20%, #d6eeff 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, #ffecd2 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    /* wavy doodle top */
+    .doodle-waves {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      opacity: .18;
+    }
+
+    .hero-logo-area {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    .badge-fiesta {
+      background: var(--pink);
+      border-radius: 50% 40% 55% 45%;
+      padding: .6rem 1.5rem;
+      display: inline-block;
+      transform: rotate(-4deg);
+      box-shadow: 4px 4px 0 var(--navy);
+    }
+    .badge-fiesta span {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(2rem, 7vw, 3.2rem);
+      color: var(--white);
+      line-height: 1.1;
+      display: block;
+    }
+    .badge-enel {
+      background: var(--sky);
+      border-radius: 40%;
+      padding: .15rem .8rem;
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(.9rem, 3vw, 1.2rem);
+      color: var(--navy);
+      display: inline-block;
+      transform: rotate(2deg);
+      margin: .25rem 0;
+    }
+    .badge-zerrillo {
+      background: var(--coral);
+      border-radius: 35% 50% 45% 40%;
+      padding: .5rem 1.8rem;
+      display: inline-block;
+      transform: rotate(3deg);
+      box-shadow: 4px 4px 0 var(--navy);
+    }
+    .badge-zerrillo span {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(2.2rem, 8vw, 3.8rem);
+      color: var(--white);
+    }
+
+    .hug-band {
+      background: var(--yellow);
+      border-radius: 50px;
+      padding: .6rem 2.5rem;
+      display: inline-block;
+      margin-top: .8rem;
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.2rem, 4.5vw, 2rem);
+      color: var(--navy);
+      transform: rotate(-2deg);
+      box-shadow: 3px 3px 0 var(--navy);
+      position: relative;
+    }
+    .hug-band::before,
+    .hug-band::after {
+      content: '🤝';
+      font-size: 1.4rem;
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+    }
+    .hug-band::before { left: .6rem; }
+    .hug-band::after  { right: .6rem; }
+
+    .ship-emoji {
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      display: block;
+      margin: 1rem auto .5rem;
+      animation: bob 3s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%,100% { transform: translateY(0) rotate(-2deg); }
+      50%      { transform: translateY(-10px) rotate(2deg); }
+    }
+
+    /* Date block */
+    .date-row {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 16px;
+      display: inline-flex;
+      gap: 0;
+      overflow: hidden;
+      margin: 1.5rem auto;
+      box-shadow: 6px 6px 0 var(--coral);
+    }
+    .date-col {
+      padding: 1.2rem 1.8rem;
+      border-right: 2px solid rgba(255,255,255,.15);
+    }
+    .date-col:last-child { border-right: none; }
+    .date-col .label {
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      opacity: .7;
+    }
+    .date-col .value {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.4rem, 5vw, 2.2rem);
+      line-height: 1;
+    }
+    .date-col .value.big { font-size: clamp(2.5rem, 9vw, 4rem); }
+    .date-col .accent { color: var(--sky); }
+    .date-col .accent2 { color: var(--yellow); }
+
+    /* ════════════════════════════════
+       SECTIONS shared
+    ════════════════════════════════ */
+    section { position: relative; }
+
+    .section-wave {
+      background: var(--navy);
+      position: relative;
+    }
+    .section-wave .content {
+      padding: 3.5rem 1rem;
+      position: relative;
+      z-index: 2;
+      color: var(--white);
+    }
+
+    .section-light .content {
+      padding: 3.5rem 1rem;
+    }
+
+    /* ════════════════════════════════
+       SOBRE EL EVENTO
+    ════════════════════════════════ */
+    #sobre {
+      background: linear-gradient(160deg, #e8f4ff 0%, #fff6e0 100%);
+    }
+    #sobre .content {
+      padding: 4rem 1rem;
+    }
+    .sobre-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 4px 4px 0 var(--sky);
+      height: 100%;
+    }
+    .sobre-card .icon {
+      font-size: 2.5rem;
+      margin-bottom: .75rem;
+      display: block;
+    }
+    .sobre-card h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.3rem;
+      color: var(--navy);
+      margin-bottom: .5rem;
+    }
+
+    .lifebuoy-badge {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: var(--coral);
+      border: 6px solid var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem;
+      margin: 0 auto 1.5rem;
+      box-shadow: 3px 3px 0 var(--yellow);
+      animation: spin-slow 12s linear infinite;
+    }
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+    /* ════════════════════════════════
+       ACTIVIDADES
+    ════════════════════════════════ */
+    #actividades {
+      background: var(--navy);
+    }
+    #actividades .content {
+      padding: 4rem 1rem;
+    }
+    .act-pill {
+      background: rgba(255,255,255,.08);
+      border: 2px solid rgba(255,255,255,.2);
+      border-radius: 50px;
+      padding: .7rem 1.4rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1rem;
+      margin: .4rem;
+      transition: transform .2s, background .2s;
+    }
+    .act-pill:hover {
+      background: var(--coral);
+      transform: translateY(-3px);
+      border-color: var(--coral);
+    }
+    .act-pill .emoji { font-size: 1.3rem; }
+
+    /* ════════════════════════════════
+       RECAUDACION
+    ════════════════════════════════ */
+    #recaudacion {
+      background: linear-gradient(160deg, #fff8e1 0%, #ffe0ef 100%);
+    }
+    #recaudacion .content { padding: 4rem 1rem; }
+
+    .assoc-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      box-shadow: 3px 3px 0 var(--yellow);
+      height: 100%;
+      transition: transform .2s;
+    }
+    .assoc-card:hover { transform: translateY(-5px); }
+    .assoc-card .emoji { font-size: 2.2rem; display: block; margin-bottom: .5rem; }
+    .assoc-card h4 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.1rem;
+      color: var(--navy);
+      margin-bottom: .3rem;
+    }
+    .assoc-card p { font-size: .85rem; color: #555; }
+
+    /* ════════════════════════════════
+       SMH
+    ════════════════════════════════ */
+    #smh {
+      background: var(--navy);
+      color: var(--white);
+    }
+    #smh .content { padding: 4rem 1rem; }
+
+    .smh-logo-circle {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-family: 'Oswald', sans-serif;
+      font-size: 2rem;
+      color: var(--navy);
+      border: 4px solid var(--sky);
+      box-shadow: 0 0 0 8px rgba(126,200,227,.2);
+    }
+
+    .smh-quote {
+      background: rgba(255,255,255,.08);
+      border-left: 5px solid var(--sky);
+      border-radius: 0 12px 12px 0;
+      padding: 1.2rem 1.5rem;
+      font-style: italic;
+      font-size: 1.05rem;
+      margin: 1.5rem 0;
+    }
+
+    .ship-photo {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 4px solid var(--sky);
+      box-shadow: 6px 6px 0 var(--coral);
+      background: #0a1e40;
+      padding: 3rem;
+      text-align: center;
+      font-size: 5rem;
+    }
+
+    /* ════════════════════════════════
+       FANZINE
+    ════════════════════════════════ */
+    #fanzine {
+      background: var(--coral);
+      color: var(--white);
+    }
+    #fanzine .content { padding: 3rem 1rem; }
+
+    .fanzine-box {
+      background: var(--white);
+      color: var(--navy);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 6px 6px 0 var(--navy);
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .price-badge {
+      background: var(--yellow);
+      color: var(--navy);
+      font-family: 'Oswald', sans-serif;
+      font-size: 2.5rem;
+      border-radius: 50%;
+      width: 80px; height: 80px;
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      border: 3px solid var(--navy);
+      margin-bottom: 1rem;
+    }
+
+    /* ════════════════════════════════
+       COLABORAN
+    ════════════════════════════════ */
+    #colaboran {
+      background: linear-gradient(160deg, #e8f4ff 0%, #f0fff4 100%);
+    }
+    #colaboran .content { padding: 4rem 1rem; }
+
+    .colab-badge {
+      background: var(--white);
+      border: 2px solid var(--navy);
+      border-radius: 50px;
+      padding: .5rem 1.4rem;
+      font-weight: 700;
+      color: var(--navy);
+      display: inline-block;
+      margin: .4rem;
+      font-size: .95rem;
+      box-shadow: 2px 2px 0 var(--sky);
+    }
+
+    /* ════════════════════════════════
+       CTA / FOOTER
+    ════════════════════════════════ */
+    #cta {
+      background: var(--navy);
+      color: var(--white);
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+    }
+    .cta-title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.8rem, 6vw, 3.2rem);
+      color: var(--yellow);
+      margin-bottom: 1rem;
+    }
+    .btn-cta {
+      background: var(--coral);
+      color: var(--white);
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.3rem;
+      padding: .9rem 2.5rem;
+      border-radius: 50px;
+      border: 3px solid var(--white);
+      text-decoration: none;
+      display: inline-block;
+      margin: .4rem;
+      transition: transform .2s, background .2s;
+      box-shadow: 4px 4px 0 rgba(255,255,255,.25);
+    }
+    .btn-cta:hover { background: var(--yellow); color: var(--navy); transform: translateY(-3px); }
+    .btn-cta-sec {
+      background: transparent;
+      border-color: var(--sky);
+      color: var(--sky);
+    }
+    .btn-cta-sec:hover { background: var(--sky); color: var(--navy); }
+
+    footer {
+      background: #0e1e3c;
+      color: rgba(255,255,255,.5);
+      text-align: center;
+      padding: 1.2rem;
+      font-size: .82rem;
+    }
+
+    /* ════════════════════════════════
+       SECTION TITLES
+    ════════════════════════════════ */
+    .sec-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700;
+      margin-bottom: .3rem;
+    }
+    .sec-sub {
+      font-size: 1.05rem;
+      opacity: .75;
+      margin-bottom: 2.5rem;
+    }
+    .pill-label {
+      display: inline-block;
+      background: var(--sky);
+      color: var(--navy);
+      border-radius: 50px;
+      padding: .2rem .9rem;
+      font-size: .8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: .6rem;
+    }
+    .pill-label.red { background: var(--coral); color: var(--white); }
+    .pill-label.yellow { background: var(--yellow); }
+    .pill-label.white { background: rgba(255,255,255,.15); color: var(--white); }
+
+    /* wave divider */
+    .wave-divider svg { display: block; width: 100%; }
+
+    /* responsive tweaks */
+    @media (max-width: 576px) {
+      .date-row { flex-direction: column; width: 90%; }
+      .date-col { border-right: none; border-bottom: 2px solid rgba(255,255,255,.15); }
+      .date-col:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+  <div class="container position-relative" style="z-index:2;">
+
+    <div class="mb-3">
+      <div class="badge-fiesta"><span>Fiestas</span></div>
+      <div style="margin:.3rem 0;">
+        <span class="badge-enel">en el</span>
+      </div>
+      <div class="badge-zerrillo"><span>Zerrillo</span></div>
+    </div>
+
+    <div class="ship-emoji">⛵</div>
+
+    <div class="hug-band">por un mundo mejor</div>
+
+    <div class="d-flex justify-content-center mt-4">
+      <div class="date-row">
+        <div class="date-col">
+          <div class="label">Día</div>
+          <div class="value accent">Sábado</div>
+          <div class="value big">30</div>
+          <div class="value accent2">Mayo 2026</div>
+        </div>
+        <div class="date-col">
+          <div class="label">Lugar</div>
+          <div class="value" style="font-size:1.1rem; line-height:1.3;">Pozo de las<br><strong>Nieves</strong><br><span style="font-size:.9rem; opacity:.7;">Aranjuez</span></div>
+        </div>
+        <div class="date-col">
+          <div class="label">Hora</div>
+          <div class="value" style="font-size:.85rem; opacity:.7;">Desde las</div>
+          <div class="value big accent">12:00</div>
+          <div class="value" style="font-size:.85rem; opacity:.7;">hrs</div>
+        </div>
+      </div>
+    </div>
+    <p class="mt-3 mb-0 text-muted" style="font-size:.9rem;">Entrada libre · 100% solidario</p>
+  </div>
+
+  <!-- wave bottom -->
+  <div class="wave-divider mt-4">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#1a2f5e" d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════ SOBRE EL EVENTO ══════════ -->
+<section id="sobre" style="background: linear-gradient(160deg, #e8f4ff 0%, #fff6e0 100%);">
+  <div class="content container text-center" style="padding:4rem 1rem;">
+
+    <span class="pill-label">¡El Zerrillo vuelve!</span>
+    <h2 class="sec-title">Música, paella y mucha alma</h2>
+    <p class="sec-sub">¡Marcad el 30 de mayo en vuestros calendarios!</p>
+
+    <div class="row g-4 text-start">
+      <div class="col-md-4">
+        <div class="sobre-card">
+          <span class="icon">🎶</span>
+          <h3>Un evento con alma</h3>
+          <p>El Pozo de las Nieves de Aranjuez se prepara para otra jornada épica donde la solidaridad, la música, los talleres infantiles y el olorcito a paella (¡a precios populares!) serán los protagonistas.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="sobre-card text-center">
+          <div class="lifebuoy-badge">⚓</div>
+          <h3>La familia zerrillera</h3>
+          <p>Un año más, ha puesto toda la maquinaria en marcha con mucho amor para organizar este evento ya tradicional.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="sobre-card">
+          <span class="icon">🌍</span>
+          <h3>Nuestro objetivo</h3>
+          <p><strong>Una fiesta autogestionada e inclusiva</strong> donde el único requisito es venir con ganas de disfrutar y compartir.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 p-3 rounded-3" style="background:#fff; border:2px dashed var(--navy); max-width:680px; margin:2rem auto 0;">
+      <p class="mb-0" style="font-size:1rem;">Nada de esto sería posible sin el equipazo que formamos con los <strong>comercios y asociaciones</strong>. Gracias a su generosidad, podemos arrimar el hombro y apoyar la labor social de asociaciones que hacen de este un mundo mejor. 💙</p>
+    </div>
+  </div>
+
+  <!-- wave -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#1a2f5e" d="M0,20 C360,70 720,0 1080,50 C1260,75 1380,20 1440,40 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════ ACTIVIDADES ══════════ -->
+<section id="actividades" style="background: var(--navy);">
+  <div class="content container text-center" style="padding:4rem 1rem;">
+
+    <span class="pill-label white">Programa</span>
+    <h2 class="sec-title text-white">¡No va a faltar de nada!</h2>
+    <p class="sec-sub text-white">Las fiestas en el Zerrillo son 100% solidarias</p>
+
+    <div class="mt-2">
+      <span class="act-pill"><span class="emoji">🎸</span> Conciertos en vivo</span>
+      <span class="act-pill"><span class="emoji">🎨</span> Talleres infantiles</span>
+      <span class="act-pill"><span class="emoji">🥘</span> Paella solidaria</span>
+      <span class="act-pill"><span class="emoji">🥪</span> Bocadillos</span>
+      <span class="act-pill"><span class="emoji">⚽</span> Actividades deportivas</span>
+      <span class="act-pill"><span class="emoji">🎭</span> Actividades culturales</span>
+      <span class="act-pill"><span class="emoji">👨‍👩‍👧</span> Para toda la familia</span>
+      <span class="act-pill"><span class="emoji">💛</span> Ambiente solidario</span>
+    </div>
+
+    <div class="mt-4 p-3 rounded-3 d-inline-block" style="background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); max-width:560px;">
+      <p class="text-white mb-0">⚓ <strong>Todo lo recaudado en este día irá para las asociaciones colaboradoras.</strong><br>
+      Porque queremos un <span style="color:var(--yellow); font-weight:900;">MUNDO MEJOR.</span></p>
+    </div>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#fff8e1" d="M0,60 C360,10 720,70 1080,20 C1260,0 1380,50 1440,40 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════ ASOCIACIONES ══════════ -->
+<section id="recaudacion" style="background: linear-gradient(160deg, #fff8e1 0%, #ffe0ef 100%);">
+  <div class="content container text-center" style="padding:4rem 1rem;">
+
+    <span class="pill-label yellow">Solidaridad</span>
+    <h2 class="sec-title">La recaudación irá destinada a:</h2>
+    <p class="sec-sub">Nuestras asociaciones amigas</p>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-6 col-md-3">
+        <div class="assoc-card">
+          <span class="emoji">♾️</span>
+          <h4>SumateA</h4>
+          <p>Asociación de apoyo a la diversidad funcional</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="assoc-card">
+          <span class="emoji">🌸</span>
+          <h4>Glorieta del Calvet</h4>
+          <p>Asociación de Vecinos de Aranjuez</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="assoc-card">
+          <span class="emoji">🎗️</span>
+          <h4>UNICCA</h4>
+          <p>Unidas Contra el Cáncer</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="assoc-card">
+          <span class="emoji">⚓</span>
+          <h4>SMH</h4>
+          <p>Salvamento Marítimo Humanitario — Aita Mari</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 p-3 rounded-3" style="background:#fff; border-left:5px solid var(--coral); max-width:640px; margin:2rem auto 0; text-align:left;">
+      <p class="mb-0">Además, en esta ocasión <strong>miramos al mar apoyando la labor de SMH</strong>: asociación de personal voluntariado que desde 2015 responden a la situación de vulneración de Derechos Humanos que se vive en el Mediterráneo y en el Egeo. <strong>La solidaridad no tiene fronteras.</strong></p>
+    </div>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#1a2f5e" d="M0,40 C240,0 480,80 720,30 C960,-10 1200,70 1440,40 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════ SMH ══════════ -->
+<section id="smh" style="background: var(--navy); color:white;">
+  <div class="content container" style="padding:4rem 1rem;">
+    <div class="text-center mb-4">
+      <div class="smh-logo-circle">⚓</div>
+      <span class="pill-label white">ONG destacada</span>
+      <h2 class="sec-title text-white mt-1">SMH, la ONG que salva<br>vidas en el mar</h2>
+    </div>
+
+    <div class="row g-4 align-items-center">
+      <div class="col-md-7">
+        <p style="font-size:1.05rem; line-height:1.8;">
+          <strong style="color:var(--sky);">Salvamento Marítimo Humanitario (SMH)</strong> es una ONG española fundada en 2015 que <strong>rescata y asiste a personas refugiadas y migrantes en el mar Mediterráneo y Egeo.</strong> Basada en el voluntariado, su misión es proteger la vida y derechos humanos de personas en tránsito, destacando por el uso del buque de rescate <strong style="color:var(--yellow);">Aita Mari</strong>.
+        </p>
+
+        <div class="smh-quote">
+          <strong style="color:var(--sky);">Su lema — Artículo 13 de los Derechos Humanos Universales:</strong><br><br>
+          "Toda persona tiene derecho a circular libremente y a elegir su residencia en el territorio de un Estado, y toda persona tiene derecho a salir de cualquier país, incluso del propio, y a regresar."
+        </div>
+
+        <p style="line-height:1.7;">Con nuestra humilde aportación, queremos apoyar este año su gran labor humanitaria.</p>
+        <a href="https://smh.eus" target="_blank" class="btn-cta" style="margin-top:1rem;">🌊 smh.eus</a>
+      </div>
+
+      <div class="col-md-5">
+        <div class="ship-photo">
+          🚢
+          <p style="color:rgba(255,255,255,.5); font-size:.85rem; margin-top:1rem;">Buque de rescate <strong style="color:white;">Aita Mari</strong><br>Salvamento Marítimo Humanitario</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#e8553a" d="M0,50 C360,10 720,70 1080,30 C1260,10 1380,60 1440,40 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════ FANZINE ══════════ -->
+<section id="fanzine" style="background: var(--coral);">
+  <div class="content container" style="padding:3rem 1rem;">
+    <div class="fanzine-box">
+      <div class="price-badge">3€</div>
+      <h2 class="sec-title" style="font-size:1.9rem;">¡Adquiere nuestro FANZINE en papel!</h2>
+      <p class="mt-2">Son <strong>3€ de ná</strong>, y podrás participar en el sorteo de una:</p>
+      <div class="my-3 p-3 rounded-3" style="background:var(--navy); color:white;">
+        <p class="mb-0" style="font-size:1.2rem; font-family:'Oswald',sans-serif;">🎁 Caja Regalo Estancias Paradores</p>
+        <p class="mb-0" style="font-size:.85rem; opacity:.7;">(una noche con desayuno y almuerzo o cena para dos)</p>
+      </div>
+      <p class="text-muted" style="font-size:.9rem;">¡No te quedes sin el tuyo!</p>
+    </div>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#e8f4ff" d="M0,30 C240,70 480,10 720,50 C960,90 1200,20 1440,50 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════ COLABORAN ══════════ -->
+<section id="colaboran" style="background: linear-gradient(160deg, #e8f4ff 0%, #f0fff4 100%);">
+  <div class="content container text-center" style="padding:4rem 1rem;">
+
+    <span class="pill-label">Colaboran</span>
+    <h2 class="sec-title">Gracias a quienes hacen posible el Zerrillo</h2>
+    <p class="sec-sub">Comercios y asociaciones que arrimaron el hombro</p>
+
+    <div class="mt-2">
+      <span class="colab-badge">AMAFI</span>
+      <span class="colab-badge">Plena Inclusión Castilla-La Mancha</span>
+      <span class="colab-badge">integrandes.org</span>
+    </div>
+
+    <p class="mt-4" style="max-width:600px; margin:1.5rem auto 0; font-size:1rem;">
+      ¿Quieres colaborar? <strong>¡Contacta con la familia zerrillera!</strong> Tu apoyo hace que la fiesta sea posible y que lleguemos más lejos.
+    </p>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#1a2f5e" d="M0,60 C360,20 720,70 1080,30 C1260,10 1380,60 1440,45 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════ CTA ══════════ -->
+<section id="cta" style="background: var(--navy); color:white; padding:4rem 1rem 2rem; text-align:center;">
+  <p class="cta-title">¡Ven a poner tu granito de arena!</p>
+  <p style="font-size:1.1rem; max-width:540px; margin:0 auto 2rem; opacity:.85;">
+    Música, amigos y solidaridad.<br><strong style="color:var(--sky);">¡No se puede pedir más!</strong>
+  </p>
+  <div>
+    <a href="https://smh.eus" target="_blank" class="btn-cta">🌊 Conoce SMH</a>
+    <a href="#sobre" class="btn-cta btn-cta-sec">📅 Ver programa</a>
+  </div>
+
+  <div class="mt-5" style="opacity:.35; font-size:1.6rem; letter-spacing:.3rem;">
+    〰〰〰〰〰〰
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <p>Fiestas en el Zerrillo 2026 · Pozo de las Nieves, Aranjuez · Sábado 30 de mayo · 12:00 hrs</p>
+  <p style="margin-top:.4rem;">Evento 100% solidario y autogestionado · <em>Por un mundo mejor</em> 🌊</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- simple scroll-reveal -->
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.sobre-card, .assoc-card, .act-pill, .fanzine-box').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

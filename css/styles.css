@@ -123,7 +123,10 @@
 
 header {
   box-shadow: 0 4px 12px rgb(0 0 0 / 60%);
-  border-bottom: solid 4px var(--color-orange);
+background: linear-gradient(#623f8f, #623f8f) padding-box,
+            
+            linear-gradient(90deg, #623f8f, #C8221E, #F5C400) border-box;
+border-bottom: 6px solid transparent;
 }
 
 .bi-geo-alt-fill::before {
@@ -355,10 +358,10 @@ header {
 
 .floating-logo {
   position: absolute;
-  top: -50px;                    /* borde superior del .container */
+  bottom: 0;                    /* borde superior del .container */
   left: 0;
   width: 100%;
-  transform: translateY(-50%);  /* sube el logo la mitad de su altura */
+  transform: translateY(50%);  /* sube el logo la mitad de su altura */
   z-index: 99;
 }
 
@@ -723,3 +726,60 @@ footer {
 @media (width >= 992px) {
   .overlay-close-btn { display: none !important; }
 }
+
+
+    /* ── Lazy loading: estado inicial ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Efecto escalonado para cards de unidades */
+    .reveal-child > * {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .reveal-child.visible > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0ms; }
+    .reveal-child.visible > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 80ms; }
+    .reveal-child.visible > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 160ms; }
+    .reveal-child.visible > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 240ms; }
+    .reveal-child.visible > *:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 320ms; }
+    .reveal-child.visible > *:nth-child(6) { opacity: 1; transform: translateY(0); transition-delay: 400ms; }
+
+    .floating-logo {
+      opacity: 1;
+      will-change: transform;
+    }
+
+    /* Placeholder para imágenes lazy */
+    img[data-src] {
+      background: #e9ecef;
+      min-height: 80px;
+    }
+
+    /* Placeholder para el iframe del mapa */
+    .map-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: #e9ecef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid #dee2e6;
+      flex-direction: column;
+      gap: 8px;
+      color: #6c757d;
+      font-size: 14px;
+    }
+    .map-placeholder i { font-size: 2rem; }
+    .map-placeholder.loaded { display: none; }
+  

@@ -235,6 +235,7 @@ iframe {
   height: 260px;
   margin-bottom: 16px;
   border: solid 2px var(--color-primary);
+  
 }
 
 .info-cards {
@@ -363,6 +364,10 @@ header {
   width: 100%;
   transform: translateY(50%);  /* sube el logo la mitad de su altura */
   z-index: 99;
+}
+
+.floating-logo img {
+  max-width: 120px;
 }
 
 #quienes-somos .container {

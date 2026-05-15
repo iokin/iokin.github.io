@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hiberus — Nuevas Oportunidades</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#1ab5b5;--teal-dark:#0d8f8f;--teal-light:#e6f8f8;--teal-mid:#9de4e4;
+  --navy:#1c2b5e;--yellow:#f5c842;--yellow-light:#fffaea;--yellow-mid:#fde68a;
+  --purple:#7b6fc3;--purple-light:#eeecfa;--green:#3aab7b;--green-light:#e7f8f1;
+  --white:#fff;--off:#f7f9fc;--gray-200:#dde2ef;--gray-400:#8a94ad;--text:#1a2035;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito Sans',sans-serif;background:var(--off);color:var(--text);-webkit-font-smoothing:antialiased}
+nav{background:var(--white);border-bottom:1px solid var(--gray-200);padding:0 clamp(1rem,5vw,3.5rem);display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(28,43,94,.07)}
+.logo{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.6rem;color:var(--navy);letter-spacing:-.5px;display:flex;align-items:center}
+.logo-bracket{display:inline-flex;flex-direction:column;margin-left:3px;gap:2px}
+.logo-bracket span{display:block;width:8px;height:3px;border-top:2.5px solid var(--teal);border-right:2.5px solid var(--teal)}
+.tagline{font-family:'Nunito',sans-serif;font-weight:700;font-size:.8rem;color:var(--navy);text-align:right;line-height:1.35}
+.tagline em{color:var(--teal);font-style:normal}
+.hero{background:var(--white);padding:clamp(2rem,5vw,3rem) clamp(1rem,5vw,3.5rem) clamp(1.5rem,4vw,2rem)}
+.hero-inner{max-width:860px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;gap:1.2rem;margin-bottom:1.3rem}
+.rocket-wrap{flex-shrink:0;width:76px;height:76px;background:var(--teal-light);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.hero-h1{font-family:'Nunito',sans-serif;font-weight:800;font-size:clamp(1.35rem,4vw,2rem);color:var(--navy);line-height:1.2;margin-bottom:.25rem}
+.hero-h2{font-family:'Nunito',sans-serif;font-weight:800;font-size:clamp(1.45rem,4.5vw,2.2rem);color:var(--teal);line-height:1.15}
+.hero-body{font-size:.96rem;color:#3d4966;line-height:1.75}
+.hero-body strong{color:var(--navy);font-weight:700}
+.hero-callout{border-left:4px solid var(--teal);background:var(--teal-light);padding:.9rem 1.2rem;border-radius:0 8px 8px 0;margin:1.2rem 0;font-size:.95rem;color:var(--navy);font-weight:600;line-height:1.65}
+.pills{display:flex;flex-wrap:wrap;gap:.5rem 1.8rem;margin-top:1.4rem;align-items:center}
+.pill{display:flex;align-items:center;gap:.45rem;font-size:.87rem;color:var(--gray-400);font-weight:600}
+.divider{width:1px;height:20px;background:var(--gray-200)}
+.section-title{text-align:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:clamp(1rem,3vw,1.3rem);color:var(--teal);padding:2rem clamp(1rem,5vw,3.5rem) 1rem;max-width:860px;margin:0 auto;display:block}
+.cards-section{padding:0 clamp(1rem,5vw,3.5rem) 2.5rem}
+.grid{max-width:860px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,370px),1fr));gap:1.2rem}
+.card{background:var(--white);border-radius:18px;padding:1.3rem 1.3rem 1.1rem;border:1.5px solid var(--gray-200);transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:0 8px 28px rgba(28,43,94,.1);transform:translateY(-2px)}
+.card.t{border-color:var(--teal-mid);background:linear-gradient(140deg,var(--teal-light),#fff 55%)}
+.card.p{border-color:#c5bfea;background:linear-gradient(140deg,var(--purple-light),#fff 55%)}
+.card.g{border-color:#a9dfc7;background:linear-gradient(140deg,var(--green-light),#fff 55%)}
+.card.y{border-color:var(--yellow-mid);background:linear-gradient(140deg,var(--yellow-light),#fff 55%)}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;margin-bottom:.85rem}
+.num{width:29px;height:29px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:.92rem;color:#fff;margin-bottom:.6rem}
+.card.t .num{background:var(--teal)} .card.p .num{background:var(--purple)}
+.card.g .num{background:var(--green)} .card.y .num{background:#c89c10}
+.card-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:1.05rem;color:var(--navy);line-height:1.25;text-decoration:underline;text-underline-offset:3px}
+.illus{flex-shrink:0;width:82px;height:68px}
+.body{font-size:.875rem;color:#4a5570;line-height:1.65;margin-bottom:.9rem}
+.cta{border-radius:8px;padding:.72rem .9rem;font-size:.85rem;line-height:1.55;color:var(--navy);font-weight:700;display:flex;gap:.45rem;align-items:flex-start}
+.card.t .cta{background:var(--teal-light)} .card.p .cta{background:var(--purple-light)}
+.card.g .cta{background:var(--green-light)} .card.y .cta{background:var(--yellow-light)}
+.cta-arrow{font-size:1rem;font-weight:900;line-height:1.55;flex-shrink:0}
+.card.t .cta-arrow{color:var(--teal)} .card.p .cta-arrow{color:var(--purple)}
+.card.g .cta-arrow{color:var(--green)} .card.y .cta-arrow{color:#c89c10}
+.footer{background:var(--white);border-top:1px solid var(--gray-200);padding:1.8rem clamp(1rem,5vw,3.5rem)}
+.footer-in{max-width:860px;margin:0 auto;display:flex;align-items:flex-start;gap:1rem}
+.footer-text{font-size:.89rem;color:#4a5570;line-height:1.7;flex:1}
+.footer-link{color:var(--teal);font-weight:700}
+.avatars{flex-shrink:0;display:flex;gap:.4rem;align-items:flex-end}
+.closing{background:var(--white);border-top:1px solid var(--gray-200);padding:1.8rem clamp(1rem,5vw,3.5rem);text-align:center}
+.closing p{font-size:.9rem;color:#4a5570;margin-bottom:.25rem}
+.closing strong{color:var(--navy)}
+.closing .green-line{color:var(--teal);font-weight:700;font-size:.9rem}
+.closing .thanks{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;color:var(--navy);text-decoration:underline;display:block;margin-top:.7rem}
+@media(max-width:500px){
+  .hero-top{flex-direction:column;gap:.8rem}
+  .divider{display:none}
+  .avatars{display:none}
+  .footer-in{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">hiberus<div class="logo-bracket"><span></span></div></div>
+  <div class="tagline">Let's build the<br/><em>future together</em></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="rocket-wrap">
+        <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+          <path d="M21 5C21 5 13 12 13 23L19 29C20 22 23.5 17.5 28 15C25.5 10.5 21 5 21 5Z" fill="#1ab5b5"/>
+          <path d="M28 15C30.5 13.5 33 13.5 35 15L32.5 23H28C28 20 28 17.5 28 15Z" fill="#9de4e4"/>
+          <path d="M13 23C11.5 25.5 11 28 12.5 30L16 28.5C14.5 26.5 13.5 24.5 13 23Z" fill="#9de4e4"/>
+          <circle cx="21" cy="20" r="3.5" fill="white" opacity=".9"/>
+          <path d="M16 29.5L12.5 35.5L18.5 33Z" fill="#f5c842"/>
+          <path d="M26.5 25.5L32 29L28.5 23Z" fill="#f5c842"/>
+        </svg>
+      </div>
+      <div>
+        <div class="hero-h1">¿Te atreves a dar el paso?</div>
+        <div class="hero-h2">nuevas oportunidades para<br/>evolucionar dentro de hiberus</div>
+      </div>
+    </div>
+
+    <p class="hero-body">
+      Hasta ahora, en hiberus las oportunidades internas han ido surgiendo de forma natural, cercana y ligada a las necesidades de cada momento.<br/><br/>
+      <strong>Pero estamos en un momento diferente.</strong><br/>
+      La compañía está evolucionando muy rápido alrededor de la IA, los nuevos modelos de servicio y las capacidades que necesitaremos en los próximos años.
+    </p>
+
+    <div class="hero-callout">
+      Por eso queremos abrir nuevas oportunidades para personas que sientan que es su momento de dar el paso, reinventarse, evolucionar o explorar nuevos caminos dentro de hiberus.
+    </div>
+
+    <div class="pills">
+      <div class="pill">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M4 2l10 7-5 1-2 5L4 2Z" stroke="#8a94ad" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        Sin grandes procesos
+      </div>
+      <div class="divider"></div>
+      <div class="pill">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M10 1.5L5 9.5h5l-2 6 8-9h-5l2-5H10Z" stroke="#8a94ad" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>
+        Sin burocracia
+      </div>
+      <div class="divider"></div>
+      <div class="pill">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><rect x="2" y="2.5" width="13" height="9" rx="2.5" stroke="#8a94ad" stroke-width="1.5"/><path d="M6 14.5l1.5-3h4" stroke="#8a94ad" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Con escucha real
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-title">Queremos abrir nuevas formas de crecer</div>
+
+<!-- CARDS -->
+<section class="cards-section">
+  <div class="grid">
+
+    <!-- 1. Account Management Evolution -->
+    <div class="card t">
+      <div class="card-head">
+        <div>
+          <div class="num">1</div>
+          <div class="card-title">Account Management<br/>Evolution</div>
+        </div>
+        <svg class="illus" viewBox="0 0 82 68" fill="none">
+          <!-- mountains -->
+          <polygon points="8,62 32,18 56,62" fill="#9de4e4"/>
+          <polygon points="30,62 52,28 74,62" fill="#1ab5b5"/>
+          <!-- flag pole -->
+          <rect x="31" y="10" width="2.5" height="14" fill="#1c2b5e" rx="1"/>
+          <!-- flag -->
+          <path d="M33.5 10 L43 13.5 L33.5 17Z" fill="#1c2b5e"/>
+          <!-- ground shadow -->
+          <ellipse cx="41" cy="64" rx="28" ry="3.5" fill="#9de4e4" opacity=".4"/>
+        </svg>
+      </div>
+      <p class="body">Para responsables de equipo, service managers o perfiles similares que quieran evolucionar hacia un rol de gerencia de cuenta, asumiendo responsabilidad sobre cliente, desarrollo comercial, delivery y operación de la cuenta.</p>
+      <div class="cta"><span class="cta-arrow">›</span><span>Da el salto si ya lideras equipos o servicios y te ves con capacidad para asumir clientes o cuentas con responsabilidad completa.</span></div>
+    </div>
+
+    <!-- 2. Transition to Data or Automation -->
+    <div class="card p">
+      <div class="card-head">
+        <div>
+          <div class="num">2</div>
+          <div class="card-title">Transition to<br/><u>Data</u> or Automation</div>
+        </div>
+        <svg class="illus" viewBox="0 0 82 68" fill="none">
+          <!-- chart background -->
+          <rect x="4" y="18" width="46" height="38" rx="5" fill="#c5bfea" opacity=".5"/>
+          <!-- bars -->
+          <rect x="11" y="30" width="7" height="20" rx="2" fill="#7b6fc3"/>
+          <rect x="22" y="37" width="7" height="13" rx="2" fill="#7b6fc3"/>
+          <rect x="33" y="24" width="7" height="26" rx="2" fill="#9d94d9"/>
+          <!-- trend line -->
+          <path d="M11 30 L22 24 L33 20 L43 13" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="43" cy="13" r="3" fill="#f5c842"/>
+          <!-- DB cylinder -->
+          <ellipse cx="66" cy="34" rx="12" ry="5" fill="#7b6fc3"/>
+          <rect x="54" y="34" width="24" height="16" fill="#7b6fc3"/>
+          <ellipse cx="66" cy="50" rx="12" ry="5" fill="#9d94d9"/>
+          <ellipse cx="66" cy="34" rx="12" ry="5" fill="#b0a8e0"/>
+        </svg>
+      </div>
+      <p class="body">Para personas que quieran evolucionar hacia Data, IA o automatización, con ganas de hacer reskilling hacia capacidades clave de futuro.</p>
+      <div class="cta"><span class="cta-arrow">›</span><span>Si crees que puedes hacer el cambio hacia Data, IA o automatización y tienes disposición para cambiar el foco.</span></div>
+    </div>
+
+    <!-- 3. Cybersecurity Evolution -->
+    <div class="card g">
+      <div class="card-head">
+        <div>
+          <div class="num">3</div>
+          <div class="card-title">Cybersecurity<br/>Evolution</div>
+        </div>
+        <svg class="illus" viewBox="0 0 82 68" fill="none">
+          <!-- shield outer -->
+          <path d="M41 6L16 17V38C16 52 41 64 41 64C41 64 66 52 66 38V17L41 6Z" fill="#a9dfc7"/>
+          <!-- shield inner -->
+          <path d="M41 12L22 22V38C22 49 41 59 41 59C41 59 60 49 60 38V22L41 12Z" fill="#3aab7b"/>
+          <!-- padlock body -->
+          <rect x="33" y="34" width="16" height="14" rx="3" fill="white"/>
+          <!-- padlock shackle -->
+          <path d="M36 34V29C36 25 46 25 46 29V34" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <!-- keyhole -->
+          <circle cx="41" cy="40" r="2.5" fill="#3aab7b"/>
+          <rect x="40" y="41.5" width="2" height="4" rx="1" fill="#3aab7b"/>
+          <!-- sparks -->
+          <line x1="12" y1="15" x2="7" y2="10" stroke="#9de4e4" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="70" y1="15" x2="75" y2="10" stroke="#9de4e4" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="8" y1="38" x2="3" y2="38" stroke="#9de4e4" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="74" y1="38" x2="79" y2="38" stroke="#9de4e4" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="12" y1="58" x2="7" y2="63" stroke="#9de4e4" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="70" y1="58" x2="75" y2="63" stroke="#9de4e4" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="body">Para personas que quieran evolucionar hacia ciberseguridad, seguridad aplicada, cloud security, compliance o seguridad vinculada a IA.</p>
+      <div class="cta"><span class="cta-arrow">›</span><span>Explora esta vía si te ves creciendo en ciberseguridad y quieres prepararte para proteger servicios y clientes.</span></div>
+    </div>
+
+    <!-- 4. New Mission Lab -->
+    <div class="card y">
+      <div class="card-head">
+        <div>
+          <div class="num">4</div>
+          <div class="card-title">New Mission<br/>Lab</div>
+        </div>
+        <svg class="illus" viewBox="0 0 82 68" fill="none">
+          <!-- pole -->
+          <rect x="39" y="5" width="4" height="58" rx="2" fill="#a07820"/>
+          <!-- sign 1 left (teal) -->
+          <path d="M8 18H39V30H8L15 24Z" fill="#1ab5b5"/>
+          <!-- sign 2 right (green) -->
+          <path d="M74 30H43V42H74L67 36Z" fill="#3aab7b"/>
+          <!-- sign 3 left (yellow) -->
+          <path d="M10 44H39V56H10L17 50Z" fill="#f5c842"/>
+          <!-- top dot -->
+          <circle cx="41" cy="5" r="4" fill="#a07820"/>
+        </svg>
+      </div>
+      <p class="body">Para quienes sienten que podrían aportar más en otro proyecto, entorno, rol o enfoque profesional dentro de hiberus.</p>
+      <div class="cta"><span class="cta-arrow">›</span><span>Abre una nueva misión si sientes que puedes aportar más en otro proyecto, rol o entorno dentro de hiberus.</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER BANNER -->
+<div class="footer">
+  <div class="footer-in">
+    <svg width="38" height="38" viewBox="0 0 38 38" fill="none" style="flex-shrink:0;margin-top:2px">
+      <rect width="38" height="38" rx="10" fill="#e6f8f8"/>
+      <rect x="7" y="11" width="24" height="16" rx="3" stroke="#1ab5b5" stroke-width="1.8"/>
+      <path d="M7 15l12 8 12-8" stroke="#1ab5b5" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    <p class="footer-text">
+      Si sientes que es tu momento de dar el paso en cualquiera de estas líneas, haz click dentro de ellas y rellena el formulario que mejor encaje contigo. Queremos conocer cómo te ves en tu próximo paso.<br/>
+      <span class="footer-link">Puedes hablar con tu manager o escribirnos de manera confidencial.</span>
+    </p>
+    <!-- Avatars -->
+    <div class="avatars">
+      <svg width="40" height="52" viewBox="0 0 40 52" fill="none">
+        <circle cx="20" cy="14" r="12" fill="#9de4e4"/>
+        <ellipse cx="20" cy="44" rx="15" ry="10" fill="#1ab5b5"/>
+        <circle cx="20" cy="13" r="7" fill="#f5d5b8"/>
+        <ellipse cx="20" cy="11" rx="4" ry="5.5" fill="#f0c8a0"/>
+      </svg>
+      <svg width="40" height="52" viewBox="0 0 40 52" fill="none">
+        <circle cx="20" cy="14" r="12" fill="#c5bfea"/>
+        <ellipse cx="20" cy="44" rx="15" ry="10" fill="#7b6fc3"/>
+        <circle cx="20" cy="13" r="7" fill="#f5d5b8"/>
+        <ellipse cx="20" cy="11" rx="4" ry="5.5" fill="#f0c8a0"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <p><strong>Seguiremos aprendiendo y ajustando cosas por el camino.</strong></p>
+  <p class="green-line">Porque construir el próximo hiberus también empieza escuchando mejor.</p>
+  <span class="thanks">Gracias.</span>
+</div>
+
+</body>
+</html>

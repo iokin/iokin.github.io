@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Desconexión Digital · LaEmpresa</title>
+<style>
+  :root {
+    --azul: #1a3a5c;
+    --azul-medio: #2563a8;
+    --azul-claro: #e8f1fb;
+    --acento: #0ea5e9;
+    --texto: #1a1a2e;
+    --texto-medio: #4b5563;
+    --texto-suave: #6b7280;
+    --fondo: #f8fafc;
+    --blanco: #ffffff;
+    --borde: #e2e8f0;
+    --borde-hover: #bfdbfe;
+    --radio: 12px;
+    --radio-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--azul);
+    color: white;
+    padding: 2rem 1.25rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--acento);
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--acento);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+  }
+  header h1 {
+    font-size: clamp(1.1rem, 4vw, 1.4rem);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.25rem;
+  }
+  header p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+  }
+
+  /* ÍNDICE / TABLA DE CONTENIDOS */
+  .toc-wrapper {
+    padding: 1rem 1.25rem 0;
+  }
+  .toc-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--azul);
+    gap: 8px;
+  }
+  .toc-toggle svg { transition: transform 0.25s; flex-shrink: 0; }
+  .toc-toggle.open svg { transform: rotate(180deg); }
+
+  .toc-panel {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-top: none;
+    border-radius: 0 0 var(--radio) var(--radio);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease;
+  }
+  .toc-panel.open { max-height: 600px; }
+
+  .toc-list { list-style: none; padding: 0.5rem 0; }
+  .toc-list li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.55rem 1rem;
+    font-size: 14px;
+    color: var(--texto-medio);
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+  }
+  .toc-list li a:hover {
+    background: var(--azul-claro);
+    color: var(--azul-medio);
+  }
+  .toc-list li a .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    background: var(--azul-claro);
+    color: var(--azul-medio);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* CONTENIDO */
+  .content { padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+
+  /* SECCIÓN */
+  .section {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    overflow: hidden;
+    scroll-margin-top: 120px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid transparent;
+    transition: background 0.15s;
+  }
+  .section-header:hover { background: var(--azul-claro); }
+  .section-header.expanded { border-bottom-color: var(--borde); }
+
+  .section-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--azul);
+    color: white;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--azul);
+    line-height: 1.3;
+  }
+  .chevron {
+    flex-shrink: 0;
+    color: var(--texto-suave);
+    transition: transform 0.25s;
+  }
+  .section-header.expanded .chevron { transform: rotate(180deg); }
+
+  .section-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .section-body.open { max-height: 2000px; }
+  .section-body-inner {
+    padding: 1.25rem;
+    font-size: 15px;
+    color: var(--texto-medio);
+    line-height: 1.75;
+  }
+  .section-body-inner p { margin-bottom: 0.85rem; }
+  .section-body-inner p:last-child { margin-bottom: 0; }
+
+  /* ENLACES INTERNOS */
+  a.ref-link {
+    color: var(--azul-medio);
+    text-decoration: none;
+    border-bottom: 1.5px dashed var(--acento);
+    padding-bottom: 1px;
+    font-weight: 500;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  a.ref-link:hover {
+    color: var(--acento);
+    border-color: var(--azul-medio);
+  }
+
+  /* HIGHLIGHT al navegar con ancla */
+  .section.highlight {
+    border-color: var(--acento);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.18);
+  }
+
+  /* NOTA DESTACADA */
+  .nota {
+    background: var(--azul-claro);
+    border-left: 3px solid var(--azul-medio);
+    border-radius: 0 var(--radio-sm) var(--radio-sm) 0;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    font-size: 14px;
+    color: var(--azul);
+  }
+
+  /* TAGS DE METADATOS */
+  .meta-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--borde);
+  }
+  .chip {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--fondo);
+    color: var(--texto-suave);
+    border: 1px solid var(--borde);
+    letter-spacing: 0.03em;
+  }
+
+  /* EMAIL LINK */
+  a.email-link {
+    color: var(--azul-medio);
+    word-break: break-all;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem 1.25rem;
+    font-size: 13px;
+    color: var(--texto-suave);
+    border-top: 1px solid var(--borde);
+    margin-top: 0.5rem;
+  }
+  footer strong { color: var(--azul); }
+
+  /* BARRA DE PROGRESO LECTURA */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--acento);
+    width: 0%;
+    transition: width 0.1s;
+    z-index: 999;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="header-badge">LaEmpresa · Edición 02 · Septiembre 2022</div>
+  <h1>Política de Desconexión Digital</h1>
+  <p>Política de Organización de la Seguridad</p>
+</header>
+
+<div class="toc-wrapper">
+  <button class="toc-toggle" id="toc-btn" aria-expanded="false" aria-controls="toc-panel">
+    <span>📋 Índice de contenidos</span>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </button>
+  <div class="toc-panel" id="toc-panel" role="region">
+    <ul class="toc-list">
+      <li><a href="#sec-1"><span class="num">1</span>Introducción</a></li>
+      <li><a href="#sec-2"><span class="num">2</span>Objetivo y Alcance</a></li>
+      <li><a href="#sec-3"><span class="num">3</span>Gestión de la entrega de servicios de proveedores</a></li>
+      <li><a href="#sec-4"><span class="num">4</span>Excepciones o limitaciones</a></li>
+      <li><a href="#sec-5"><span class="num">5</span>Acciones de sensibilización</a></li>
+      <li><a href="#sec-6"><span class="num">6</span>Uso de medios tecnológicos</a></li>
+      <li><a href="#sec-7"><span class="num">7</span>Difusión</a></li>
+      <li><a href="#sec-8"><span class="num">8</span>Interpretación</a></li>
+      <li><a href="#sec-9"><span class="num">9</span>Comunicación</a></li>
+      <li><a href="#sec-10"><span class="num">10</span>Régimen disciplinario</a></li>
+      <li><a href="#sec-11"><span class="num">11</span>Actualización, revisión y verificación</a></li>
+      <li><a href="#sec-12"><span class="num">12</span>Archivo y documentación</a></li>
+      <li><a href="#sec-13"><span class="num">13</span>Subordinación a la ley</a></li>
+      <li><a href="#sec-14"><span class="num">14</span>Aprobación y vigencia</a></li>
+    </ul>
+  </div>
+</div>
+
+<main class="content" id="main-content">
+
+  <!-- 1 -->
+  <article class="section" id="sec-1">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">1</div>
+      <div class="section-title">Introducción</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>Con fecha 7 de diciembre de 2018, entró en vigor la <strong>Ley Orgánica 3/2018, de 5 de diciembre</strong>, de Protección de Datos Personales y Garantía de los Derechos Digitales (en adelante, "Ley Orgánica de Protección de Datos"), por la que se modifica, entre otras disposiciones legales, el Texto Refundido de la Ley del Estatuto de los Trabajadores, mediante la inclusión de un nuevo artículo, el <strong>artículo 20 bis</strong>.</p>
+        <p>Con motivo de la regulación de los derechos y libertades predicables al entorno de Internet, así como los derechos de seguridad y educación digital, se reconoce por primera vez en la regulación española, el <strong>derecho a la desconexión digital</strong> en el marco del derecho a la intimidad en el uso de dispositivos digitales en el ámbito laboral.</p>
+        <p>En su artículo 88 se regula el derecho a la desconexión digital como procedimiento que ha de garantizar a las personas trabajadoras el respeto a su tiempo de descanso, permisos y vacaciones, así como de su intimidad personal y familiar, más allá del tiempo de trabajo determinado legal o convencionalmente.</p>
+        <p>Además, contiene la obligación de establecer una política interna dirigida a las personas trabajadoras, sin exclusión del personal directivo, y prevé que se preserve el derecho a la desconexión digital en los supuestos de realización total o parcial del trabajo a distancia, así como en el domicilio de la persona trabajadora vinculado al uso con fines laborales de herramientas tecnológicas.</p>
+        <p>Las modalidades de ejercicio de este derecho atenderán a la naturaleza y objeto de la relación laboral, potenciarán el derecho a la conciliación de la actividad laboral y la vida personal y familiar y se sujetarán a lo establecido en la negociación colectiva.</p>
+        <div class="nota">Esta política interna tendrá que contener <a href="#sec-5" class="ref-link">acciones formativas y campañas de sensibilización</a> sobre la utilización de las herramientas tecnológicas con el objetivo de evitar la fatiga informática.</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 2 -->
+  <article class="section" id="sec-2">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">2</div>
+      <div class="section-title">Objetivo y Alcance</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>La finalidad de este documento es el establecimiento de una <strong>Política de Desconexión Digital (POLÍTICA)</strong> dotándole de un contenido concreto y acorde a todas las modalidades de prestación del trabajo, ya sea presencial, a distancia o en el domicilio, y haciendo uso de los medios y recursos de la empresa o bien de otros propios del trabajador.</p>
+        <p>Con su implementación <strong>LaEmpresa</strong> (en adelante la Empresa) contribuye a la mejora de la conciliación de la vida personal, familiar y laboral, y se compromete a impulsar medidas concretas para potenciar el respeto a los tiempos de descanso una vez finalizada la jornada laboral, reconociendo el derecho a la desconexión digital como elemento fundamental.</p>
+        <p>Se garantizará el derecho a la desconexión digital a <strong>todas las personas trabajadoras</strong> con independencia de que desarrollen su trabajo de forma presencial tanto en las oficinas propias o del cliente, así como en aquellos casos en los que se realice teletrabajo.</p>
+      </div>
+      <div class="meta-chips">
+        <span class="chip">Presencial</span>
+        <span class="chip">Teletrabajo</span>
+        <span class="chip">Domicilio</span>
+        <span class="chip">Todo el personal</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- 3 -->
+  <article class="section" id="sec-3">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">3</div>
+      <div class="section-title">Gestión de la entrega de servicios de proveedores</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>La Empresa garantiza a su personal el derecho a la desconexión digital una vez finalizada su jornada laboral y asegura que este derecho se respetará durante el periodo que duren sus <strong>vacaciones, descanso diario y semanal, bajas, permisos o excedencias</strong>.</p>
+        <p>El personal tendrá derecho a <strong>no leer o responder</strong> a ninguna comunicación, fuere cual fuere el medio utilizado (correo electrónico, WhatsApp, teléfono, etc.), una vez finalizada su jornada laboral, salvo en los supuestos descritos en el <a href="#sec-4" class="ref-link">apartado cuarto (Excepciones o limitaciones)</a>.</p>
+        <p>En periodos de ausencia como vacaciones, bajas, permisos o excedencias, será altamente recomendable que la persona trabajadora configure sus cuentas con un <strong>mensaje de ausencia o no disponibilidad</strong>, indicando otros datos de contacto alternativos.</p>
+        <p>En aras de un uso responsable del correo electrónico, se aconseja <strong>limitar el número de personas en copia</strong> a los meramente imprescindibles.</p>
+        <p>Queda expresamente <strong>prohibida cualquier exigencia o reclamación</strong> por parte de cualquier empleado o directivo de la Empresa con el objetivo de requerir una respuesta, actuación o petición de índole laboral fuera de la jornada de trabajo. En todo caso, la persona trabajadora no estaría obligada a atender o dar respuesta a la misma hasta el inicio de la siguiente jornada laboral.</p>
+        <p>La Empresa <strong>no podrá sancionar ni aplicar ninguna medida</strong> de reprobación o discriminatoria frente a ninguna persona trabajadora en relación al ejercicio de su derecho a la desconexión digital.</p>
+        <p>En lo que respecta a la convocatoria y asistencia a reuniones, tanto a nivel interno como con clientes, se realizará teniendo en cuenta el tiempo aproximado de duración sin que, salvo excepciones, se extiendan más tarde de la finalización de la jornada ordinaria.</p>
+        <div class="nota">En el supuesto de que la persona trabajadora considere que su derecho a la desconexión digital está siendo vulnerado, podrá contactar con el Departamento de Recursos Humanos mediante el envío de un correo electrónico a rrhh@LaEmpresa.</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 4 -->
+  <article class="section" id="sec-4">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">4</div>
+      <div class="section-title">Excepciones o limitaciones</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>Cuando concurran circunstancias de <strong>fuerza mayor</strong>, o que supongan un grave, inminente o evidente perjuicio empresarial o del negocio, cuya urgencia temporal necesite indubitadamente de una respuesta inmediata, se podrán establecer limitaciones a esta <a href="#sec-2" class="ref-link">POLÍTICA</a>.</p>
+        <p>Las personas que conozcan de estas circunstancias podrán iniciar comunicaciones por los medios que consideren oportunos, informando de la concurrencia de éstas, así como de las posibles actuaciones a realizar.</p>
+        <p>Todas estas posibles intervenciones serán computadas como <strong>tiempo de trabajo efectivo</strong>.</p>
+        <p>Además, se limita la desconexión digital en los casos en que una persona tenga asignadas <strong>funciones de soporte, disponibilidad, guardias o análogas</strong> que exijan una atención o supervisión continuada de servicios, sistemas o cualesquiera otros recursos de la empresa, así como a aquellos que perciban un complemento de "disponibilidad" u otro de similar naturaleza.</p>
+        <p>El reconocimiento y garantías del derecho a la desconexión digital no impedirá que cualquier persona trabajadora pueda, de forma libre y voluntaria, atender, enviar o responder a comunicaciones por medios electrónicos, siempre teniendo en consideración y debido respecto al <strong>derecho a la desconexión digital de otras personas trabajadoras</strong>.</p>
+      </div>
+      <div class="meta-chips">
+        <span class="chip">Fuerza mayor</span>
+        <span class="chip">Guardias / Disponibilidad</span>
+        <span class="chip">Tiempo efectivo</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- 5 -->
+  <article class="section" id="sec-5">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">5</div>
+      <div class="section-title">Acciones de sensibilización</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>La Empresa llevará a cabo <strong>acciones formativas y/o de sensibilización</strong>, por los medios que considere oportunos, a fin de facilitar la comprensión y ejercicio del derecho a la desconexión digital.</p>
+        <p>Para ello se informará y/o formará a su equipo sobre la necesaria protección de este derecho, teniendo en cuenta sus circunstancias tanto laborales como personales, poniendo a su disposición toda la información y/o formación que precisen para la comprensión y posterior aplicación de las medidas protectoras previstas en esta <a href="#sec-2" class="ref-link">POLÍTICA</a>.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- 6 -->
+  <article class="section" id="sec-6">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">6</div>
+      <div class="section-title">Uso de medios tecnológicos</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>El equipo de la Empresa debe utilizar el software, hardware, dispositivo móvil o cualquier otro recurso tecnológico conforme a la naturaleza de sus obligaciones y responsabilidades, a las directrices establecidas en esta <a href="#sec-2" class="ref-link">POLÍTICA</a> y en el resto de la normativa interna, en particular el <strong>Código Ético de LaEmpresa</strong>.</p>
+        <p>En ejercicio del derecho a la desconexión digital la persona trabajadora tendrá derecho a abstenerse de su uso fuera de la jornada de trabajo. La Empresa <strong>se reserva el derecho de efectuar revisiones o auditorías internas</strong> de seguridad en dichos equipos, de acuerdo con sus políticas internas y normas/certificaciones técnicas y de calidad.</p>
+        <p>En caso de que la persona trabajadora hubiera instalado voluntariamente aplicaciones o cuentas de la empresa en <strong>equipos o dispositivos personales</strong>, deberá igualmente adoptar las medidas anteriores, estableciendo una separación de perfiles y accesos. La empresa no estará facultada en ningún momento a realizar revisiones o auditorías sobre los equipos o dispositivos propiedad de la persona trabajadora, salvo autorización expresa.</p>
+        <p>En todo caso, la persona trabajadora será responsable de implantar en sus equipos o dispositivos <strong>medidas de seguridad informática equivalentes</strong> a las establecidas en la empresa para la protección de los recursos de ésta.</p>
+        <p>Las disposiciones anteriores se aplicarán adicionalmente al resto de pactos o condiciones establecidas contractualmente en materia de <strong>confidencialidad, protección de datos, propiedad intelectual e industrial</strong> o cumplimiento normativo.</p>
+      </div>
+      <div class="meta-chips">
+        <span class="chip">Dispositivos empresa</span>
+        <span class="chip">Dispositivos personales</span>
+        <span class="chip">Seguridad</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- 7 -->
+  <article class="section" id="sec-7">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">7</div>
+      <div class="section-title">Difusión</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>La Empresa tiene atribuida la coordinación, dentro de los límites legales, de las estrategias y directrices generales de gestión de la organización, y por este motivo impulsará el seguimiento de los <strong>principios y buenas prácticas</strong> que se contienen en esta <a href="#sec-2" class="ref-link">POLÍTICA</a>.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- 8 -->
+  <article class="section" id="sec-8">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">8</div>
+      <div class="section-title">Interpretación</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>Esta <a href="#sec-2" class="ref-link">POLÍTICA</a> debe interpretarse y aplicarse en el marco de la <strong>normativa legal, los Estatutos Sociales y el Código Ético</strong>, así como sus políticas corporativas y todos aquellos protocolos que desarrollan las anteriores, concretan su aplicación y garantizan su cumplimiento.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- 9 -->
+  <article class="section" id="sec-9">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">9</div>
+      <div class="section-title">Comunicación</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>Se impulsará que la presente <a href="#sec-2" class="ref-link">POLÍTICA</a> y los procedimientos y controles que se deriven de esta, sean <strong>conocidos, comprendidos y fácilmente accesibles</strong> a todas las personas trabajadoras.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- 10 -->
+  <article class="section" id="sec-10">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">10</div>
+      <div class="section-title">Régimen disciplinario</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>El régimen disciplinario aplicable a la Empresa se ampara en lo establecido en el <strong>Convenio Colectivo de aplicación</strong>, así como en el Estatuto de los Trabajadores y demás normativa complementaria.</p>
+        <p>En caso de detectarse una infracción de la presente <a href="#sec-2" class="ref-link">POLÍTICA</a>, en su carácter de normativa interna de obligado cumplimiento, tras el análisis de las conclusiones y el estudio e investigación de los hechos, si se comprueba una no conformidad o incumplimiento, se actuará inmediatamente, dando traslado de las conclusiones a la <strong>Dirección de Recursos Humanos</strong>, a efectos de la adopción de las medidas pertinentes en cada caso.</p>
+        <p>La Dirección de Recursos Humanos es competente para la aplicación de las <strong>medidas disciplinarias</strong> conforme al régimen de faltas y sanciones previstas en el Convenio Colectivo de aplicación.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- 11 -->
+  <article class="section" id="sec-11">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">11</div>
+      <div class="section-title">Actualización, revisión y verificación</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>Esta <a href="#sec-2" class="ref-link">POLÍTICA</a> deberá mantenerse <strong>actualizada en el tiempo</strong> y deberá ser revisada cada vez que se observen y/o detecten deficiencias y no conformidades, así como cuando se produzcan cambios en la estructura interna, cambios de criterios jurisprudenciales y modificaciones en la legislación aplicable.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- 12 -->
+  <article class="section" id="sec-12">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">12</div>
+      <div class="section-title">Archivo y documentación</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>Esta <a href="#sec-2" class="ref-link">POLÍTICA</a> constituye una <strong>evidencia documental</strong> de la existencia del sistema de cumplimiento y su desarrollo y ejecución derivará en evidencias que acrediten su funcionamiento y mejora continua. Por ello esta POLÍTICA deberá ser registrada como información de la empresa garantizándose su <strong>integridad y disponibilidad</strong>.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- 13 -->
+  <article class="section" id="sec-13">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">13</div>
+      <div class="section-title">Subordinación a la ley</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>El contenido de esta <a href="#sec-2" class="ref-link">POLÍTICA</a> siempre está subordinada a las <strong>exigencias y disposiciones legales</strong>. En el caso de que alguno de los apartados fuese contrario a aquellas, deberá procederse a su inmediata adaptación.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- 14 -->
+  <article class="section" id="sec-14">
+    <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+      <div class="section-num">14</div>
+      <div class="section-title">Aprobación y vigencia</div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="section-body-inner">
+        <p>Este documento es el resultado de las reuniones de trabajo mantenidas entre el <strong>departamento de Recursos Humanos</strong>, miembros del equipo Directivo y la <strong>Representación Legal de los Trabajadores</strong>.</p>
+        <div class="nota">Se ha acordado y firmado su contenido en <strong>Zaragoza, el día 19 de septiembre de 2022</strong>. A partir de ese momento se encuentra plenamente en vigor en todos sus términos.</div>
+      </div>
+    </div>
+  </article>
+
+</main>
+
+<footer>
+  <strong>LaEmpresa</strong><br>
+  Política de Desconexión Digital · Edición 02 · Septiembre 2022<br>
+  <a href="https://LaEmpresa" style="color: #2563a8; margin-top: 6px; display: inline-block;">LaEmpresa</a>
+</footer>
+
+<script>
+  // Toggle índice
+  const tocBtn = document.getElementById('toc-btn');
+  const tocPanel = document.getElementById('toc-panel');
+  tocBtn.addEventListener('click', () => {
+    const open = tocPanel.classList.toggle('open');
+    tocBtn.classList.toggle('open', open);
+    tocBtn.setAttribute('aria-expanded', open);
+  });
+
+  // Cerrar índice al hacer clic en un enlace
+  tocPanel.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      tocPanel.classList.remove('open');
+      tocBtn.classList.remove('open');
+      tocBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Toggle secciones
+  document.querySelectorAll('.section-header').forEach(header => {
+    function toggle() {
+      const body = header.nextElementSibling;
+      const isOpen = body.classList.toggle('open');
+      header.classList.toggle('expanded', isOpen);
+      header.setAttribute('aria-expanded', isOpen);
+    }
+    header.addEventListener('click', toggle);
+    header.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+
+  // Navegar a sección desde enlaces internos → abrirla y hacer scroll
+  document.querySelectorAll('a.ref-link').forEach(link => {
+    link.addEventListener('click', e => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (!target) return;
+      const body = target.querySelector('.section-body');
+      const header = target.querySelector('.section-header');
+      if (body && !body.classList.contains('open')) {
+        body.classList.add('open');
+        header.classList.add('expanded');
+        header.setAttribute('aria-expanded', 'true');
+      }
+      // Highlight
+      target.classList.add('highlight');
+      setTimeout(() => target.classList.remove('highlight'), 1800);
+    });
+  });
+
+  // Abrir sección si se accede por ancla en la URL
+  function openByHash() {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const target = document.querySelector(hash);
+    if (!target) return;
+    const body = target.querySelector('.section-body');
+    const header = target.querySelector('.section-header');
+    if (body) { body.classList.add('open'); header.classList.add('expanded'); }
+  }
+  openByHash();
+  window.addEventListener('hashchange', openByHash);
+
+  // Barra de progreso
+  const bar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+</script>
+</body>
+</html>

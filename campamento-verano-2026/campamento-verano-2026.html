@@ -1,105 +1,507 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>En construcción</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Campamento Verano 2026</title>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-title" content="Campa Verano 2026"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="application-name" content="Campa Verano 2026"/>
+  <link rel="apple-touch-icon" href="icon-campa.png"/>
+  <link rel="icon" type="image/png" href="icon-campa.png"/>
+  <meta name="theme-color" content="#2d6a4f"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: sans-serif;
-      background: #f5f5f5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      padding: 2rem;
+    :root {
+      --verde: #2d6a4f;
+      --verde-claro: #52b788;
+      --crema: #fefae0;
+      --naranja: #e07a2f;
+      --amarillo: #f5c843;
+      --tierra: #8b5e3c;
+      --texto: #1a1a1a;
     }
 
-    .container { max-width: 420px; }
+    body {
+      background-color: #f4f1e8;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--texto);
+      padding: 40px 16px;
+    }
 
-    .icon {
-      width: 64px;
-      height: 64px;
-      background: #FAEEDA;
+    .wrapper {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: var(--verde);
+      border-radius: 20px 20px 0 0;
+      padding: 48px 40px 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 20%, rgba(255,255,255,.07), transparent 60%);
+    }
+    .header .emoji-row {
+      font-size: 2rem;
+      letter-spacing: 4px;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 2.4rem;
+      color: var(--amarillo);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .header p.subtitulo {
+      color: rgba(255,255,255,.85);
+      font-size: 1rem;
+    }
+
+    /* ── BODY CARD ── */
+    .card {
+      background: #fff;
+      padding: 40px;
+      border-left: 1px solid #e0ddd4;
+      border-right: 1px solid #e0ddd4;
+    }
+
+    .intro {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #333;
+      margin-bottom: 32px;
+    }
+
+    /* ── INFO BLOCK ── */
+    .info-block {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .info-pill {
+      flex: 1;
+      min-width: 180px;
+      background: var(--crema);
+      border: 1.5px solid var(--amarillo);
+      border-radius: 14px;
+      padding: 20px 24px;
+      text-align: center;
+    }
+    .info-pill .label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--verde);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .info-pill .value {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      color: var(--tierra);
+      font-weight: 700;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      color: var(--verde);
+      border-bottom: 2px solid var(--verde-claro);
+      padding-bottom: 6px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 36px;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 18px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--verde-claro), var(--amarillo));
+    }
+    .timeline li {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+      padding-left: 0;
+      align-items: flex-start;
+    }
+    .timeline .dot {
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      background: var(--verde);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 1.5rem;
+      font-size: 1rem;
+      position: relative;
+      z-index: 1;
     }
-
-    .badge {
-      display: inline-block;
-      padding: 5px 14px;
-      background: #FAEEDA;
-      color: #633806;
-      border-radius: 999px;
-      font-size: 13px;
+    .timeline .content .fecha {
+      font-size: 0.75rem;
       font-weight: 600;
-      margin-bottom: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--verde-claro);
+      margin-bottom: 2px;
+    }
+    .timeline .content .desc {
+      font-size: 0.95rem;
+      color: #333;
+      line-height: 1.5;
+    }
+    .timeline li.highlight .dot { background: var(--naranja); }
+    .timeline li.highlight .content .fecha { color: var(--naranja); }
+
+    /* ── NOTA / AVISO ── */
+    .nota-forms {
+      background: #fff8ec;
+      border: 1.5px solid var(--naranja);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+    }
+    .nota-forms p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: #444;
+    }
+    .nota-forms strong { color: var(--naranja); }
+
+    /* ── AVISO VERDE ── */
+    .aviso-verde {
+      background: #f0faf4;
+      border: 1.5px solid var(--verde-claro);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+    }
+    .aviso-verde p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: #444;
+    }
+    .aviso-verde strong { color: var(--verde); }
+
+    /* ── LISTA NUMERADA ── */
+    .obs-list {
+      list-style: none;
+      margin-bottom: 28px;
+      padding: 0;
+    }
+    .obs-list li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+      color: #333;
+      line-height: 1.55;
+    }
+    .obs-list .num {
+      min-width: 28px;
+      height: 28px;
+      background: var(--verde);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-top: 1px;
     }
 
-    h1 {
-      font-size: 22px;
-      font-weight: 500;
-      color: #111;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      font-size: 15px;
-      color: #666;
-      line-height: 1.7;
-      margin-bottom: 2rem;
-    }
-
-    .bar-wrap {
-      width: 240px;
-      height: 6px;
-      background: #e0e0e0;
-      border-radius: 999px;
-      overflow: hidden;
-      margin: 0 auto 2rem;
-    }
-
-    .bar-fill {
-      height: 100%;
-      width: 60%;
-      background: #EF9F27;
-      border-radius: 999px;
-    }
-
-    a {
+    /* ── CTA BUTTON ── */
+    .cta-wrap { text-align: center; margin-bottom: 36px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .cta-btn {
       display: inline-block;
-      padding: 10px 24px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      background: var(--verde);
+      color: #fff;
       text-decoration: none;
-      color: #111;
-      font-size: 15px;
-      background: #fff;
-      transition: background 0.15s;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 16px 36px;
+      border-radius: 50px;
+      letter-spacing: .5px;
+      transition: background .2s, transform .15s;
+      box-shadow: 0 4px 18px rgba(45,106,79,.25);
     }
+    .cta-btn:hover { background: var(--verde-claro); transform: translateY(-2px); }
+    .cta-btn--pdf {
+      background: var(--tierra);
+      box-shadow: 0 4px 18px rgba(139,94,60,.25);
+    }
+    .cta-btn--pdf:hover { background: var(--naranja); }
 
-    a:hover { background: #f0f0f0; }
+    /* ── DOCUMENTOS ── */
+    .doc-list {
+      list-style: none;
+      margin-bottom: 36px;
+    }
+    .doc-list li {
+      border: 1.5px solid #e0ddd4;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .doc-list li:hover {
+      border-color: var(--verde-claro);
+      box-shadow: 0 2px 12px rgba(45,106,79,.1);
+    }
+    .doc-list a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      text-decoration: none;
+      color: var(--texto);
+    }
+    .doc-list .doc-icon { font-size: 1.4rem; min-width: 32px; text-align: center; }
+    .doc-list .doc-info { flex: 1; }
+    .doc-list .doc-name { font-weight: 600; font-size: 0.95rem; color: var(--verde); }
+    .doc-list .doc-desc { font-size: 0.8rem; color: #888; margin-top: 2px; }
+    .doc-list .doc-arrow { color: #ccc; font-size: 1rem; }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--verde);
+      border-radius: 0 0 20px 20px;
+      padding: 28px 40px;
+      text-align: center;
+      color: rgba(255,255,255,.7);
+      font-size: 0.85rem;
+    }
+    .footer strong { color: var(--amarillo); }
+
+    @media (max-width: 480px) {
+      .card { padding: 28px 20px; }
+      .header { padding: 36px 20px 28px; }
+      .header h1 { font-size: 1.8rem; }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="icon">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-        <path d="M13.78 15.3L19.78 21.3L21.19 19.88L15.19 13.88L13.78 15.3ZM17.5 10C18.04 10 18.55 9.91 19.03 9.75L15.42 6.14L16.84 4.72L20.45 8.33C20.61 7.85 20.7 7.34 20.7 6.8C20.7 4.46 18.84 2.6 16.5 2.6C15.96 2.6 15.45 2.69 14.97 2.85L18.58 6.46L17.16 7.88L13.55 4.27C13.39 4.75 13.3 5.26 13.3 5.8C13.3 8.14 15.16 10 17.5 10ZM7.78 13.88L1.78 19.88L3.19 21.3L9.19 15.3L7.78 13.88ZM6.5 10C8.84 10 10.7 8.14 10.7 5.8C10.7 5.26 10.61 4.75 10.45 4.27L6.84 7.88L5.42 6.46L9.03 2.85C8.55 2.69 8.04 2.6 7.5 2.6C5.16 2.6 3.3 4.46 3.3 6.8C3.3 7.34 3.39 7.85 3.55 8.33L7.16 4.72L8.58 6.14L4.97 9.75C5.45 9.91 5.96 10 6.5 10Z" fill="#BA7517"/>
-      </svg>
-    </div>
-    <span class="badge">En construcción</span>
-    <h1>Estamos trabajando en algo nuevo</h1>
-    <p>Esta página estará disponible pronto. Gracias por tu paciencia.</p>
-    <div class="bar-wrap"><div class="bar-fill"></div></div>
-    <a href="/">← Volver al inicio</a>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="emoji-row">☀️⛺🌊</div>
+    <h1>Campamento<br/>Verano 2026</h1>
+    <p class="subtitulo">Cabanzón · Cantabria · 15 días</p>
   </div>
+
+  <!-- CARD PRINCIPAL -->
+  <div class="card">
+
+    <p class="intro">
+      ¡Hola familias! Como sabéis, ¡se acerca el ansiado campamento de verano de 15 días! Aquí tenéis toda la información necesaria para apuntaros. ¡Leedlo todo con atención!
+    </p>
+
+    <!-- PRECIO Y LUGAR -->
+    <div class="info-block">
+      <div class="info-pill">
+        <div class="label">📍 Lugar</div>
+        <div class="value">Cabanzón<br/><small style="font-size:.85rem;color:#777">Cantabria</small></div>
+      </div>
+      <div class="info-pill">
+        <div class="label">💚 Precio Asociados</div>
+        <div class="value">365 € <small style="font-size:.8rem;color:#999;display:block;font-weight:400">(provisional)</small></div>
+      </div>
+      <div class="info-pill">
+        <div class="label">🙋 Precio No asociados</div>
+        <div class="value">395 €</div>
+      </div>
+    </div>
+
+    <!-- FECHAS IMPORTANTES -->
+    <div class="section-title">📅 Fechas importantes</div>
+    <ul class="timeline">
+      <li>
+        <div class="dot">👥</div>
+        <div class="content">
+          <div class="fecha">Domingo 14 de junio · 23:59 h</div>
+          <div class="desc"><strong>Apertura inscripción asociados.</strong></div>
+        </div>
+      </li>
+      <li>
+        <div class="dot">📋</div>
+        <div class="content">
+          <div class="fecha">Domingo 21 de junio</div>
+          <div class="desc"><strong>Listado provisional de asociados apuntados</strong> para que podáis comprobar que la inscripción se ha realizado correctamente.</div>
+        </div>
+      </li>
+      <li>
+        <div class="dot">🙋</div>
+        <div class="content">
+          <div class="fecha">Domingo 21 de junio · 23:59 h</div>
+          <div class="desc"><strong>Apertura inscripción NO asociados.</strong> Los asociados pueden seguir apuntándose. Plazo hasta el domingo 28 de junio a las 23:59 h.</div>
+        </div>
+      </li>
+      <li>
+        <div class="dot">✅</div>
+        <div class="content">
+          <div class="fecha">Domingo 28 de junio (o lunes 29) · desde 00:00 h</div>
+          <div class="desc"><strong>Listado definitivo de apuntados</strong> (asociados y no asociados). Se enviará el 28 si las plazas están completas, o a partir del 29 si aún quedaban libres. <strong>Tras recibirlo, ya podéis realizar el pago.</strong></div>
+        </div>
+      </li>
+      <li>
+        <div class="dot">💳</div>
+        <div class="content">
+          <div class="fecha">Domingo 5 de julio · fin de día</div>
+          <div class="desc"><strong>Fecha límite de pago.</strong> Es necesario que el ingreso esté hecho antes de que finalice este día para poder verificar posibles errores.</div>
+        </div>
+      </li>
+      <li class="highlight">
+        <div class="dot">🚌</div>
+        <div class="content">
+          <div class="fecha">Sábado 1 de agosto · 7:30 h</div>
+          <div class="desc"><strong>Salida al campamento</strong> desde El Deleite, Aranjuez.</div>
+        </div>
+      </li>
+      <li class="highlight">
+        <div class="dot">🏠</div>
+        <div class="content">
+          <div class="fecha">Sábado 15 de agosto · ~22:00 h*</div>
+          <div class="desc"><strong>Recogida</strong> en El Deleite, Aranjuez. <em style="font-size:.85rem;color:#888">*Hora aproximada, se confirmará ese mismo día por correo al salir.</em></div>
+        </div>
+      </li>
+    </ul>
+
+    <!-- CÓMO APUNTARSE -->
+    <div class="section-title">📝 ¿Cómo apuntarse?</div>
+    <div class="nota-forms">
+      <p>
+        Hay que rellenar <strong>un formulario por cada acampado</strong>, dentro de los plazos indicados y siguiendo las instrucciones del cuestionario.
+      </p>
+      <br/>
+      <p>
+        El <strong>orden cronológico de recepción del cuestionario</strong> es el que determina la prioridad (se contabiliza hasta las décimas de segundo).
+      </p>
+      <br/>
+      <p style="font-size:.85rem;color:#777;">⚠️ <strong>Importante:</strong> una vez inscrito, NO realizar el pago hasta recibir el correo de confirmación con el listado definitivo.</p>
+    </div>
+
+    <div class="cta-wrap">
+      <a class="cta-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeO1WVuCSuVOnSuofYbOsgAICMd1fhPY7OjlnPP8zs_VmgeXw/viewform?usp=sharing&ouid=105406958976528565605" target="_blank">
+        📝 Abrir formulario de inscripción
+      </a>
+    </div>
+
+    <!-- COSAS A TENER EN CUENTA -->
+    <div class="section-title">⚠️ Cosas a tener en cuenta</div>
+    <ul class="obs-list">
+      <li>
+        <span class="num">1</span>
+        <span>Los asociados que <strong>no hayan pagado el trimestre ni las credenciales</strong> no podrán asistir al campamento.</span>
+      </li>
+      <li>
+        <span class="num">2</span>
+        <span>Es importante apuntarse <strong>cuanto antes</strong>: hay un número reducido de plazas y, si se pasa el plazo, la plaza podría ser cubierta por una persona no asociada.</span>
+      </li>
+      <li>
+        <span class="num">3</span>
+        <span>El número de <strong>plazas para no asociados</strong> dependerá de la cantidad de asociados inscritos.</span>
+      </li>
+      <li>
+        <span class="num">4</span>
+        <span>Una vez concluido el plazo de reserva, <strong>no se devolverá el importe del primer pago</strong>. Si no se puede asistir, debe comunicarse antes del 29 de junio. Consultar el apartado nº 4 de la normativa de pagos adjunta.</span>
+      </li>
+    </ul>
+
+    <!-- DOCUMENTACIÓN -->
+    <div class="section-title">📁 Documentos</div>
+    <div class="aviso-verde">
+      <p>Se adjunta el <strong>dossier</strong> con toda la información sobre el campamento, pagos, plazos, etc. También se adjunta la <strong>autorización, ficha médica y derechos de imagen</strong>, que debéis rellenar y traer impresas el día del campamento junto a la <strong>Tarjeta Sanitaria</strong>.</p>
+    </div>
+
+    <ul class="doc-list">
+      <li>
+        <a href="dossier-campa2026.pdf" target="_blank" download>
+          <span class="doc-icon">📘</span>
+          <span class="doc-info">
+            <div class="doc-name">Dossier Verano 2026</div>
+            <div class="doc-desc">Toda la información del campamento, pagos y plazos</div>
+          </span>
+          <span class="doc-arrow">↓</span>
+        </a>
+      </li>
+      <li>
+        <a href="autorizacion-campa2026.pdf" target="_blank" download>
+          <span class="doc-icon">✍️</span>
+          <span class="doc-info">
+            <div class="doc-name">Autorización</div>
+            <div class="doc-desc">Traer impresa el día del campamento</div>
+          </span>
+          <span class="doc-arrow">↓</span>
+        </a>
+      </li>
+      <li>
+        <a href="ficha-medica.pdf" target="_blank" download>
+          <span class="doc-icon">🏥</span>
+          <span class="doc-info">
+            <div class="doc-name">Ficha médica</div>
+            <div class="doc-desc">Traer impresa el día del campamento</div>
+          </span>
+          <span class="doc-arrow">↓</span>
+        </a>
+      </li>
+      <li>
+        <a href="consentimiento-imagen.pdf" target="_blank" download>
+          <span class="doc-icon">📷</span>
+          <span class="doc-info">
+            <div class="doc-name">Consentimiento de imagen</div>
+            <div class="doc-desc">Traer impreso el día del campamento</div>
+          </span>
+          <span class="doc-arrow">↓</span>
+        </a>
+      </li>
+      <li>
+        <a href="normativa-campa2026.pdf" target="_blank" download>
+          <span class="doc-icon">📄</span>
+          <span class="doc-info">
+            <div class="doc-name">Normativa de pagos y asistencia</div>
+            <div class="doc-desc">Condiciones de pago y asistencia</div>
+          </span>
+          <span class="doc-arrow">↓</span>
+        </a>
+      </li>
+    </ul>
+
+  </div><!-- /card -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <strong>¡Nos vemos en Cabanzón! ☀️⛺</strong><br/>
+    Cualquier duda, escribid a este mismo correo.
+  </div>
+
+</div>
 </body>
 </html>

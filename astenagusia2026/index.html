@@ -10,47 +10,69 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         .hero-section {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
             color: white;
-            padding: 3rem 1rem;
+            padding: 3.5rem 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        /* Botones de navegación personalizados y coloridos */
+        .nav-pills .nav-link {
+            background-color: #ffffff;
+            color: #495057;
+            font-weight: 600;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        .nav-pills .nav-link:hover {
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+            transform: translateY(-2px);
         }
         .nav-pills .nav-link.active {
-            background-color: #1e3c72;
+            background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 10px rgba(19, 84, 122, 0.3);
         }
-        .nav-pills .nav-link {
-            color: #1e3c72;
-            font-weight: 500;
-        }
-        /* Estilo especial para los días más bonitos/destacados */
+        /* Días especiales con estilo vibrante */
         .nav-pills .nav-link.dia-especial {
             background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
             color: white;
-            font-weight: bold;
+            border-color: transparent;
         }
         .nav-pills .nav-link.dia-especial.active {
             background: linear-gradient(135deg, #c92a4a 0%, #d9381e 100%);
+            box-shadow: 0 4px 10px rgba(255, 65, 108, 0.4);
         }
+        /* Tarjetas de eventos con borde izquierdo multicolor */
         .card-evento {
-            border-left: 4px solid #1e3c72;
-            transition: transform 0.2s;
+            border-left: 5px solid #ff7b00;
+            transition: all 0.2s ease;
+            background-color: #ffffff;
+        }
+        .card-evento:nth-child(even) {
+            border-left-color: #00b4d8;
         }
         .card-evento:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
         }
         .emergency-box {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe8a1 100%);
+            border-left: 5px solid #ffc107;
         }
     </style>
 </head>
-<body class="bg-light">
+<body class="bg-white">
 
     <!-- Header / Héroe -->
-    <header class="hero-section text-center shadow">
+    <header class="hero-section text-center">
         <div class="container">
-            <h1 class="display-4 fw-bold">Aste Nagusia 2026</h1>
-            <p class="lead">Semana Grande de Donostia / San Sebastián[span_0](start_span)[span_0](end_span)</p>
-            <span class="badge bg-light text-dark fs-6 px-3 py-2"><i class="bi bi-calendar-event"></i> Del 8 al 15 de Agosto de 2026[span_1](start_span)[span_1](end_span)</span>
+            <h1 class="display-4 fw-bold">🎆 Aste Nagusia 2026</h1>
+            <p class="lead fw-semibold">Semana Grande de Donostia / San Sebastián[span_0](start_span)[span_0](end_span)</p>
+            <span class="badge bg-dark bg-opacity-75 text-white fs-6 px-3 py-2 shadow-sm">
+                <i class="bi bi-calendar-event"></i> Del 8 al 15 de Agosto de 2026[span_1](start_span)[span_1](end_span)
+            </span>
         </div>
     </header>
 
@@ -58,22 +80,24 @@
     <main class="container my-4">
 
         <!-- Alerta de Emergencia / Protocolo -->
-        <div class="card emergency-box mb-4 shadow-sm">
+        <div class="card emergency-box mb-4 shadow-sm border-0">
             <div class="card-body">
-                <h5 class="card-title text-dark fw-bold"><i class="bi bi-shield-exclamation"></i> Protocolo contra agresiones sexistas</h5>
+                <h5 class="card-title text-dark fw-bold">
+                    <i class="bi bi-shield-exclamation text-warning"></i> Protocolo contra agresiones sexistas
+                </h5>
                 <p class="card-text mb-1">Espacio de información y atención en el <strong>Boulevard</strong> (del 9 al 16 de agosto)[span_2](start_span)[span_2](end_span).</p>
                 <p class="card-text small text-muted mb-0">
                     <strong>Teléfonos de emergencia:</strong> 
-                    <a href="tel:112" class="text-danger fw-bold">SOS Deiak: 112</a>[span_3](start_span)[span_3](end_span) | 
-                    <a href="tel:900840188" class="text-dark">Harriberria: 900 840 188</a>[span_4](start_span)[span_4](end_span) | 
-                    <a href="tel:092" class="text-dark">Guardia Municipal: 092</a>[span_5](start_span)[span_5](end_span) | 
-                    <a href="tel:900840111" class="text-dark">SATEVI: 900 840 111</a>[span_6](start_span)[span_6](end_span)
+                    <a href="tel:112" class="text-danger fw-bold text-decoration-none">SOS Deiak: 112</a>[span_3](start_span)[span_3](end_span) | 
+                    <a href="tel:900840188" class="text-dark fw-semibold text-decoration-none">Harriberria: 900 840 188</a>[span_4](start_span)[span_4](end_span) | 
+                    <a href="tel:092" class="text-dark fw-semibold text-decoration-none">Guardia Municipal: 092</a>[span_5](start_span)[span_5](end_span) | 
+                    <a href="tel:900840111" class="text-dark fw-semibold text-decoration-none">SATEVI: 900 840 111</a>[span_6](start_span)[span_6](end_span)
                 </p>
             </div>
         </div>
 
-        <!-- Navegación por Días (Tabs) con días destacados -->
-        <ul class="nav nav-pills nav-fill mb-4 gap-2 flex-column flex-md-row bg-white p-2 rounded shadow-sm" id="pills-tab" role="tablist">
+        <!-- Navegación por Días (Tabs) con diseño vistoso -->
+        <ul class="nav nav-pills nav-fill mb-4 gap-2 flex-column flex-md-row p-2 rounded shadow-sm bg-light" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="tab-07" data-bs-toggle="pill" data-bs-target="#content-07" type="button" role="tab">Viernes 7</button>
             </li>
@@ -102,7 +126,7 @@
                 <button class="nav-link dia-especial active" id="tab-15" data-bs-toggle="pill" data-bs-target="#content-15" type="button" role="tab"><i class="bi bi-stars"></i> Sáb 15 (Clausura)</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tab-extras" data-bs-toggle="pill" data-bs-target="#content-extras" type="button" role="tab"><i class="bi bi-star-fill"></i> Más info</button>
+                <button class="nav-link" id="tab-extras" data-bs-toggle="pill" data-bs-target="#content-extras" type="button" role="tab"><i class="bi bi-star-fill text-warning"></i> Más info</button>
             </li>
         </ul>
 
@@ -111,113 +135,113 @@
 
             <!-- VIERNES 7 -->
             <div class="tab-pane fade" id="content-07" role="tabpanel">
-                <h3 class="mb-3 text-primary">Viernes, 7 de agosto (Previo)[span_7](start_span)[span_7](end_span)</h3>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>17:00 - 19:00</strong> - Feriales sin ruido[span_8](start_span)[span_8](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>17:00 - 20:00</strong> - XXI Torneo de Voley Playa de Semana Grande en la playa de la Zurriola[span_9](start_span)[span_9](end_span).</div></div>
+                <h3 class="mb-3 text-info fw-bold">Viernes, 7 de agosto (Previo)[span_7](start_span)[span_7](end_span)</h3>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>17:00 - 19:00</strong> - Feriales sin ruido[span_8](start_span)[span_8](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>17:00 - 20:00</strong> - XXI Torneo de Voley Playa de Semana Grande en la playa de la Zurriola[span_9](start_span)[span_9](end_span).</div></div>
             </div>
 
             <!-- SÁBADO 8 -->
             <div class="tab-pane fade" id="content-08" role="tabpanel">
-                <h3 class="mb-3 text-primary">Sábado, 8 de agosto (Inicio / Cañonazo)[span_10](start_span)[span_10](end_span)</h3>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>Todo el día</strong> - Zurriola Street Food (Food trucks)[span_11](start_span)[span_11](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>09:00 - 20:00</strong> - XXI Torneo de Voley Playa (Zurriola)[span_12](start_span)[span_12](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>09:00 - 14:00</strong> - XIII Mercado Especial de Productos Agrícolas de Euskal Herria (c/ Loiola)[span_13](start_span)[span_13](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>14:00</strong> - Regata Cruceros Trofeo Urdaneta Aste Nagusia Porsche (Salida: Mollaberria)[span_14](start_span)[span_14](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>18:00</strong> - Gigantes y Cabezudos por el Centro y la Parte Vieja[span_15](start_span)[span_15](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>18:15</strong> - ¡Vamos al Cañonazo! con banda Illumbe[span_16](start_span)[span_16](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>19:00</strong> - <span class="badge bg-danger">Cañonazo festivo</span> en Alderdi Eder[span_17](start_span)[span_17](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>19:20</strong> - Holi Fest en el Boulevard[span_18](start_span)[span_18](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>20:30</strong> - XLIX Alarde de Txistularis (pz. de la Constitución)[span_19](start_span)[span_19](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Pirotecnia Alpujarreña (Granada)[span_20](start_span)[span_20](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>23:30</strong> - Encierro de Toros de Fuego y conciertos (Veintiuni en Sagüés, etc.)[span_21](start_span)[span_21](end_span).</div></div>
+                <h3 class="mb-3 text-danger fw-bold">Sábado, 8 de agosto (Inicio / Cañonazo)[span_10](start_span)[span_10](end_span)</h3>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>Todo el día</strong> - Zurriola Street Food (Food trucks)[span_11](start_span)[span_11](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>09:00 - 20:00</strong> - XXI Torneo de Voley Playa (Zurriola)[span_12](start_span)[span_12](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>09:00 - 14:00</strong> - XIII Mercado Especial de Productos Agrícolas de Euskal Herria (c/ Loiola)[span_13](start_span)[span_13](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>14:00</strong> - Regata Cruceros Trofeo Urdaneta Aste Nagusia Porsche (Salida: Mollaberria)[span_14](start_span)[span_14](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>18:00</strong> - Gigantes y Cabezudos por el Centro y la Parte Vieja[span_15](start_span)[span_15](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>18:15</strong> - ¡Vamos al Cañonazo! con banda Illumbe[span_16](start_span)[span_16](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>19:00</strong> - <span class="badge bg-danger">Cañonazo festivo</span> en Alderdi Eder[span_17](start_span)[span_17](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>19:20</strong> - Holi Fest en el Boulevard[span_18](start_span)[span_18](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>20:30</strong> - XLIX Alarde de Txistularis (pz. de la Constitución)[span_19](start_span)[span_19](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Pirotecnia Alpujarreña (Granada)[span_20](start_span)[span_20](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>23:30</strong> - Encierro de Toros de Fuego y conciertos (Veintiuni en Sagüés, etc.)[span_21](start_span)[span_21](end_span).</div></div>
             </div>
 
             <!-- DOMINGO 9 -->
             <div class="tab-pane fade" id="content-09" role="tabpanel">
-                <h3 class="mb-3 text-primary">Domingo, 9 de agosto[span_22](start_span)[span_22](end_span)</h3>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>Todo el día</strong> - Zurriola Street Food y Actividades de Waterpolo en el Náutico[span_23](start_span)[span_23](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>10:30</strong> - Paseo y baño años 20 en La Concha con los Bebés de la Bulla[span_24](start_span)[span_24](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>11:00</strong> - IX Concurso Semana Grande de Merluza en Salsa Verde (c/ Matia)[span_25](start_span)[span_25](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>12:00</strong> - Salida guiada en canoas por el río Urumea[span_26](start_span)[span_26](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>17:30</strong> - Carreras de caballos: Gran Premio de Yeguas (Hipódromo)[span_27](start_span)[span_27](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Xena Pyrotechnics (Países Bajos)[span_28](start_span)[span_28](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>23:45</strong> - Concierto de Nat Simons & Aurora Beltrán (Sagüés)[span_29](start_span)[span_29](end_span).</div></div>
+                <h3 class="mb-3 text-primary fw-bold">Domingo, 9 de agosto[span_22](start_span)[span_22](end_span)</h3>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>Todo el día</strong> - Zurriola Street Food y Actividades de Waterpolo en el Náutico[span_23](start_span)[span_23](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>10:30</strong> - Paseo y baño años 20 en La Concha con los Bebés de la Bulla[span_24](start_span)[span_24](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>11:00</strong> - IX Concurso Semana Grande de Merluza en Salsa Verde (c/ Matia)[span_25](start_span)[span_25](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>12:00</strong> - Salida guiada en canoas por el río Urumea[span_26](start_span)[span_26](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>17:30</strong> - Carreras de caballos: Gran Premio de Yeguas (Hipódromo)[span_27](start_span)[span_27](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Xena Pyrotechnics (Países Bajos)[span_28](start_span)[span_28](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>23:45</strong> - Concierto de Nat Simons & Aurora Beltrán (Sagüés)[span_29](start_span)[span_29](end_span).</div></div>
             </div>
 
             <!-- LUNES 10 -->
             <div class="tab-pane fade" id="content-10" role="tabpanel">
-                <h3 class="mb-3 text-primary">Lunes, 10 de agosto[span_30](start_span)[span_30](end_span)</h3>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>09:30</strong> - ¡¡¡Al Abordaje!!! Montaje de balsas en el puerto[span_31](start_span)[span_31](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>11:00</strong> - Refugios climáticos: Parque de Aiete (Fundación Cristina Enea)[span_32](start_span)[span_32](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>12:30</strong> - Bertsolaris en la pz. Easo[span_33](start_span)[span_33](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>17:00</strong> - ¡¡¡Al Abordaje!!! Salida del puerto y llegada a La Concha[span_34](start_span)[span_34](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>18:00</strong> - IX Concurso Semana Grande de Paella (pz. Cataluña)[span_35](start_span)[span_35](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Pirotecnia Tamarit (Valencia)[span_36](start_span)[span_36](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>23:45</strong> - Concierto de Sanguijuelas del Guadiana (Sagüés)[span_37](start_span)[span_37](end_span).</div></div>
+                <h3 class="mb-3 text-success fw-bold">Lunes, 10 de agosto[span_30](start_span)[span_30](end_span)</h3>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>09:30</strong> - ¡¡¡Al Abordaje!!! Montaje de balsas en el puerto[span_31](start_span)[span_31](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>11:00</strong> - Refugios climáticos: Parque de Aiete (Fundación Cristina Enea)[span_32](start_span)[span_32](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>12:30</strong> - Bertsolaris en la pz. Easo[span_33](start_span)[span_33](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>17:00</strong> - ¡¡¡Al Abordaje!!! Salida del puerto y llegada a La Concha[span_34](start_span)[span_34](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>18:00</strong> - IX Concurso Semana Grande de Paella (pz. Cataluña)[span_35](start_span)[span_35](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Pirotecnia Tamarit (Valencia)[span_36](start_span)[span_36](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>23:45</strong> - Concierto de Sanguijuelas del Guadiana (Sagüés)[span_37](start_span)[span_37](end_span).</div></div>
             </div>
 
             <!-- MARTES 11 -->
             <div class="tab-pane fade" id="content-11" role="tabpanel">
-                <h3 class="mb-3 text-primary">Martes, 11 de agosto[span_38](start_span)[span_38](end_span)</h3>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>11:00</strong> - Barrene (Juego colectivo de pelota en pz. Trinidad)[span_39](start_span)[span_39](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>14:00 - 19:00</strong> - II Torneo de Waterpolo "Ciudad de San Sebastián[span_40](start_span)"[span_40](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>17:30</strong> - Bizikleta Festa (Fiesta infantil en el Boulevard)[span_41](start_span)[span_41](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>18:00</strong> - I Concurso de Cocochas al Pil Pil ("Memorial Javier Coleto") en pz. Zuloaga[span_42](start_span)[span_42](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Phoenix Fireworks (Reino Unido)[span_43](start_span)[span_43](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>23:45</strong> - Concierto de La Orquesta Mondragón (Sagüés)[span_44](start_span)[span_44](end_span).</div></div>
+                <h3 class="mb-3 text-warning text-dark fw-bold">Martes, 11 de agosto[span_38](start_span)[span_38](end_span)</h3>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>11:00</strong> - Barrene (Juego colectivo de pelota en pz. Trinidad)[span_39](start_span)[span_39](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>14:00 - 19:00</strong> - II Torneo de Waterpolo "Ciudad de San Sebastián[span_40](start_span)"[span_40](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>17:30</strong> - Bizikleta Festa (Fiesta infantil en el Boulevard)[span_41](start_span)[span_41](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>18:00</strong> - I Concurso de Cocochas al Pil Pil ("Memorial Javier Coleto") en pz. Zuloaga[span_42](start_span)[span_42](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Phoenix Fireworks (Reino Unido)[span_43](start_span)[span_43](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>23:45</strong> - Concierto de La Orquesta Mondragón (Sagüés)[span_44](start_span)[span_44](end_span).</div></div>
             </div>
 
             <!-- MIÉRCOLES 12 -->
             <div class="tab-pane fade" id="content-12" role="tabpanel">
-                <h3 class="mb-3 text-primary">Miércoles, 12 de agosto[span_45](start_span)[span_45](end_span)</h3>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>11:00</strong> - Refugios climáticos: Monte Urgull[span_46](start_span)[span_46](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>12:30</strong> - Bertsolaris en la pz. Easo[span_47](start_span)[span_47](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>15:00 - 19:00</strong> - Torneo de Waterpolo 4x4 de cuadrillas (Náutico)[span_48](start_span)[span_48](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>19:00 - 21:00</strong> - Fiesta del Eclipse (EITB) en Sagüés[span_49](start_span)[span_49](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Pirotecnia Valenciana (Valencia)[span_50](start_span)[span_50](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>23:45</strong> - Concierto de Malmö 040 (Sagüés)[span_51](start_span)[span_51](end_span).</div></div>
+                <h3 class="mb-3 text-danger fw-bold">Miércoles, 12 de agosto[span_45](start_span)[span_45](end_span)</h3>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>11:00</strong> - Refugios climáticos: Monte Urgull[span_46](start_span)[span_46](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>12:30</strong> - Bertsolaris en la pz. Easo[span_47](start_span)[span_47](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>15:00 - 19:00</strong> - Torneo de Waterpolo 4x4 de cuadrillas (Náutico)[span_48](start_span)[span_48](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>19:00 - 21:00</strong> - Fiesta del Eclipse (EITB) en Sagüés[span_49](start_span)[span_49](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Pirotecnia Valenciana (Valencia)[span_50](start_span)[span_50](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>23:45</strong> - Concierto de Malmö 040 (Sagüés)[span_51](start_span)[span_51](end_span).</div></div>
             </div>
 
             <!-- JUEVES 13 -->
             <div class="tab-pane fade" id="content-13" role="tabpanel">
-                <h3 class="mb-3 text-primary">Jueves, 13 de agosto[span_52](start_span)[span_52](end_span)</h3>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>11:00</strong> - Travesía Nordic Walking (pz. Cataluña)[span_53](start_span)[span_53](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>12:00 - 19:00</strong> - Parque Acuático Hinchable (Terraza Zurriola del Kursaal)[span_54](start_span)[span_54](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>17:00 - 20:00</strong> - III Concurso de Chipirones en su Tinta (Parque Aitzol - Amara)[span_55](start_span)[span_55](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>20:00</strong> - Puro Relajo (Mariachis) en la pz. de la Constitución[span_56](start_span)[span_56](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Gianni Vaccalluzzo (Italia)[span_57](start_span)[span_57](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>23:45</strong> - Concierto de Süne (Sagüés)[span_58](start_span)[span_58](end_span).</div></div>
+                <h3 class="mb-3 text-info fw-bold">Jueves, 13 de agosto[span_52](start_span)[span_52](end_span)</h3>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>11:00</strong> - Travesía Nordic Walking (pz. Cataluña)[span_53](start_span)[span_53](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>12:00 - 19:00</strong> - Parque Acuático Hinchable (Terraza Zurriola del Kursaal)[span_54](start_span)[span_54](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>17:00 - 20:00</strong> - III Concurso de Chipirones en su Tinta (Parque Aitzol - Amara)[span_55](start_span)[span_55](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>20:00</strong> - Puro Relajo (Mariachis) en la pz. de la Constitución[span_56](start_span)[span_56](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Gianni Vaccalluzzo (Italia)[span_57](start_span)[span_57](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>23:45</strong> - Concierto de Süne (Sagüés)[span_58](start_span)[span_58](end_span).</div></div>
             </div>
 
             <!-- VIERNES 14 -->
             <div class="tab-pane fade" id="content-14" role="tabpanel">
-                <h3 class="mb-3 text-primary">Viernes, 14 de agosto[span_59](start_span)[span_59](end_span)</h3>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>12:00</strong> - Tobogán acuático gigante y parque hinchable (Terraza Zurriola)[span_60](start_span)[span_60](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>16:00</strong> - Finales del XXXI Torneo Aste Nagusia de Pelota a Mano (pz. Trinidad)[span_61](start_span)[span_61](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>18:00</strong> - V Concurso Gastronómico "Cocinando en Familia" (c/ Elkano)[span_62](start_span)[span_62](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>19:30</strong> - Salve Solemne con el Orfeón Donostiarra (Basílica Santa María del Coro)[span_63](start_span)[span_63](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Gironina (Valencia)[span_64](start_span)[span_64](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>23:45</strong> - ¡¡Festara!! (Coros en Amara, El Antiguo y Parte Vieja) y concierto de Lia Kali en Sagüés[span_65](start_span)[span_65](end_span).</div></div>
+                <h3 class="mb-3 text-primary fw-bold">Viernes, 14 de agosto[span_59](start_span)[span_59](end_span)</h3>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>12:00</strong> - Tobogán acuático gigante y parque hinchable (Terraza Zurriola)[span_60](start_span)[span_60](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>16:00</strong> - Finales del XXXI Torneo Aste Nagusia de Pelota a Mano (pz. Trinidad)[span_61](start_span)[span_61](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>18:00</strong> - V Concurso Gastronómico "Cocinando en Familia" (c/ Elkano)[span_62](start_span)[span_62](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>19:30</strong> - Salve Solemne con el Orfeón Donostiarra (Basílica Santa María del Coro)[span_63](start_span)[span_63](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-primary">Fuegos Artificiales</span>: Gironina (Valencia)[span_64](start_span)[span_64](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>23:45</strong> - ¡¡Festara!! (Coros en Amara, El Antiguo y Parte Vieja) y concierto de Lia Kali en Sagüés[span_65](start_span)[span_65](end_span).</div></div>
             </div>
 
             <!-- SÁBADO 15 -->
             <div class="tab-pane fade show active" id="content-15" role="tabpanel">
-                <h3 class="mb-3 text-primary">Sábado, 15 de agosto (Clausura)[span_66](start_span)[span_66](end_span)</h3>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>11:00</strong> - <span class="badge bg-success">LVI Travesía a Nado al Paseo Nuevo</span> (Zurriola a La Concha)[span_67](start_span)[span_67](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>11:00</strong> - XIX Concurso Semana Grande de Marmitako (c/ Elkano)[span_68](start_span)[span_68](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>17:15</strong> - Carreras de caballos: Copa de Oro (Hipódromo)[span_69](start_span)[span_69](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>19:30</strong> - Urrezko Kopa (Aizkolariak) en la pz. de la Trinidad[span_70](start_span)[span_70](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>20:00</strong> - Acto de despedida de Gigantes y Cabezudos (Agur Erraldoia en pz. Zuloaga)[span_71](start_span)[span_71](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-danger">Espectáculo piromusical de clausura</span>: Pirotecnia Valecea (Álava) - 150 años[span_72](start_span)[span_72](end_span).</div></div>
-                <div class="card card-evento mb-2 shadow-sm"><div class="card-body"><strong>23:45</strong> - Concierto de Etzakit (Sagüés)[span_73](start_span)[span_73](end_span).</div></div>
+                <h3 class="mb-3 text-danger fw-bold">Sábado, 15 de agosto (Clausura)[span_66](start_span)[span_66](end_span)</h3>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>11:00</strong> - <span class="badge bg-success">LVI Travesía a Nado al Paseo Nuevo</span> (Zurriola a La Concha)[span_67](start_span)[span_67](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>11:00</strong> - XIX Concurso Semana Grande de Marmitako (c/ Elkano)[span_68](start_span)[span_68](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>17:15</strong> - Carreras de caballos: Copa de Oro (Hipódromo)[span_69](start_span)[span_69](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>19:30</strong> - Urrezko Kopa (Aizkolariak) en la pz. de la Trinidad[span_70](start_span)[span_70](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>20:00</strong> - Acto de despedida de Gigantes y Cabezudos (Agur Erraldoia en pz. Zuloaga)[span_71](start_span)[span_71](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>22:45</strong> - <span class="badge bg-danger">Espectáculo piromusical de clausura</span>: Pirotecnia Valecea (Álava) - 150 años[span_72](start_span)[span_72](end_span).</div></div>
+                <div class="card card-evento mb-2 shadow-sm border-0"><div class="card-body"><strong>23:45</strong> - Concierto de Etzakit (Sagüés)[span_73](start_span)[span_73](end_span).</div></div>
             </div>
 
             <!-- MÁS INFO / EXTRAS -->
             <div class="tab-pane fade" id="content-extras" role="tabpanel">
-                <h3 class="mb-3 text-primary">Atracciones, Teatro y Exposiciones</h3>
-                <div class="card shadow-sm mb-3">
+                <h3 class="mb-3 text-secondary fw-bold">Atracciones, Teatro y Exposiciones</h3>
+                <div class="card shadow-sm mb-3 border-0 bg-light">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-shop"></i> Feriales y Espacios</h5>
+                        <h5 class="card-title text-primary"><i class="bi bi-shop"></i> Feriales y Espacios</h5>
                         <p class="card-text">
                             - <strong>Paseo Nuevo:</strong> Del 7 al 17 de agosto (Días populares: 7 y 17)[span_74](start_span)[span_74](end_span).<br>
                             - <strong>Ferial Infantil (Plaza Gipuzkoa):</strong> Del 7 al 17 de agosto (Días populares: 7 y 17)[span_75](start_span)[span_75](end_span).<br>
@@ -225,9 +249,9 @@
                         </p>
                     </div>
                 </div>
-                <div class="card shadow-sm mb-3">
+                <div class="card shadow-sm mb-3 border-0 bg-light">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-ticket-perforated"></i> Teatro Principal y Victoria Eugenia</h5>
+                        <h5 class="card-title text-primary"><i class="bi bi-ticket-perforated"></i> Teatro Principal y Victoria Eugenia</h5>
                         <p class="card-text">
                             Obras de teatro diarias a las 20:00 h del 5 al 16 de agosto (como <em>"Menú cerrado"</em>, <em>"Tigrea"</em>, <em>"Asesinato para dos"</em>, etc.)[span_77](start_span)[span_77](end_span).
                         </p>
@@ -241,8 +265,8 @@
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-4 mt-5">
         <div class="container">
-            <p class="mb-0">Aste Nagusia 2026 - Donostia / San Sebastián[span_78](start_span)[span_78](end_span)</p>
-            <small class="text-muted">Desarrollado para consulta rápida en web móvil.</small>
+            <p class="mb-0 fw-semibold">Aste Nagusia 2026 - Donostia / San Sebastián[span_78](start_span)[span_78](end_span)</p>
+            <small class="text-white-50">Diseño optimizado y muy visual para consulta rápida.</small>
         </div>
     </footer>
 

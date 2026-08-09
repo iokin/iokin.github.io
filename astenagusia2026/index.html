@@ -16,8 +16,13 @@
             const idPestanaHoy = `tab-${String(diaHoy).padStart(2, '0')}`;
             const pestanaHoy = document.getElementById(idPestanaHoy);
             if (pestanaHoy) {
-                new bootstrap.Tab(pestanaHoy).show();
-                pestanaHoy.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    new bootstrap.Tab(pestanaHoy).show();
+    pestanaHoy.classList.add('is-today');
+    const insigniaHoy = document.createElement('span');
+    insigniaHoy.className = 'today-badge';
+    insigniaHoy.textContent = 'HOY';
+    pestanaHoy.appendChild(insigniaHoy);
+    pestanaHoy.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             }
         }
     });
@@ -33,6 +38,25 @@
             --cat-infantil: #f06595;
             --cat-default: #ff7b00;
         }
+        .day-card.is-today {
+    outline: 2px solid #212529;
+    outline-offset: 2px;
+}
+.today-badge {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #212529;
+    color: #ffffff;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 1px 6px;
+    border-radius: 999px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    white-space: nowrap;
+}
         .hero-section {
             background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
             color: white;

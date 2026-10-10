@@ -1,1 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123765">
+  <meta name="description" content="Consulta y compara los precios oficiales de los carburantes en estaciones de servicio de España.">
+  <title>Precios de carburantes en España</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="./" aria-label="Precios de carburantes, inicio">
+        <span class="brand__icon" aria-hidden="true">⛽</span>
+        <span><span class="brand__title">Precios de carburantes</span><span class="brand__subtitle">Consulta precios oficiales por provincia</span></span>
+      </a>
+      <span class="source-tag">Datos oficiales · MITECO</span>
+    </div>
+  </header>
 
+  <main class="container main-content">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">COMPARADOR DE CARBURANTES</p>
+      <h1 id="page-title">Encuentra los precios de tu provincia</h1>
+      <p class="intro__text">Consulta estaciones de servicio y ordena los resultados para encontrar los precios más bajos.</p>
+    </section>
+
+    <form class="search-panel" id="search-form">
+      <div class="field">
+        <label for="province">Provincia</label>
+        <select id="province" name="province" required>
+          <option value="">Cargando provincias…</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fuel">Tipo de combustible</label>
+        <select id="fuel" name="fuel" required>
+          <option value="1">Gasolina 95 E5</option>
+          <option value="3">Gasolina 98 E5</option>
+          <option value="4" selected>Gasóleo A habitual</option>
+          <option value="5">Gasóleo Premium</option>
+          <option value="2">Gasolina 95 E10</option>
+          <option value="21">Gasolina 98 E10</option>
+          <option value="17">GLP</option>
+          <option value="18">Gas natural comprimido</option>
+          <option value="19">Gas natural licuado</option>
+          <option value="27">Diésel renovable</option>
+        </select>
+      </div>
+      <button class="button button--primary" id="search-button" type="submit"><span aria-hidden="true">⌕</span> Buscar precios</button>
+    </form>
+
+    <section class="results-section" aria-labelledby="results-title">
+      <div class="results-heading">
+        <div>
+          <p class="eyebrow">RESULTADOS</p>
+          <h2 id="results-title">Estaciones de servicio</h2>
+          <p class="results-summary" id="results-summary">Selecciona una provincia y un combustible para consultar los precios.</p>
+        </div>
+        <div class="results-controls">
+          <label class="sr-only" for="sort">Orden de resultados</label>
+          <select id="sort" aria-label="Orden de resultados">
+            <option value="price-asc">Más baratos primero</option>
+            <option value="price-desc">Más caros primero</option>
+            <option value="name-asc">Nombre de estación</option>
+            <option value="town-asc">Municipio</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="status" id="status" role="status" aria-live="polite">
+        <span class="status__icon" aria-hidden="true">ℹ</span>
+        <span>Preparando la consulta de datos oficiales…</span>
+      </div>
+
+      <div class="table-wrap" id="table-wrap" hidden>
+        <table>
+          <thead><tr><th scope="col">Estación</th><th scope="col">Municipio</th><th scope="col">Dirección</th><th scope="col" class="price-column">Precio (€/l)</th><th scope="col">Horario</th></tr></thead>
+          <tbody id="results-body"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="pagination" hidden>
+        <p id="page-summary"></p>
+        <div class="pagination__buttons">
+          <button class="button button--secondary" id="previous-page" type="button">Anterior</button>
+          <button class="button button--secondary" id="next-page" type="button">Siguiente</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="notice">
+      <span class="notice__icon" aria-hidden="true">ⓘ</span>
+      <p>Los precios pueden cambiar. Confirma siempre el importe en el surtidor. La fecha que se muestra corresponde a la fecha comunicada por el servicio oficial.</p>
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Fuente de datos: <a href="https://energia.serviciosmin.gob.es/ServiciosRestCarburantes/PreciosCarburantes/" target="_blank" rel="noopener noreferrer">Ministerio para la Transición Ecológica y el Reto Demográfico (MITECO)</a>.</p>
+      <p id="data-date">Fecha de datos: pendiente de consulta</p>
+      <p class="footer-note">Proyecto independiente. No es una web oficial del Gobierno de España.</p>
+    </div>
+  </footer>
+</body>
+</html>

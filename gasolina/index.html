@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#123765">
-  <meta name="description" content="Consulta y compara los precios oficiales de los carburantes en estaciones de servicio de España.">
+  <meta name="description" content="Consulta y compara los precios oficiales de los carburantes en estaciones de servicio de España, por comunidad autónoma, provincia y municipio.">
   <title>Precios de carburantes en España</title>
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
@@ -14,7 +14,7 @@
     <div class="container site-header__inner">
       <a class="brand" href="./" aria-label="Precios de carburantes, inicio">
         <span class="brand__icon" aria-hidden="true">⛽</span>
-        <span><span class="brand__title">Precios de carburantes</span><span class="brand__subtitle">Consulta precios oficiales por provincia</span></span>
+        <span><span class="brand__title">Precios de carburantes</span><span class="brand__subtitle">Consulta precios oficiales por comunidad, provincia y municipio</span></span>
       </a>
       <span class="source-tag">Datos oficiales · MITECO</span>
     </div>
@@ -23,15 +23,21 @@
   <main class="container main-content">
     <section class="intro" aria-labelledby="page-title">
       <p class="eyebrow">COMPARADOR DE CARBURANTES</p>
-      <h1 id="page-title">Encuentra los precios de tu provincia</h1>
-      <p class="intro__text">Consulta estaciones de servicio y ordena los resultados para encontrar los precios más bajos.</p>
+      <h1 id="page-title">Encuentra los precios de tu zona</h1>
+      <p class="intro__text">Elige comunidad autónoma, provincia y combustible. Después puedes afinar por municipio y ordenar los resultados para encontrar los precios más bajos.</p>
     </section>
 
     <form class="search-panel" id="search-form">
       <div class="field">
+        <label for="ccaa">Comunidad autónoma</label>
+        <select id="ccaa" name="ccaa" required>
+          <option value="">Cargando comunidades…</option>
+        </select>
+      </div>
+      <div class="field">
         <label for="province">Provincia</label>
-        <select id="province" name="province" required>
-          <option value="">Cargando provincias…</option>
+        <select id="province" name="province">
+          <option value="">Selecciona primero una comunidad</option>
         </select>
       </div>
       <div class="field">
@@ -41,7 +47,7 @@
           <option value="3">Gasolina 98 E5</option>
           <option value="4" selected>Gasóleo A habitual</option>
           <option value="5">Gasóleo Premium</option>
-          <option value="2">Gasolina 95 E10</option>
+          <option value="23">Gasolina 95 E10</option>
           <option value="21">Gasolina 98 E10</option>
           <option value="17">GLP</option>
           <option value="18">Gas natural comprimido</option>
@@ -56,17 +62,24 @@
       <div class="results-heading">
         <div>
           <p class="eyebrow">RESULTADOS</p>
-          <h2 id="results-title">Estaciones de servicio</h2>
-          <p class="results-summary" id="results-summary">Selecciona una provincia y un combustible para consultar los precios.</p>
+          <h2 id="results-title" tabindex="-1">Estaciones de servicio</h2>
+          <p class="results-summary" id="results-summary">Selecciona una comunidad y un combustible para consultar los precios.</p>
         </div>
         <div class="results-controls">
-          <label class="sr-only" for="sort">Orden de resultados</label>
-          <select id="sort" aria-label="Orden de resultados">
-            <option value="price-asc">Más baratos primero</option>
-            <option value="price-desc">Más caros primero</option>
-            <option value="name-asc">Nombre de estación</option>
-            <option value="town-asc">Municipio</option>
-          </select>
+          <div class="field">
+            <label for="municipality">Municipio</label>
+            <input id="municipality" name="municipality" type="search" list="municipality-list" autocomplete="off" placeholder="Escribe para filtrar" disabled>
+            <datalist id="municipality-list"></datalist>
+          </div>
+          <div class="field">
+            <label for="sort">Ordenar por</label>
+            <select id="sort" name="sort">
+              <option value="price-asc">Más baratos primero</option>
+              <option value="price-desc">Más caros primero</option>
+              <option value="name-asc">Nombre de estación</option>
+              <option value="town-asc">Municipio</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -77,6 +90,7 @@
 
       <div class="table-wrap" id="table-wrap" hidden>
         <table>
+          <caption class="sr-only">Precios por estación de servicio. El nombre de cada estación enlaza a su ubicación en Google Maps.</caption>
           <thead><tr><th scope="col">Estación</th><th scope="col">Municipio</th><th scope="col">Dirección</th><th scope="col" class="price-column">Precio (€/l)</th><th scope="col">Horario</th></tr></thead>
           <tbody id="results-body"></tbody>
         </table>
@@ -92,7 +106,7 @@
 
     <aside class="notice">
       <span class="notice__icon" aria-hidden="true">ⓘ</span>
-      <p>Los precios pueden cambiar. Confirma siempre el importe en el surtidor. La fecha que se muestra corresponde a la fecha comunicada por el servicio oficial.</p>
+      <p>Los precios pueden cambiar. Confirma siempre el importe en el surtidor. La fecha que se muestra corresponde a la fecha comunicada por el servicio oficial. El enlace de cada estación abre Google Maps con la ubicación que indica el servicio oficial.</p>
     </aside>
   </main>
 

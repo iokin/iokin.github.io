@@ -32,16 +32,31 @@ const PROVINCES = [
   ['46', 'Valencia / València', '10'], ['47', 'Valladolid', '08'], ['49', 'Zamora', '08'], ['50', 'Zaragoza', '02']
 ];
 
-const PROVINCE_NAMES = new Map(PROVINCES.map(([id, name]) => [id, name]));
+// Otros nombres habituales, para que el buscador reconozca la zona.
+const PROVINCE_ALIASES = {
+  '48': ['Vizcaya'], '20': ['Guipúzcoa'], '15': ['Coruña', 'La Coruña'], '17': ['Gerona'], '25': ['Lérida'],
+  '32': ['Orense'], '26': ['Rioja'], '07': ['Baleares'], '38': ['Tenerife']
+};
+const CCAA_ALIASES = { '09': ['Catalunya'], '10': ['Comunidad Valenciana'], '16': ['Euskadi'] };
 
-const form = document.querySelector('#search-form');
+const CCAA_BY_ID = new Map(CCAA);
+const PROVINCE_BY_ID = new Map(PROVINCES.map(([id, name, ccaa]) => [id, { id, name, ccaa }]));
+
+const searchForm = document.querySelector('#search-form');
+const queryInput = document.querySelector('#query');
+const territoryList = document.querySelector('#territory-list');
+const searchButton = document.querySelector('#search-button');
+const filtersToggle = document.querySelector('#filters-toggle');
+const filtersSummary = document.querySelector('#filters-summary');
+const filtersPanel = document.querySelector('#filters-panel');
 const ccaaSelect = document.querySelector('#ccaa');
 const provinceSelect = document.querySelector('#province');
-const fuelSelect = document.querySelector('#fuel');
 const municipalityInput = document.querySelector('#municipality');
 const municipalityList = document.querySelector('#municipality-list');
+const fuelSelect = document.querySelector('#fuel');
+const applyButton = document.querySelector('#apply-button');
+const sortField = document.querySelector('#sort-field');
 const sortSelect = document.querySelector('#sort');
-const searchButton = document.querySelector('#search-button');
 const statusBox = document.querySelector('#status');
 const resultsTitle = document.querySelector('#results-title');
 const resultsSummary = document.querySelector('#results-summary');
@@ -51,31 +66,62 @@ const pagination = document.querySelector('#pagination');
 const pageSummary = document.querySelector('#page-summary');
 const previousButton = document.querySelector('#previous-page');
 const nextButton = document.querySelector('#next-page');
-const dataDate = document.querySelector('#data-date');
 
 let stations = [];
 let currentPage = 1;
+let currentDate = '';
+let textQuery = '';        // texto del buscador (sin la zona) que filtra los resultados cargados
+let loadedScope = null;    // zona de la última consulta correcta: { type, id, label }
+let loadedFuel = '';
+let lastSubmitKey = '';    // repetir la misma búsqueda vuelve a consultar el servicio
+let loading = false;
 
-// Compara sin tildes ni mayúsculas para que «alcala» encuentre «Alcalá de Henares».
-function normalise(value) {
-  return String(value ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLocaleLowerCase('es').trim();
+// ---------- Utilidades ----------
+
+// Minúsculas, sin tildes ni signos: «Alcalá de Henares» → «alcala de henares».
+function words(value) {
+  return String(value ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLocaleLowerCase('es')
+    .replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function tokens(value) {
+  return words(value).split(' ').filter(Boolean);
 }
 
 function byName(a, b) {
   return a[1].localeCompare(b[1], 'es');
 }
 
+function countLabel(count) {
+  return `${count.toLocaleString('es-ES')} ${count === 1 ? 'estación' : 'estaciones'}`;
+}
+
+function selectedText(select) {
+  return select.selectedOptions[0]?.textContent ?? '';
+}
+
 function showStatus(message, type = 'info') {
-  statusBox.className = `status${type === 'error' ? ' status--error' : type === 'success' ? ' status--success' : ''}`;
+  statusBox.className = `status${type === 'error' ? ' status--error' : ''}`;
   statusBox.replaceChildren();
   const icon = document.createElement('span');
   icon.className = 'status__icon';
   icon.setAttribute('aria-hidden', 'true');
-  icon.textContent = type === 'error' ? '!' : type === 'success' ? '✓' : 'ℹ';
+  icon.textContent = type === 'error' ? '!' : 'ℹ';
   const text = document.createElement('span');
   text.textContent = message;
   statusBox.append(icon, text);
   statusBox.hidden = false;
+}
+
+function hideStatus() {
+  statusBox.hidden = true;
+}
+
+function setLoading(value) {
+  loading = value;
+  searchButton.disabled = value;
+  applyButton.disabled = value;
+  searchButton.textContent = value ? 'Buscando…' : 'Buscar';
 }
 
 async function fetchJson(url) {
@@ -83,21 +129,57 @@ async function fetchJson(url) {
   const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   try {
     const response = await fetch(url, { headers: { Accept: 'application/json' }, signal: controller.signal });
-    if (!response.ok) throw new Error(`El servicio oficial ha respondido con HTTP ${response.status}.`);
-    const contentType = response.headers.get('content-type') || '';
-    if (!contentType.includes('json')) {
-      throw new Error('El servicio oficial no ha devuelto JSON. Puede ser necesario ajustar la negociación de formato de la API.');
-    }
+    if (!response.ok) throw new Error(`El servicio oficial respondió con HTTP ${response.status}.`);
+    if (!(response.headers.get('content-type') || '').includes('json')) throw new Error('El servicio no devolvió JSON.');
     return await response.json();
   } catch (error) {
-    if (error.name === 'AbortError') {
-      throw new Error('El servicio oficial tarda demasiado en responder. Inténtalo de nuevo en unos minutos.');
-    }
+    if (error.name === 'AbortError') throw new Error('El servicio tarda demasiado en responder. Inténtalo de nuevo.');
     throw error;
   } finally {
     clearTimeout(timer);
   }
 }
+
+// ---------- Reconocimiento de la zona en el buscador ----------
+
+const TERRITORIES = [];
+
+function addTerritory(type, id, label, names) {
+  new Set(names.map(words).filter(Boolean)).forEach(key => TERRITORIES.push({ type, id, label, key, size: key.split(' ').length }));
+}
+
+PROVINCES.forEach(([id, name]) => addTerritory('province', id, name, [name, ...name.split('/'), ...(PROVINCE_ALIASES[id] ?? [])]));
+CCAA.forEach(([id, name]) => addTerritory('ccaa', id, name, [name, ...(CCAA_ALIASES[id] ?? [])]));
+// Primero los nombres más largos («Castilla y León» antes que «León»); a igualdad, la provincia antes que la comunidad.
+TERRITORIES.sort((a, b) => b.size - a.size || b.key.length - a.key.length || (a.type === b.type ? 0 : a.type === 'province' ? -1 : 1));
+
+// Separa la consulta en zona (provincia o comunidad) y texto libre. Si hay varias zonas, gana la última:
+// «Avenida de Madrid Valladolid» → zona Valladolid, texto «Avenida de Madrid».
+function parseQuery(raw) {
+  const parts = String(raw ?? '').split(/\s+/).filter(part => words(part));
+  const list = [];
+  parts.forEach((part, index) => tokens(part).forEach(word => list.push({ word, index })));
+
+  const hits = [];
+  for (const territory of TERRITORIES) {
+    const key = territory.key.split(' ');
+    for (let start = 0; start + key.length <= list.length; start++) {
+      if (key.every((word, offset) => list[start + offset].word === word)) hits.push({ territory, start, end: start + key.length });
+    }
+  }
+  const kept = [];
+  for (const hit of hits) {
+    if (!kept.some(other => hit.start < other.end && other.start < hit.end)) kept.push(hit);
+  }
+  kept.sort((a, b) => b.start - a.start);
+  const chosen = kept[0];
+  if (!chosen) return { territory: null, text: parts.join(' ') };
+
+  const used = new Set(list.slice(chosen.start, chosen.end).map(item => item.index));
+  return { territory: chosen.territory, text: parts.filter((_, index) => !used.has(index)).join(' ') };
+}
+
+// ---------- Filtros ----------
 
 function loadCcaa() {
   ccaaSelect.replaceChildren(new Option('Selecciona una comunidad', ''));
@@ -105,11 +187,16 @@ function loadCcaa() {
 }
 
 function loadProvinces(ccaaId, selected = '') {
-  provinceSelect.replaceChildren(new Option(ccaaId ? 'Todas las provincias' : 'Selecciona primero una comunidad', ''));
+  provinceSelect.replaceChildren(new Option(ccaaId ? 'Todas las provincias' : '—', ''));
   provinceSelect.disabled = !ccaaId;
   PROVINCES.filter(province => province[2] === ccaaId).sort(byName)
     .forEach(([id, name]) => provinceSelect.add(new Option(name, id)));
   provinceSelect.value = selected;
+}
+
+function loadTerritorySuggestions() {
+  const names = new Set([...CCAA.map(([, name]) => name), ...PROVINCES.map(([, name]) => name)]);
+  territoryList.replaceChildren(...[...names].sort((a, b) => a.localeCompare(b, 'es')).map(name => new Option(name)));
 }
 
 function loadMunicipalities() {
@@ -121,6 +208,44 @@ function loadMunicipalities() {
   municipalityInput.value = '';
 }
 
+function setFiltersOpen(open) {
+  filtersPanel.hidden = !open;
+  filtersToggle.setAttribute('aria-expanded', String(open));
+  filtersToggle.textContent = open ? 'Ocultar filtros' : 'Mostrar filtros';
+  filtersSummary.hidden = open;
+}
+
+function updateFiltersSummary() {
+  filtersSummary.textContent = selectedText(fuelSelect);
+}
+
+function scopeFromSelects() {
+  const ccaaId = ccaaSelect.value;
+  if (!ccaaId) return null;
+  const provinceId = provinceSelect.value;
+  return provinceId
+    ? { type: 'province', id: provinceId, label: PROVINCE_BY_ID.get(provinceId).name }
+    : { type: 'ccaa', id: ccaaId, label: CCAA_BY_ID.get(ccaaId) };
+}
+
+function scopeKey(scope) {
+  return scope ? `${scope.type}:${scope.id}` : '';
+}
+
+// Refleja en los filtros la zona escrita en el buscador.
+function applyTerritory(territory) {
+  if (territory.type === 'ccaa') {
+    ccaaSelect.value = territory.id;
+    loadProvinces(territory.id);
+  } else {
+    const province = PROVINCE_BY_ID.get(territory.id);
+    ccaaSelect.value = province.ccaa;
+    loadProvinces(province.ccaa, province.id);
+  }
+}
+
+// ---------- Datos ----------
+
 function getPrice(item) {
   const raw = String(item.PrecioProducto ?? '').trim().replace(',', '.');
   const value = Number.parseFloat(raw);
@@ -128,12 +253,13 @@ function getPrice(item) {
 }
 
 function mapStation(item) {
-  const provinceId = String(item.IDProvincia ?? '').trim();
-  return {
+  const province = PROVINCE_BY_ID.get(String(item.IDProvincia ?? '').trim());
+  const station = {
     id: String(item.IDEESS ?? `${item['Rótulo']}-${item['Dirección']}-${item.Municipio}`),
     name: String(item['Rótulo'] ?? '').trim() || 'Estación sin rótulo',
     town: String(item.Municipio ?? item.Localidad ?? '').trim(),
-    province: PROVINCE_NAMES.get(provinceId) ?? String(item.Provincia ?? '').trim(),
+    locality: String(item.Localidad ?? '').trim(),
+    province: province?.name ?? String(item.Provincia ?? '').trim(),
     address: String(item['Dirección'] ?? '').trim(),
     postcode: String(item['C.P.'] ?? '').trim(),
     price: getPrice(item),
@@ -141,6 +267,11 @@ function mapStation(item) {
     latitude: String(item.Latitud ?? '').trim(),
     longitude: String(item['Longitud (WGS84)'] ?? '').trim()
   };
+  const ccaaName = province ? CCAA_BY_ID.get(province.ccaa) : '';
+  // Texto normalizado, con espacio inicial, para buscar por comienzo de palabra.
+  station.search = ` ${words([station.name, station.address, station.town, station.locality, station.postcode, station.province, ccaaName].join(' '))}`;
+  station.townSearch = ` ${words(station.town)}`;
+  return station;
 }
 
 // Enlace a Google Maps: usa las coordenadas oficiales si son válidas; si no, busca por nombre y dirección.
@@ -155,66 +286,98 @@ function mapsUrl(station) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
-function selectedText(select) {
-  return select.selectedOptions[0]?.textContent ?? '';
-}
-
-async function searchPrices(event) {
-  if (event) event.preventDefault();
-  const ccaaId = ccaaSelect.value;
-  const provinceId = provinceSelect.value;
-  const fuelId = fuelSelect.value;
-  if (!ccaaId || !fuelId) {
-    showStatus('Selecciona una comunidad autónoma y un tipo de combustible.', 'error');
-    return;
-  }
-
-  searchButton.disabled = true;
-  searchButton.textContent = 'Consultando…';
+async function loadStations(scope, fuelId) {
+  setLoading(true);
   tableWrap.hidden = true;
   pagination.hidden = true;
-  resultsBody.replaceChildren();
-  showStatus('Consultando los datos oficiales del MITECO…');
-  dataDate.textContent = 'Fecha de datos: consultando…';
+  sortField.hidden = true;
+  resultsSummary.textContent = '';
+  showStatus('Consultando…');
 
   try {
-    // Con provincia se consulta por provincia; sin ella, por toda la comunidad autónoma.
-    const url = provinceId
-      ? `${PRICES_BY_PROVINCE_URL}/${encodeURIComponent(provinceId)}/${encodeURIComponent(fuelId)}`
-      : `${PRICES_BY_CCAA_URL}/${encodeURIComponent(ccaaId)}/${encodeURIComponent(fuelId)}`;
-    const data = await fetchJson(url);
+    const base = scope.type === 'province' ? PRICES_BY_PROVINCE_URL : PRICES_BY_CCAA_URL;
+    const data = await fetchJson(`${base}/${encodeURIComponent(scope.id)}/${encodeURIComponent(fuelId)}`);
     const list = data.ListaEESSPrecio ?? data.listaEESSPrecio ?? data.ListaEESS ?? [];
-    if (!Array.isArray(list)) throw new Error('La respuesta del servicio no contiene una lista de estaciones válida.');
+    if (!Array.isArray(list)) throw new Error('Respuesta del servicio no válida.');
     stations = list.map(mapStation);
-    const dateText = String(data.Fecha ?? data.fecha ?? '').trim();
+    currentDate = String(data.Fecha ?? data.fecha ?? '').trim();
+    loadedScope = scope;
+    loadedFuel = fuelId;
     currentPage = 1;
-    const scope = provinceId ? selectedText(provinceSelect) : selectedText(ccaaSelect);
-    resultsTitle.textContent = `Estaciones de servicio · ${scope} · ${selectedText(fuelSelect)}`;
-    dataDate.textContent = `Fecha de datos: ${dateText || 'no indicada por el servicio'}`;
+    resultsTitle.textContent = `${scope.label} · ${selectedText(fuelSelect)}`;
     loadMunicipalities();
     renderResults();
-    if (!stations.length) {
-      showStatus('El servicio oficial no ha devuelto estaciones para esta combinación de filtros.', 'success');
-    } else {
-      showStatus(`Consulta completada: ${stations.length.toLocaleString('es-ES')} estaciones recibidas del servicio oficial.`, 'success');
-    }
+    if (stations.length) hideStatus();
+    else showStatus('El servicio no devuelve estaciones para esta zona y combustible.');
   } catch (error) {
     stations = [];
-    resultsTitle.textContent = 'Estaciones de servicio';
+    currentDate = '';
+    loadedScope = null;
+    resultsTitle.textContent = 'Resultados';
     loadMunicipalities();
     renderResults();
-    const message = error instanceof TypeError ? 'No se ha podido conectar con el servicio oficial.' : error.message;
-    showStatus(`${message} Si el problema persiste y la consola menciona CORS, consulta el apartado de incidencias del README.`, 'error');
-    dataDate.textContent = 'Fecha de datos: no disponible';
+    showStatus(error instanceof TypeError ? 'No se pudo conectar con el servicio oficial.' : error.message, 'error');
   } finally {
-    searchButton.disabled = false;
-    searchButton.innerHTML = '<span aria-hidden="true">⌕</span> Buscar precios';
+    setLoading(false);
   }
 }
 
+// Consulta el servicio solo si cambia la zona o el combustible (o se repite la búsqueda); si no, solo filtra.
+async function run(scope, refresh = false) {
+  const fuelId = fuelSelect.value;
+  const stale = !loadedScope || scopeKey(scope) !== scopeKey(loadedScope) || fuelId !== loadedFuel;
+  if (stale || refresh) {
+    await loadStations(scope, fuelId);
+  } else {
+    hideStatus();
+    currentPage = 1;
+    renderResults();
+  }
+}
+
+async function onSearch(event) {
+  event.preventDefault();
+  if (loading) return;
+  const raw = queryInput.value.trim();
+  const parsed = parseQuery(raw);
+  if (parsed.territory) applyTerritory(parsed.territory);
+  const scope = scopeFromSelects();
+  if (!scope) {
+    showStatus('Escribe una provincia o comunidad, por ejemplo «Sevilla».', 'error');
+    queryInput.focus();
+    return;
+  }
+  textQuery = parsed.text;
+  const key = `${words(raw)}|${fuelSelect.value}`;
+  const refresh = key === lastSubmitKey;
+  lastSubmitKey = key;
+  await run(scope, refresh);
+}
+
+async function onApplyFilters(event) {
+  event.preventDefault();
+  if (loading) return;
+  const scope = scopeFromSelects();
+  if (!scope) {
+    showStatus('Elige una comunidad autónoma.', 'error');
+    ccaaSelect.focus();
+    return;
+  }
+  // El buscador pasa a reflejar la zona de los filtros y conserva el texto libre.
+  textQuery = parseQuery(queryInput.value).text;
+  queryInput.value = [scope.label, textQuery].filter(Boolean).join(' ');
+  lastSubmitKey = `${words(queryInput.value)}|${fuelSelect.value}`;
+  await run(scope);
+}
+
+// ---------- Resultados ----------
+
 function filteredStations() {
-  const query = normalise(municipalityInput.value);
-  return query ? stations.filter(station => normalise(station.town).includes(query)) : stations;
+  const townTokens = tokens(municipalityInput.value);
+  const textTokens = tokens(textQuery);
+  if (!townTokens.length && !textTokens.length) return stations;
+  return stations.filter(station => townTokens.every(token => station.townSearch.includes(` ${token}`))
+    && textTokens.every(token => station.search.includes(` ${token}`)));
 }
 
 function sortedStations() {
@@ -253,7 +416,7 @@ function stationCell(station) {
   arrow.textContent = ' ↗';
   const hint = document.createElement('span');
   hint.className = 'sr-only';
-  hint.textContent = ' (ver en Google Maps, se abre en una pestaña nueva)';
+  hint.textContent = ' (Google Maps, pestaña nueva)';
   link.append(label, arrow, hint);
   name.append(link);
 
@@ -263,6 +426,15 @@ function stationCell(station) {
 
   td.append(name, detail);
   return td;
+}
+
+function summaryText(shown, total) {
+  if (!loadedScope) return 'Busca una zona para ver precios.';
+  if (!total) return 'Sin estaciones.';
+  const date = currentDate ? ` · datos de ${currentDate}` : '';
+  if (!shown) return `Ninguna estación coincide (${total.toLocaleString('es-ES')} en total)${date}`;
+  if (shown !== total) return `${shown.toLocaleString('es-ES')} de ${countLabel(total)}${date}`;
+  return `${countLabel(total)}${date}`;
 }
 
 function renderResults() {
@@ -286,19 +458,11 @@ function renderResults() {
     resultsBody.append(row);
   });
 
-  const town = municipalityInput.value.trim();
-  if (!stations.length) {
-    resultsSummary.textContent = 'Los resultados aparecerán aquí tras realizar una consulta.';
-  } else if (town && !sorted.length) {
-    resultsSummary.textContent = `Ninguna estación coincide con «${town}» (de ${stations.length.toLocaleString('es-ES')} en total)`;
-  } else if (town) {
-    resultsSummary.textContent = `${sorted.length.toLocaleString('es-ES')} estaciones que coinciden con «${town}» (de ${stations.length.toLocaleString('es-ES')} en total)`;
-  } else {
-    resultsSummary.textContent = `${stations.length.toLocaleString('es-ES')} estaciones encontradas`;
-  }
+  resultsSummary.textContent = summaryText(sorted.length, stations.length);
+  sortField.hidden = !stations.length;
   tableWrap.hidden = !pageItems.length;
   pagination.hidden = !sorted.length;
-  pageSummary.textContent = `Página ${currentPage} de ${pageCount} · ${sorted.length.toLocaleString('es-ES')} estaciones`;
+  pageSummary.textContent = `Página ${currentPage} de ${pageCount}`;
   previousButton.disabled = currentPage <= 1;
   nextButton.disabled = currentPage >= pageCount;
 }
@@ -309,14 +473,21 @@ function changePage(delta) {
   resultsTitle.focus();
 }
 
-form.addEventListener('submit', searchPrices);
+// ---------- Eventos e inicio ----------
+
+searchForm.addEventListener('submit', onSearch);
+filtersPanel.addEventListener('submit', onApplyFilters);
+filtersToggle.addEventListener('click', () => setFiltersOpen(filtersPanel.hidden));
 ccaaSelect.addEventListener('change', () => loadProvinces(ccaaSelect.value));
+fuelSelect.addEventListener('change', updateFiltersSummary);
 sortSelect.addEventListener('change', () => { currentPage = 1; renderResults(); });
 municipalityInput.addEventListener('input', () => { currentPage = 1; renderResults(); });
 previousButton.addEventListener('click', () => { if (currentPage > 1) changePage(-1); });
 nextButton.addEventListener('click', () => changePage(1));
 
 loadCcaa();
-ccaaSelect.value = '13';
-loadProvinces('13', '28');
-showStatus('Selecciona los filtros y pulsa «Buscar precios» para consultar los datos oficiales.');
+loadProvinces('');
+loadTerritorySuggestions();
+updateFiltersSummary();
+setFiltersOpen(false);
+renderResults();

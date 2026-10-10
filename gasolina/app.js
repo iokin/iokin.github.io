@@ -1,26 +1,45 @@
 'use strict';
 
 const API_BASE = 'https://energia.serviciosmin.gob.es/ServiciosRestCarburantes/PreciosCarburantes';
-const PROVINCES_URL = `${API_BASE}/Listados/Provincias/`;
-const PRICES_URL = `${API_BASE}/EstacionesTerrestres/FiltroProvinciaProducto`;
+const PRICES_BY_PROVINCE_URL = `${API_BASE}/EstacionesTerrestres/FiltroProvinciaProducto`;
+const PRICES_BY_CCAA_URL = `${API_BASE}/EstacionesTerrestres/FiltroCCAAProducto`;
 const PAGE_SIZE = 25;
+const REQUEST_TIMEOUT_MS = 30000;
 
-// Códigos provinciales publicados por el listado oficial del MITECO.
-const PROVINCES = [
-  ['02','Albacete'],['03','Alicante / Alacant'],['04','Almería'],['01','Araba/Álava'],['33','Asturias'],['05','Ávila'],['06','Badajoz'],['07','Illes Balears'],['08','Barcelona'],['48','Bizkaia'],['09','Burgos'],['10','Cáceres'],['11','Cádiz'],['39','Cantabria'],['12','Castellón / Castelló'],['51','Ceuta'],['13','Ciudad Real'],['14','Córdoba'],['15','A Coruña'],['16','Cuenca'],['20','Gipuzkoa'],['17','Girona'],['18','Granada'],['19','Guadalajara'],['21','Huelva'],['22','Huesca'],['23','Jaén'],['24','León'],['25','Lleida'],['27','Lugo'],['28','Madrid'],['29','Málaga'],['52','Melilla'],['30','Murcia'],['31','Navarra'],['32','Ourense'],['34','Palencia'],['35','Las Palmas'],['36','Pontevedra'],['26','La Rioja'],['37','Salamanca'],['38','Santa Cruz de Tenerife'],['40','Segovia'],['41','Sevilla'],['42','Soria'],['43','Tarragona'],['44','Teruel'],['45','Toledo'],['46','Valencia / València'],['47','Valladolid'],['49','Zamora'],['50','Zaragoza']
+// Comunidades autónomas según el listado oficial del MITECO: [IDCCAA, nombre].
+const CCAA = [
+  ['01', 'Andalucía'], ['02', 'Aragón'], ['03', 'Principado de Asturias'], ['04', 'Illes Balears'],
+  ['05', 'Canarias'], ['06', 'Cantabria'], ['07', 'Castilla-La Mancha'], ['08', 'Castilla y León'],
+  ['09', 'Cataluña'], ['10', 'Comunitat Valenciana'], ['11', 'Extremadura'], ['12', 'Galicia'],
+  ['13', 'Comunidad de Madrid'], ['14', 'Región de Murcia'], ['15', 'Comunidad Foral de Navarra'],
+  ['16', 'País Vasco'], ['17', 'La Rioja'], ['18', 'Ceuta'], ['19', 'Melilla']
 ];
 
-// IDs de productos publicados por el servicio oficial MITECO.
-const FUEL_NAMES = new Map([
-  ['1', 'Gasolina 95 E5'], ['2', 'Gasolina 95 E10'], ['3', 'Gasolina 98 E5'],
-  ['4', 'Gasóleo A habitual'], ['5', 'Gasóleo Premium'], ['17', 'GLP'],
-  ['18', 'Gas natural comprimido'], ['19', 'Gas natural licuado'],
-  ['21', 'Gasolina 98 E10'], ['27', 'Diésel renovable']
-]);
+// Provincias según el listado oficial del MITECO: [IDProvincia, nombre, IDCCAA].
+const PROVINCES = [
+  ['02', 'Albacete', '07'], ['03', 'Alicante / Alacant', '10'], ['04', 'Almería', '01'], ['01', 'Araba/Álava', '16'],
+  ['33', 'Asturias', '03'], ['05', 'Ávila', '08'], ['06', 'Badajoz', '11'], ['07', 'Illes Balears', '04'],
+  ['08', 'Barcelona', '09'], ['48', 'Bizkaia', '16'], ['09', 'Burgos', '08'], ['10', 'Cáceres', '11'],
+  ['11', 'Cádiz', '01'], ['39', 'Cantabria', '06'], ['12', 'Castellón / Castelló', '10'], ['51', 'Ceuta', '18'],
+  ['13', 'Ciudad Real', '07'], ['14', 'Córdoba', '01'], ['15', 'A Coruña', '12'], ['16', 'Cuenca', '07'],
+  ['20', 'Gipuzkoa', '16'], ['17', 'Girona', '09'], ['18', 'Granada', '01'], ['19', 'Guadalajara', '07'],
+  ['21', 'Huelva', '01'], ['22', 'Huesca', '02'], ['23', 'Jaén', '01'], ['24', 'León', '08'],
+  ['25', 'Lleida', '09'], ['27', 'Lugo', '12'], ['28', 'Madrid', '13'], ['29', 'Málaga', '01'],
+  ['52', 'Melilla', '19'], ['30', 'Murcia', '14'], ['31', 'Navarra', '15'], ['32', 'Ourense', '12'],
+  ['34', 'Palencia', '08'], ['35', 'Las Palmas', '05'], ['36', 'Pontevedra', '12'], ['26', 'La Rioja', '17'],
+  ['37', 'Salamanca', '08'], ['38', 'Santa Cruz de Tenerife', '05'], ['40', 'Segovia', '08'], ['41', 'Sevilla', '01'],
+  ['42', 'Soria', '08'], ['43', 'Tarragona', '09'], ['44', 'Teruel', '02'], ['45', 'Toledo', '07'],
+  ['46', 'Valencia / València', '10'], ['47', 'Valladolid', '08'], ['49', 'Zamora', '08'], ['50', 'Zaragoza', '02']
+];
+
+const PROVINCE_NAMES = new Map(PROVINCES.map(([id, name]) => [id, name]));
 
 const form = document.querySelector('#search-form');
+const ccaaSelect = document.querySelector('#ccaa');
 const provinceSelect = document.querySelector('#province');
 const fuelSelect = document.querySelector('#fuel');
+const municipalityInput = document.querySelector('#municipality');
+const municipalityList = document.querySelector('#municipality-list');
 const sortSelect = document.querySelector('#sort');
 const searchButton = document.querySelector('#search-button');
 const statusBox = document.querySelector('#status');
@@ -36,10 +55,14 @@ const dataDate = document.querySelector('#data-date');
 
 let stations = [];
 let currentPage = 1;
-let currentDate = '';
 
+// Compara sin tildes ni mayúsculas para que «alcala» encuentre «Alcalá de Henares».
 function normalise(value) {
-  return String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('es').trim();
+  return String(value ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLocaleLowerCase('es').trim();
+}
+
+function byName(a, b) {
+  return a[1].localeCompare(b[1], 'es');
 }
 
 function showStatus(message, type = 'info') {
@@ -56,67 +79,93 @@ function showStatus(message, type = 'info') {
 }
 
 async function fetchJson(url) {
-  const response = await fetch(url, { headers: { Accept: 'application/json' } });
-  if (!response.ok) throw new Error(`El servicio oficial ha respondido con HTTP ${response.status}.`);
-  const contentType = response.headers.get('content-type') || '';
-  if (!contentType.includes('json')) {
-    throw new Error('El servicio oficial no ha devuelto JSON. Puede ser necesario ajustar la negociación de formato de la API.');
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  try {
+    const response = await fetch(url, { headers: { Accept: 'application/json' }, signal: controller.signal });
+    if (!response.ok) throw new Error(`El servicio oficial ha respondido con HTTP ${response.status}.`);
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.includes('json')) {
+      throw new Error('El servicio oficial no ha devuelto JSON. Puede ser necesario ajustar la negociación de formato de la API.');
+    }
+    return await response.json();
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      throw new Error('El servicio oficial tarda demasiado en responder. Inténtalo de nuevo en unos minutos.');
+    }
+    throw error;
+  } finally {
+    clearTimeout(timer);
   }
-  return response.json();
 }
 
-function parseProvinceList(data) {
-  // El listado oficial puede presentarse como una cadena compacta: ID + nombre + IDCCAA + comunidad.
-  const raw = typeof data === 'string' ? data : Array.isArray(data) ? data : null;
-  if (Array.isArray(raw)) return raw.map(item => ({ id: String(item.IDProvincia ?? item.id ?? ''), name: String(item.Provincia ?? item.Nombre ?? item.name ?? '') })).filter(p => p.id && p.name);
-  if (raw) {
-    const text = raw.trim();
-    const matches = [...text.matchAll(/(\d{2})([A-ZÁÉÍÓÚÜÑ /.-]+?)(\d{2})(?=[A-ZÁÉÍÓÚÜÑ])/g)];
-    if (matches.length) return matches.map(match => ({ id: match[1], name: match[2].trim() }));
-  }
-  if (data && typeof data === 'object') {
-    const list = data.Provincias ?? data.ListaProvincias ?? data;
-    if (Array.isArray(list)) return list.map(item => ({ id: String(item.IDProvincia ?? item.id ?? ''), name: String(item.Provincia ?? item.Nombre ?? item.name ?? '') })).filter(p => p.id && p.name);
-  }
-  throw new Error('No se ha podido interpretar el listado de provincias del servicio oficial.');
+function loadCcaa() {
+  ccaaSelect.replaceChildren(new Option('Selecciona una comunidad', ''));
+  [...CCAA].sort(byName).forEach(([id, name]) => ccaaSelect.add(new Option(name, id)));
 }
 
-function loadProvinces() {
-  const provinces = [...PROVINCES].sort((a, b) => a[1].localeCompare(b[1], 'es'));
-  provinceSelect.replaceChildren(new Option('Selecciona una provincia', ''));
-  provinces.forEach(([id, name]) => provinceSelect.add(new Option(name, id)));
-  provinceSelect.value = '28';
-  showStatus('Selecciona el combustible y pulsa «Buscar precios» para consultar los datos oficiales.');
+function loadProvinces(ccaaId, selected = '') {
+  provinceSelect.replaceChildren(new Option(ccaaId ? 'Todas las provincias' : 'Selecciona primero una comunidad', ''));
+  provinceSelect.disabled = !ccaaId;
+  PROVINCES.filter(province => province[2] === ccaaId).sort(byName)
+    .forEach(([id, name]) => provinceSelect.add(new Option(name, id)));
+  provinceSelect.value = selected;
 }
 
-function getPrice(station) {
-  const raw = String(station.PrecioProducto ?? '').trim().replace(',', '.');
+function loadMunicipalities() {
+  // El campo admite texto libre; la lista solo ofrece sugerencias con los municipios de la consulta.
+  const towns = [...new Set(stations.map(station => station.town).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, 'es'));
+  municipalityList.replaceChildren(...towns.map(town => new Option(town)));
+  municipalityInput.disabled = towns.length === 0;
+  municipalityInput.value = '';
+}
+
+function getPrice(item) {
+  const raw = String(item.PrecioProducto ?? '').trim().replace(',', '.');
   const value = Number.parseFloat(raw);
   return Number.isFinite(value) && value > 0 ? value : null;
 }
 
 function mapStation(item) {
+  const provinceId = String(item.IDProvincia ?? '').trim();
   return {
-    id: String(item.IDEESS ?? `${item.Rótulo}-${item.Dirección}-${item.Municipio}`),
-    name: String(item['Rótulo'] ?? 'Estación sin rótulo').trim(),
+    id: String(item.IDEESS ?? `${item['Rótulo']}-${item['Dirección']}-${item.Municipio}`),
+    name: String(item['Rótulo'] ?? '').trim() || 'Estación sin rótulo',
     town: String(item.Municipio ?? item.Localidad ?? '').trim(),
-    locality: String(item.Localidad ?? '').trim(),
+    province: PROVINCE_NAMES.get(provinceId) ?? String(item.Provincia ?? '').trim(),
     address: String(item['Dirección'] ?? '').trim(),
     postcode: String(item['C.P.'] ?? '').trim(),
     price: getPrice(item),
     schedule: String(item.Horario ?? '').trim(),
-    brand: String(item['Rótulo'] ?? '').trim(),
     latitude: String(item.Latitud ?? '').trim(),
-    longitude: String(item['Longitud_x0020__x0028_WGS84_x0029_'] ?? '').trim()
+    longitude: String(item['Longitud (WGS84)'] ?? '').trim()
   };
+}
+
+// Enlace a Google Maps: usa las coordenadas oficiales si son válidas; si no, busca por nombre y dirección.
+function mapsUrl(station) {
+  const lat = Number.parseFloat(station.latitude.replace(',', '.'));
+  const lng = Number.parseFloat(station.longitude.replace(',', '.'));
+  const hasCoordinates = Number.isFinite(lat) && Number.isFinite(lng)
+    && lat >= 27 && lat <= 44 && lng >= -19 && lng <= 5.5; // rango aproximado de España, Canarias incluidas
+  const query = hasCoordinates
+    ? `${lat},${lng}`
+    : [station.name, station.address, station.postcode, station.town, station.province].filter(Boolean).join(' ');
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+function selectedText(select) {
+  return select.selectedOptions[0]?.textContent ?? '';
 }
 
 async function searchPrices(event) {
   if (event) event.preventDefault();
+  const ccaaId = ccaaSelect.value;
   const provinceId = provinceSelect.value;
   const fuelId = fuelSelect.value;
-  if (!provinceId || !fuelId) {
-    showStatus('Selecciona una provincia y un tipo de combustible.', 'error');
+  if (!ccaaId || !fuelId) {
+    showStatus('Selecciona una comunidad autónoma y un tipo de combustible.', 'error');
     return;
   }
 
@@ -129,15 +178,20 @@ async function searchPrices(event) {
   dataDate.textContent = 'Fecha de datos: consultando…';
 
   try {
-    const url = `${PRICES_URL}/${encodeURIComponent(provinceId)}/${encodeURIComponent(fuelId)}`;
+    // Con provincia se consulta por provincia; sin ella, por toda la comunidad autónoma.
+    const url = provinceId
+      ? `${PRICES_BY_PROVINCE_URL}/${encodeURIComponent(provinceId)}/${encodeURIComponent(fuelId)}`
+      : `${PRICES_BY_CCAA_URL}/${encodeURIComponent(ccaaId)}/${encodeURIComponent(fuelId)}`;
     const data = await fetchJson(url);
     const list = data.ListaEESSPrecio ?? data.listaEESSPrecio ?? data.ListaEESS ?? [];
     if (!Array.isArray(list)) throw new Error('La respuesta del servicio no contiene una lista de estaciones válida.');
     stations = list.map(mapStation);
-    currentDate = String(data.Fecha ?? data.fecha ?? '').trim();
+    const dateText = String(data.Fecha ?? data.fecha ?? '').trim();
     currentPage = 1;
-    resultsTitle.textContent = `Estaciones de servicio · ${provinceSelect.selectedOptions[0].textContent} · ${FUEL_NAMES.get(fuelId) ?? fuelSelect.selectedOptions[0].textContent}`;
-    dataDate.textContent = `Fecha de datos: ${currentDate || 'no indicada por el servicio'}`;
+    const scope = provinceId ? selectedText(provinceSelect) : selectedText(ccaaSelect);
+    resultsTitle.textContent = `Estaciones de servicio · ${scope} · ${selectedText(fuelSelect)}`;
+    dataDate.textContent = `Fecha de datos: ${dateText || 'no indicada por el servicio'}`;
+    loadMunicipalities();
     renderResults();
     if (!stations.length) {
       showStatus('El servicio oficial no ha devuelto estaciones para esta combinación de filtros.', 'success');
@@ -146,8 +200,11 @@ async function searchPrices(event) {
     }
   } catch (error) {
     stations = [];
+    resultsTitle.textContent = 'Estaciones de servicio';
+    loadMunicipalities();
     renderResults();
-    showStatus(`${error.message} Si el error menciona CORS o un problema de red, consulta el apartado de incidencias del README.`, 'error');
+    const message = error instanceof TypeError ? 'No se ha podido conectar con el servicio oficial.' : error.message;
+    showStatus(`${message} Si el problema persiste y la consola menciona CORS, consulta el apartado de incidencias del README.`, 'error');
     dataDate.textContent = 'Fecha de datos: no disponible';
   } finally {
     searchButton.disabled = false;
@@ -155,8 +212,13 @@ async function searchPrices(event) {
   }
 }
 
+function filteredStations() {
+  const query = normalise(municipalityInput.value);
+  return query ? stations.filter(station => normalise(station.town).includes(query)) : stations;
+}
+
 function sortedStations() {
-  const sorted = [...stations];
+  const sorted = [...filteredStations()];
   switch (sortSelect.value) {
     case 'price-desc': sorted.sort((a, b) => (b.price ?? -1) - (a.price ?? -1)); break;
     case 'name-asc': sorted.sort((a, b) => a.name.localeCompare(b.name, 'es')); break;
@@ -173,6 +235,36 @@ function cell(text, className = '') {
   return td;
 }
 
+function stationCell(station) {
+  const td = document.createElement('td');
+  const name = document.createElement('span');
+  name.className = 'station-name';
+
+  const link = document.createElement('a');
+  link.className = 'station-link';
+  link.href = mapsUrl(station);
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  const label = document.createElement('span');
+  label.textContent = station.name;
+  const arrow = document.createElement('span');
+  arrow.className = 'station-link__icon';
+  arrow.setAttribute('aria-hidden', 'true');
+  arrow.textContent = ' ↗';
+  const hint = document.createElement('span');
+  hint.className = 'sr-only';
+  hint.textContent = ' (ver en Google Maps, se abre en una pestaña nueva)';
+  link.append(label, arrow, hint);
+  name.append(link);
+
+  const detail = document.createElement('span');
+  detail.className = 'station-brand';
+  detail.textContent = [station.postcode ? `C.P. ${station.postcode}` : '', station.province].filter(Boolean).join(' · ') || 'Estación de servicio';
+
+  td.append(name, detail);
+  return td;
+}
+
 function renderResults() {
   const sorted = sortedStations();
   const pageCount = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
@@ -182,15 +274,7 @@ function renderResults() {
 
   pageItems.forEach(station => {
     const row = document.createElement('tr');
-    const nameCell = document.createElement('td');
-    const name = document.createElement('span');
-    name.className = 'station-name';
-    name.textContent = station.name;
-    const brand = document.createElement('span');
-    brand.className = 'station-brand';
-    brand.textContent = station.postcode ? `C.P. ${station.postcode}` : 'Estación de servicio';
-    nameCell.append(name, brand);
-    row.append(nameCell, cell(station.town), cell(station.address));
+    row.append(stationCell(station), cell(station.town), cell(station.address));
 
     const priceCell = document.createElement('td');
     priceCell.className = 'price-column';
@@ -202,7 +286,16 @@ function renderResults() {
     resultsBody.append(row);
   });
 
-  resultsSummary.textContent = stations.length ? `${stations.length.toLocaleString('es-ES')} estaciones encontradas` : 'Los resultados aparecerán aquí tras realizar una consulta.';
+  const town = municipalityInput.value.trim();
+  if (!stations.length) {
+    resultsSummary.textContent = 'Los resultados aparecerán aquí tras realizar una consulta.';
+  } else if (town && !sorted.length) {
+    resultsSummary.textContent = `Ninguna estación coincide con «${town}» (de ${stations.length.toLocaleString('es-ES')} en total)`;
+  } else if (town) {
+    resultsSummary.textContent = `${sorted.length.toLocaleString('es-ES')} estaciones que coinciden con «${town}» (de ${stations.length.toLocaleString('es-ES')} en total)`;
+  } else {
+    resultsSummary.textContent = `${stations.length.toLocaleString('es-ES')} estaciones encontradas`;
+  }
   tableWrap.hidden = !pageItems.length;
   pagination.hidden = !sorted.length;
   pageSummary.textContent = `Página ${currentPage} de ${pageCount} · ${sorted.length.toLocaleString('es-ES')} estaciones`;
@@ -210,8 +303,20 @@ function renderResults() {
   nextButton.disabled = currentPage >= pageCount;
 }
 
+function changePage(delta) {
+  currentPage += delta;
+  renderResults();
+  resultsTitle.focus();
+}
+
 form.addEventListener('submit', searchPrices);
+ccaaSelect.addEventListener('change', () => loadProvinces(ccaaSelect.value));
 sortSelect.addEventListener('change', () => { currentPage = 1; renderResults(); });
-previousButton.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderResults(); } });
-nextButton.addEventListener('click', () => { currentPage++; renderResults(); });
-loadProvinces();
+municipalityInput.addEventListener('input', () => { currentPage = 1; renderResults(); });
+previousButton.addEventListener('click', () => { if (currentPage > 1) changePage(-1); });
+nextButton.addEventListener('click', () => changePage(1));
+
+loadCcaa();
+ccaaSelect.value = '13';
+loadProvinces('13', '28');
+showStatus('Selecciona los filtros y pulsa «Buscar precios» para consultar los datos oficiales.');

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#123765">
-  <meta name="description" content="Precios oficiales de carburantes en España por dirección, provincia o comunidad.">
+  <meta name="description" content="Precios oficiales de carburantes en España por localidad o cerca de ti.">
   <title>Precios de carburantes en España</title>
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
@@ -22,68 +22,54 @@
   <main class="container main-content">
     <h1 id="page-title">Encuentra los precios de tu zona</h1>
 
-    <section class="search-panel" aria-label="Búsqueda">
-      <form class="search-row" id="search-form" role="search">
-        <div class="search-box">
-          <label class="sr-only" for="query">Dirección, provincia o comunidad</label>
-          <span class="search-box__icon" aria-hidden="true">⌕</span>
-          <input id="query" name="query" type="search" list="territory-list" autocomplete="off" enterkeyhint="search" placeholder="Dirección, provincia o comunidad">
-          <datalist id="territory-list"></datalist>
-        </div>
-        <button class="button button--primary" id="search-button" type="submit">Buscar</button>
-      </form>
-
-      <div class="filters-bar">
-        <button class="button button--ghost" id="filters-toggle" type="button" aria-expanded="false" aria-controls="filters-panel">Mostrar filtros</button>
-        <span class="filters-summary" id="filters-summary"></span>
+    <form class="search-panel" id="search-form" role="search">
+      <div class="field">
+        <label for="query">Localidad</label>
+        <input id="query" name="query" type="search" list="town-list" autocomplete="off" enterkeyhint="search" placeholder="Escribe una localidad">
+        <datalist id="town-list"></datalist>
       </div>
+      <div class="field">
+        <label for="fuel">Combustible</label>
+        <select id="fuel" name="fuel">
+          <option value="1">Gasolina 95 E5</option>
+          <option value="3">Gasolina 98 E5</option>
+          <option value="4" selected>Gasóleo A habitual</option>
+          <option value="5">Gasóleo Premium</option>
+          <option value="23">Gasolina 95 E10</option>
+          <option value="21">Gasolina 98 E10</option>
+          <option value="17">GLP</option>
+          <option value="18">Gas natural comprimido</option>
+          <option value="19">Gas natural licuado</option>
+          <option value="27">Diésel renovable</option>
+        </select>
+      </div>
+      <div class="search-actions">
+        <button class="button button--primary" id="search-button" type="submit">Buscar</button>
+        <button class="button button--secondary" id="locate-button" type="button">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+          Cerca de mí
+        </button>
+      </div>
+    </form>
 
-      <form class="filters" id="filters-panel" hidden>
-        <div class="field">
-          <label for="ccaa">Comunidad autónoma</label>
-          <select id="ccaa" name="ccaa"></select>
-        </div>
-        <div class="field">
-          <label for="province">Provincia</label>
-          <select id="province" name="province" disabled></select>
-        </div>
-        <div class="field">
-          <label for="municipality">Municipio</label>
-          <input id="municipality" name="municipality" type="search" list="municipality-list" autocomplete="off" placeholder="Escribe para filtrar" disabled>
-          <datalist id="municipality-list"></datalist>
-        </div>
-        <div class="field">
-          <label for="fuel">Combustible</label>
-          <select id="fuel" name="fuel">
-            <option value="1">Gasolina 95 E5</option>
-            <option value="3">Gasolina 98 E5</option>
-            <option value="4" selected>Gasóleo A habitual</option>
-            <option value="5">Gasóleo Premium</option>
-            <option value="23">Gasolina 95 E10</option>
-            <option value="21">Gasolina 98 E10</option>
-            <option value="17">GLP</option>
-            <option value="18">Gas natural comprimido</option>
-            <option value="19">Gas natural licuado</option>
-            <option value="27">Diésel renovable</option>
-          </select>
-        </div>
-        <button class="button button--secondary" id="apply-button" type="submit">Aplicar filtros</button>
-      </form>
-    </section>
+    <div class="choices" id="choices" role="group" aria-labelledby="choices-title" hidden>
+      <p class="choices__title" id="choices-title">¿Cuál de estas?</p>
+      <ul class="choices__list" id="choices-list"></ul>
+      <p class="choices__more" id="choices-more" hidden></p>
+    </div>
 
     <section class="results-section" aria-labelledby="results-title">
       <div class="results-heading">
         <div>
           <h2 id="results-title" tabindex="-1">Resultados</h2>
-          <p class="results-summary" id="results-summary" aria-live="polite">Busca una zona para ver precios.</p>
+          <p class="results-summary" id="results-summary" aria-live="polite">Busca una localidad o usa «Cerca de mí».</p>
         </div>
         <div class="field results-sort" id="sort-field" hidden>
           <label for="sort">Ordenar por</label>
           <select id="sort" name="sort">
-            <option value="price-asc">Más baratos primero</option>
-            <option value="price-desc">Más caros primero</option>
-            <option value="name-asc">Nombre de estación</option>
-            <option value="town-asc">Municipio</option>
+            <option value="price-asc">Más baratas primero</option>
+            <option value="price-desc">Más caras primero</option>
+            <option value="distance" disabled>Más cercanas primero</option>
           </select>
         </div>
       </div>
@@ -106,7 +92,7 @@
       </div>
     </section>
 
-    <p class="notice"><span aria-hidden="true">ⓘ</span> Confirma siempre el precio en el surtidor.</p>
+    <p class="notice"><span aria-hidden="true">ⓘ</span> Confirma siempre el precio en el surtidor. Tu ubicación se usa solo en tu navegador.</p>
   </main>
 
   <footer class="site-footer">

@@ -1,60 +1,53 @@
 'use strict';
 
 const API_BASE = 'https://energia.serviciosmin.gob.es/ServiciosRestCarburantes/PreciosCarburantes';
+const MUNICIPALITIES_URL = `${API_BASE}/Listados/Municipios/`;
+const PRICES_BY_TOWN_URL = `${API_BASE}/EstacionesTerrestres/FiltroMunicipioProducto`;
 const PRICES_BY_PROVINCE_URL = `${API_BASE}/EstacionesTerrestres/FiltroProvinciaProducto`;
-const PRICES_BY_CCAA_URL = `${API_BASE}/EstacionesTerrestres/FiltroCCAAProducto`;
 const PAGE_SIZE = 25;
 const REQUEST_TIMEOUT_MS = 30000;
+const TOWNS_TIMEOUT_MS = 60000;
+const NEARBY_RADIUS_KM = 15;       // «Cerca de mí» muestra las estaciones dentro de este radio
+const NEARBY_FALLBACK_COUNT = 10;  // si no hay ninguna en el radio, las más cercanas
+const NEAREST_PROVINCES = 3;       // provincias que se consultan alrededor de la ubicación
+const PROVINCE_REACH_KM = 160;     // solo provincias cuyo centro queda a esta distancia o menos
+const MAX_CHOICES = 12;
+const TOWNS_CACHE_KEY = 'carburantes:localidades:v1';
+const TOWNS_CACHE_DAYS = 30;
 
-// Comunidades autónomas según el listado oficial del MITECO: [IDCCAA, nombre].
-const CCAA = [
-  ['01', 'Andalucía'], ['02', 'Aragón'], ['03', 'Principado de Asturias'], ['04', 'Illes Balears'],
-  ['05', 'Canarias'], ['06', 'Cantabria'], ['07', 'Castilla-La Mancha'], ['08', 'Castilla y León'],
-  ['09', 'Cataluña'], ['10', 'Comunitat Valenciana'], ['11', 'Extremadura'], ['12', 'Galicia'],
-  ['13', 'Comunidad de Madrid'], ['14', 'Región de Murcia'], ['15', 'Comunidad Foral de Navarra'],
-  ['16', 'País Vasco'], ['17', 'La Rioja'], ['18', 'Ceuta'], ['19', 'Melilla']
-];
-
-// Provincias según el listado oficial del MITECO: [IDProvincia, nombre, IDCCAA].
+// Provincias del listado oficial del MITECO: [IDProvincia, nombre, latitud, longitud del centro (aproximado)].
+// El centro solo sirve para elegir qué provincias consultar; las distancias salen de las coordenadas de cada estación.
 const PROVINCES = [
-  ['02', 'Albacete', '07'], ['03', 'Alicante / Alacant', '10'], ['04', 'Almería', '01'], ['01', 'Araba/Álava', '16'],
-  ['33', 'Asturias', '03'], ['05', 'Ávila', '08'], ['06', 'Badajoz', '11'], ['07', 'Illes Balears', '04'],
-  ['08', 'Barcelona', '09'], ['48', 'Bizkaia', '16'], ['09', 'Burgos', '08'], ['10', 'Cáceres', '11'],
-  ['11', 'Cádiz', '01'], ['39', 'Cantabria', '06'], ['12', 'Castellón / Castelló', '10'], ['51', 'Ceuta', '18'],
-  ['13', 'Ciudad Real', '07'], ['14', 'Córdoba', '01'], ['15', 'A Coruña', '12'], ['16', 'Cuenca', '07'],
-  ['20', 'Gipuzkoa', '16'], ['17', 'Girona', '09'], ['18', 'Granada', '01'], ['19', 'Guadalajara', '07'],
-  ['21', 'Huelva', '01'], ['22', 'Huesca', '02'], ['23', 'Jaén', '01'], ['24', 'León', '08'],
-  ['25', 'Lleida', '09'], ['27', 'Lugo', '12'], ['28', 'Madrid', '13'], ['29', 'Málaga', '01'],
-  ['52', 'Melilla', '19'], ['30', 'Murcia', '14'], ['31', 'Navarra', '15'], ['32', 'Ourense', '12'],
-  ['34', 'Palencia', '08'], ['35', 'Las Palmas', '05'], ['36', 'Pontevedra', '12'], ['26', 'La Rioja', '17'],
-  ['37', 'Salamanca', '08'], ['38', 'Santa Cruz de Tenerife', '05'], ['40', 'Segovia', '08'], ['41', 'Sevilla', '01'],
-  ['42', 'Soria', '08'], ['43', 'Tarragona', '09'], ['44', 'Teruel', '02'], ['45', 'Toledo', '07'],
-  ['46', 'Valencia / València', '10'], ['47', 'Valladolid', '08'], ['49', 'Zamora', '08'], ['50', 'Zaragoza', '02']
+  ['01', 'Araba/Álava', 42.85, -2.7], ['02', 'Albacete', 38.95, -2.0], ['03', 'Alicante / Alacant', 38.5, -0.6],
+  ['04', 'Almería', 37.1, -2.3], ['05', 'Ávila', 40.6, -5.0], ['06', 'Badajoz', 38.7, -6.2],
+  ['07', 'Illes Balears', 39.6, 2.9], ['08', 'Barcelona', 41.7, 2.0], ['09', 'Burgos', 42.35, -3.6],
+  ['10', 'Cáceres', 39.7, -6.2], ['11', 'Cádiz', 36.5, -5.8], ['12', 'Castellón / Castelló', 40.2, -0.1],
+  ['13', 'Ciudad Real', 38.9, -3.9], ['14', 'Córdoba', 37.9, -4.7], ['15', 'A Coruña', 43.0, -8.4],
+  ['16', 'Cuenca', 40.1, -2.1], ['17', 'Girona', 42.1, 2.8], ['18', 'Granada', 37.2, -3.3],
+  ['19', 'Guadalajara', 40.8, -2.6], ['20', 'Gipuzkoa', 43.2, -2.1], ['21', 'Huelva', 37.5, -6.8],
+  ['22', 'Huesca', 42.2, -0.1], ['23', 'Jaén', 37.8, -3.5], ['24', 'León', 42.7, -5.9],
+  ['25', 'Lleida', 41.7, 1.0], ['26', 'La Rioja', 42.3, -2.5], ['27', 'Lugo', 43.0, -7.4],
+  ['28', 'Madrid', 40.5, -3.7], ['29', 'Málaga', 36.8, -4.6], ['30', 'Murcia', 38.0, -1.5],
+  ['31', 'Navarra', 42.7, -1.65], ['32', 'Ourense', 42.2, -7.6], ['33', 'Asturias', 43.3, -5.9],
+  ['34', 'Palencia', 42.4, -4.5], ['35', 'Las Palmas', 28.5, -14.5], ['36', 'Pontevedra', 42.4, -8.6],
+  ['37', 'Salamanca', 40.9, -6.0], ['38', 'Santa Cruz de Tenerife', 28.4, -17.0], ['39', 'Cantabria', 43.2, -4.0],
+  ['40', 'Segovia', 41.1, -4.0], ['41', 'Sevilla', 37.4, -5.7], ['42', 'Soria', 41.7, -2.5],
+  ['43', 'Tarragona', 41.1, 1.0], ['44', 'Teruel', 40.6, -1.1], ['45', 'Toledo', 39.8, -4.2],
+  ['46', 'Valencia / València', 39.4, -0.9], ['47', 'Valladolid', 41.6, -4.7], ['48', 'Bizkaia', 43.25, -2.85],
+  ['49', 'Zamora', 41.7, -6.0], ['50', 'Zaragoza', 41.6, -1.0], ['51', 'Ceuta', 35.89, -5.32],
+  ['52', 'Melilla', 35.29, -2.94]
 ];
-
-// Otros nombres habituales, para que el buscador reconozca la zona.
-const PROVINCE_ALIASES = {
-  '48': ['Vizcaya'], '20': ['Guipúzcoa'], '15': ['Coruña', 'La Coruña'], '17': ['Gerona'], '25': ['Lérida'],
-  '32': ['Orense'], '26': ['Rioja'], '07': ['Baleares'], '38': ['Tenerife']
-};
-const CCAA_ALIASES = { '09': ['Catalunya'], '10': ['Comunidad Valenciana'], '16': ['Euskadi'] };
-
-const CCAA_BY_ID = new Map(CCAA);
-const PROVINCE_BY_ID = new Map(PROVINCES.map(([id, name, ccaa]) => [id, { id, name, ccaa }]));
+const PROVINCE_BY_ID = new Map(PROVINCES.map(([id, name, lat, lng]) => [id, { id, name, lat, lng }]));
 
 const searchForm = document.querySelector('#search-form');
 const queryInput = document.querySelector('#query');
-const territoryList = document.querySelector('#territory-list');
-const searchButton = document.querySelector('#search-button');
-const filtersToggle = document.querySelector('#filters-toggle');
-const filtersSummary = document.querySelector('#filters-summary');
-const filtersPanel = document.querySelector('#filters-panel');
-const ccaaSelect = document.querySelector('#ccaa');
-const provinceSelect = document.querySelector('#province');
-const municipalityInput = document.querySelector('#municipality');
-const municipalityList = document.querySelector('#municipality-list');
+const townList = document.querySelector('#town-list');
 const fuelSelect = document.querySelector('#fuel');
-const applyButton = document.querySelector('#apply-button');
+const searchButton = document.querySelector('#search-button');
+const locateButton = document.querySelector('#locate-button');
+const choices = document.querySelector('#choices');
+const choicesList = document.querySelector('#choices-list');
+const choicesMore = document.querySelector('#choices-more');
 const sortField = document.querySelector('#sort-field');
 const sortSelect = document.querySelector('#sort');
 const statusBox = document.querySelector('#status');
@@ -67,13 +60,13 @@ const pageSummary = document.querySelector('#page-summary');
 const previousButton = document.querySelector('#previous-page');
 const nextButton = document.querySelector('#next-page');
 
+let towns = null;          // localidades del listado oficial (se cargan al usar el buscador)
+let townsPromise = null;
 let stations = [];
 let currentPage = 1;
 let currentDate = '';
-let textQuery = '';        // texto del buscador (sin la zona) que filtra los resultados cargados
-let loadedScope = null;    // zona de la última consulta correcta: { type, id, label }
-let loadedFuel = '';
-let lastSubmitKey = '';    // repetir la misma búsqueda vuelve a consultar el servicio
+let context = null;        // { geo, fallback } de la última consulta correcta
+let lastSearch = null;     // { type: 'town', town } o { type: 'geo', lat, lng }; se repite al cambiar de combustible
 let loading = false;
 
 // ---------- Utilidades ----------
@@ -88,16 +81,18 @@ function tokens(value) {
   return words(value).split(' ').filter(Boolean);
 }
 
-function byName(a, b) {
-  return a[1].localeCompare(b[1], 'es');
-}
-
 function countLabel(count) {
   return `${count.toLocaleString('es-ES')} ${count === 1 ? 'estación' : 'estaciones'}`;
 }
 
 function selectedText(select) {
   return select.selectedOptions[0]?.textContent ?? '';
+}
+
+function errorMessage(error) {
+  if (error instanceof TypeError) return 'No se pudo conectar con el servicio oficial.';
+  if (error instanceof SyntaxError) return 'Respuesta del servicio no válida.';
+  return error.message;
 }
 
 function showStatus(message, type = 'info') {
@@ -117,16 +112,15 @@ function hideStatus() {
   statusBox.hidden = true;
 }
 
-function setLoading(value) {
+function setBusy(value) {
   loading = value;
   searchButton.disabled = value;
-  applyButton.disabled = value;
-  searchButton.textContent = value ? 'Buscando…' : 'Buscar';
+  locateButton.disabled = value;
 }
 
-async function fetchJson(url) {
+async function fetchJson(url, timeout = REQUEST_TIMEOUT_MS) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), timeout);
   try {
     const response = await fetch(url, { headers: { Accept: 'application/json' }, signal: controller.signal });
     if (!response.ok) throw new Error(`El servicio oficial respondió con HTTP ${response.status}.`);
@@ -140,108 +134,146 @@ async function fetchJson(url) {
   }
 }
 
-// ---------- Reconocimiento de la zona en el buscador ----------
-
-const TERRITORIES = [];
-
-function addTerritory(type, id, label, names) {
-  new Set(names.map(words).filter(Boolean)).forEach(key => TERRITORIES.push({ type, id, label, key, size: key.split(' ').length }));
+function distanceKm(lat1, lng1, lat2, lng2) {
+  const rad = Math.PI / 180;
+  const dLat = (lat2 - lat1) * rad;
+  const dLng = (lng2 - lng1) * rad;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLng / 2) ** 2;
+  return 12742 * Math.asin(Math.sqrt(a));
 }
 
-PROVINCES.forEach(([id, name]) => addTerritory('province', id, name, [name, ...name.split('/'), ...(PROVINCE_ALIASES[id] ?? [])]));
-CCAA.forEach(([id, name]) => addTerritory('ccaa', id, name, [name, ...(CCAA_ALIASES[id] ?? [])]));
-// Primero los nombres más largos («Castilla y León» antes que «León»); a igualdad, la provincia antes que la comunidad.
-TERRITORIES.sort((a, b) => b.size - a.size || b.key.length - a.key.length || (a.type === b.type ? 0 : a.type === 'province' ? -1 : 1));
+// Rango aproximado de España, Canarias incluidas.
+function insideSpain(lat, lng) {
+  return Number.isFinite(lat) && Number.isFinite(lng) && lat >= 27 && lat <= 44 && lng >= -19 && lng <= 5.5;
+}
 
-// Separa la consulta en zona (provincia o comunidad) y texto libre. Si hay varias zonas, gana la última:
-// «Avenida de Madrid Valladolid» → zona Valladolid, texto «Avenida de Madrid».
-function parseQuery(raw) {
-  const parts = String(raw ?? '').split(/\s+/).filter(part => words(part));
-  const list = [];
-  parts.forEach((part, index) => tokens(part).forEach(word => list.push({ word, index })));
+// ---------- Localidades ----------
 
-  const hits = [];
-  for (const territory of TERRITORIES) {
-    const key = territory.key.split(' ');
-    for (let start = 0; start + key.length <= list.length; start++) {
-      if (key.every((word, offset) => list[start + offset].word === word)) hits.push({ territory, start, end: start + key.length });
+function makeTown([id, provinceId, name]) {
+  const province = PROVINCE_BY_ID.get(provinceId)?.name ?? '';
+  const key = words(name);
+  return {
+    id, provinceId, name, province,
+    label: province ? `${name} (${province})` : name,
+    key,
+    nameWords: ` ${key}`,
+    searchWords: ` ${key} ${words(province)}`,
+    full: `${key} ${words(province)}`.trim()
+  };
+}
+
+function readTownsCache() {
+  try {
+    const cached = JSON.parse(localStorage.getItem(TOWNS_CACHE_KEY) ?? 'null');
+    if (cached && Array.isArray(cached.rows) && cached.rows.length && Date.now() - cached.savedAt < TOWNS_CACHE_DAYS * 864e5) return cached.rows;
+  } catch { /* sin almacenamiento disponible */ }
+  return null;
+}
+
+function writeTownsCache(rows) {
+  try {
+    localStorage.setItem(TOWNS_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), rows }));
+  } catch { /* cuota superada o modo privado */ }
+}
+
+function loadTowns() {
+  if (towns) return Promise.resolve(towns);
+  townsPromise ??= (async () => {
+    let rows = readTownsCache();
+    if (!rows) {
+      const data = await fetchJson(MUNICIPALITIES_URL, TOWNS_TIMEOUT_MS);
+      if (!Array.isArray(data)) throw new Error('Lista de localidades no válida.');
+      rows = data.map(item => [String(item.IDMunicipio ?? '').trim(), String(item.IDProvincia ?? '').trim(), String(item.Municipio ?? '').trim()])
+        .filter(([id, , name]) => id && name);
+      if (!rows.length) throw new Error('Lista de localidades vacía.');
+      writeTownsCache(rows);
     }
+    towns = rows.map(makeTown);
+    return towns;
+  })().catch(error => {
+    townsPromise = null;
+    throw error;
+  });
+  return townsPromise;
+}
+
+// Busca por comienzo de palabra, sin tildes. Orden: 0 nombre exacto, 1 empieza por lo escrito,
+// 2 el nombre contiene todas las palabras, 3 coincide al sumar la provincia («Alcalá Madrid»).
+function findTowns(raw) {
+  const queryTokens = tokens(raw);
+  if (!queryTokens.length || !towns) return [];
+  const query = queryTokens.join(' ');
+  const matches = [];
+  for (const town of towns) {
+    let tier;
+    if (town.key === query || town.full === query) tier = 0;
+    else if (queryTokens.every(token => town.nameWords.includes(` ${token}`))) tier = town.key.startsWith(query) ? 1 : 2;
+    else if (queryTokens.every(token => town.searchWords.includes(` ${token}`))) tier = 3;
+    else continue;
+    matches.push({ town, tier });
   }
-  const kept = [];
-  for (const hit of hits) {
-    if (!kept.some(other => hit.start < other.end && other.start < hit.end)) kept.push(hit);
+  return matches.sort((a, b) => a.tier - b.tier || a.town.name.localeCompare(b.town.name, 'es'));
+}
+
+// Devuelve la localidad si no hay duda; si no, null y se pregunta cuál.
+function pickTown(matches) {
+  const exact = matches.filter(match => match.tier === 0);
+  const byName = matches.filter(match => match.tier <= 2);
+  if (exact.length === 1) return exact[0].town;
+  if (byName.length === 1) return byName[0].town;
+  if (!byName.length && matches.length === 1) return matches[0].town;
+  return null;
+}
+
+function updateSuggestions() {
+  const query = words(queryInput.value);
+  if (!towns || query.length < 2) {
+    townList.replaceChildren();
+    return;
   }
-  kept.sort((a, b) => b.start - a.start);
-  const chosen = kept[0];
-  if (!chosen) return { territory: null, text: parts.join(' ') };
-
-  const used = new Set(list.slice(chosen.start, chosen.end).map(item => item.index));
-  return { territory: chosen.territory, text: parts.filter((_, index) => !used.has(index)).join(' ') };
+  townList.replaceChildren(...findTowns(query).slice(0, 15).map(({ town }) => new Option(town.label)));
 }
 
-// ---------- Filtros ----------
-
-function loadCcaa() {
-  ccaaSelect.replaceChildren(new Option('Selecciona una comunidad', ''));
-  [...CCAA].sort(byName).forEach(([id, name]) => ccaaSelect.add(new Option(name, id)));
+function hideChoices() {
+  choices.hidden = true;
+  choicesList.replaceChildren();
 }
 
-function loadProvinces(ccaaId, selected = '') {
-  provinceSelect.replaceChildren(new Option(ccaaId ? 'Todas las provincias' : '—', ''));
-  provinceSelect.disabled = !ccaaId;
-  PROVINCES.filter(province => province[2] === ccaaId).sort(byName)
-    .forEach(([id, name]) => provinceSelect.add(new Option(name, id)));
-  provinceSelect.value = selected;
+// Vuelve al estado inicial de los resultados (tabla, resumen y título).
+function clearResults() {
+  stations = [];
+  currentDate = '';
+  context = null;
+  currentPage = 1;
+  resultsTitle.textContent = 'Resultados';
+  renderResults();
 }
 
-function loadTerritorySuggestions() {
-  const names = new Set([...CCAA.map(([, name]) => name), ...PROVINCES.map(([, name]) => name)]);
-  territoryList.replaceChildren(...[...names].sort((a, b) => a.localeCompare(b, 'es')).map(name => new Option(name)));
+function showChoices(matches) {
+  clearResults();
+  const byName = matches.filter(match => match.tier <= 2);
+  const shown = byName.length ? byName : matches;
+  choicesList.replaceChildren(...shown.slice(0, MAX_CHOICES).map(({ town }) => {
+    const item = document.createElement('li');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'button button--choice';
+    button.textContent = town.label;
+    button.addEventListener('click', () => chooseTown(town));
+    item.append(button);
+    return item;
+  }));
+  choicesMore.hidden = shown.length <= MAX_CHOICES;
+  choicesMore.textContent = `Hay ${shown.length.toLocaleString('es-ES')} coincidencias. Escribe más letras para afinar.`;
+  choices.hidden = false;
+  hideStatus();
+  choicesList.querySelector('button')?.focus();
 }
 
-function loadMunicipalities() {
-  // El campo admite texto libre; la lista solo ofrece sugerencias con los municipios de la consulta.
-  const towns = [...new Set(stations.map(station => station.town).filter(Boolean))]
-    .sort((a, b) => a.localeCompare(b, 'es'));
-  municipalityList.replaceChildren(...towns.map(town => new Option(town)));
-  municipalityInput.disabled = towns.length === 0;
-  municipalityInput.value = '';
-}
-
-function setFiltersOpen(open) {
-  filtersPanel.hidden = !open;
-  filtersToggle.setAttribute('aria-expanded', String(open));
-  filtersToggle.textContent = open ? 'Ocultar filtros' : 'Mostrar filtros';
-  filtersSummary.hidden = open;
-}
-
-function updateFiltersSummary() {
-  filtersSummary.textContent = selectedText(fuelSelect);
-}
-
-function scopeFromSelects() {
-  const ccaaId = ccaaSelect.value;
-  if (!ccaaId) return null;
-  const provinceId = provinceSelect.value;
-  return provinceId
-    ? { type: 'province', id: provinceId, label: PROVINCE_BY_ID.get(provinceId).name }
-    : { type: 'ccaa', id: ccaaId, label: CCAA_BY_ID.get(ccaaId) };
-}
-
-function scopeKey(scope) {
-  return scope ? `${scope.type}:${scope.id}` : '';
-}
-
-// Refleja en los filtros la zona escrita en el buscador.
-function applyTerritory(territory) {
-  if (territory.type === 'ccaa') {
-    ccaaSelect.value = territory.id;
-    loadProvinces(territory.id);
-  } else {
-    const province = PROVINCE_BY_ID.get(territory.id);
-    ccaaSelect.value = province.ccaa;
-    loadProvinces(province.ccaa, province.id);
-  }
+function chooseTown(town) {
+  hideChoices();
+  queryInput.value = town.label;
+  load({ type: 'town', town });
 }
 
 // ---------- Datos ----------
@@ -252,140 +284,201 @@ function getPrice(item) {
   return Number.isFinite(value) && value > 0 ? value : null;
 }
 
-function mapStation(item) {
-  const province = PROVINCE_BY_ID.get(String(item.IDProvincia ?? '').trim());
-  const station = {
+function parseCoordinate(value) {
+  const number = Number.parseFloat(String(value ?? '').trim().replace(',', '.'));
+  return Number.isFinite(number) ? number : null;
+}
+
+function mapStation(item, origin = null) {
+  const lat = parseCoordinate(item.Latitud);
+  const lng = parseCoordinate(item['Longitud (WGS84)']);
+  const coords = insideSpain(lat, lng) ? { lat, lng } : null;
+  return {
     id: String(item.IDEESS ?? `${item['Rótulo']}-${item['Dirección']}-${item.Municipio}`),
     name: String(item['Rótulo'] ?? '').trim() || 'Estación sin rótulo',
     town: String(item.Municipio ?? item.Localidad ?? '').trim(),
-    locality: String(item.Localidad ?? '').trim(),
-    province: province?.name ?? String(item.Provincia ?? '').trim(),
+    province: PROVINCE_BY_ID.get(String(item.IDProvincia ?? '').trim())?.name ?? String(item.Provincia ?? '').trim(),
     address: String(item['Dirección'] ?? '').trim(),
     postcode: String(item['C.P.'] ?? '').trim(),
     price: getPrice(item),
     schedule: String(item.Horario ?? '').trim(),
-    latitude: String(item.Latitud ?? '').trim(),
-    longitude: String(item['Longitud (WGS84)'] ?? '').trim()
+    coords,
+    distance: origin && coords ? distanceKm(origin.lat, origin.lng, coords.lat, coords.lng) : null
   };
-  const ccaaName = province ? CCAA_BY_ID.get(province.ccaa) : '';
-  // Texto normalizado, con espacio inicial, para buscar por comienzo de palabra.
-  station.search = ` ${words([station.name, station.address, station.town, station.locality, station.postcode, station.province, ccaaName].join(' '))}`;
-  station.townSearch = ` ${words(station.town)}`;
-  return station;
 }
 
 // Enlace a Google Maps: usa las coordenadas oficiales si son válidas; si no, busca por nombre y dirección.
 function mapsUrl(station) {
-  const lat = Number.parseFloat(station.latitude.replace(',', '.'));
-  const lng = Number.parseFloat(station.longitude.replace(',', '.'));
-  const hasCoordinates = Number.isFinite(lat) && Number.isFinite(lng)
-    && lat >= 27 && lat <= 44 && lng >= -19 && lng <= 5.5; // rango aproximado de España, Canarias incluidas
-  const query = hasCoordinates
-    ? `${lat},${lng}`
+  const query = station.coords
+    ? `${station.coords.lat},${station.coords.lng}`
     : [station.name, station.address, station.postcode, station.town, station.province].filter(Boolean).join(' ');
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
-async function loadStations(scope, fuelId) {
-  setLoading(true);
+async function fetchStationList(url) {
+  const data = await fetchJson(url);
+  const list = data.ListaEESSPrecio ?? data.listaEESSPrecio ?? data.ListaEESS ?? [];
+  if (!Array.isArray(list)) throw new Error('Respuesta del servicio no válida.');
+  return { list, date: String(data.Fecha ?? data.fecha ?? '').trim() };
+}
+
+async function fetchTown(town, fuelId) {
+  const { list, date } = await fetchStationList(`${PRICES_BY_TOWN_URL}/${encodeURIComponent(town.id)}/${encodeURIComponent(fuelId)}`);
+  return {
+    stations: list.map(item => mapStation(item)),
+    date,
+    context: { geo: false, fallback: false },
+    title: town.name === town.province ? town.name : town.label,
+    empty: `Sin estaciones de este combustible en ${town.name}.`
+  };
+}
+
+// Provincias a consultar alrededor de una ubicación: las más próximas por su centro, sin pasarse de PROVINCE_REACH_KM.
+function nearestProvinces(lat, lng) {
+  const ranked = [...PROVINCE_BY_ID.values()]
+    .map(province => ({ id: province.id, km: distanceKm(lat, lng, province.lat, province.lng) }))
+    .sort((a, b) => a.km - b.km);
+  const reachable = ranked.filter(province => province.km <= PROVINCE_REACH_KM).slice(0, NEAREST_PROVINCES);
+  return (reachable.length ? reachable : ranked.slice(0, 1)).map(province => province.id);
+}
+
+async function fetchNearby(origin, fuelId) {
+  const ids = nearestProvinces(origin.lat, origin.lng);
+  const settled = await Promise.allSettled(ids.map(id => fetchStationList(`${PRICES_BY_PROVINCE_URL}/${encodeURIComponent(id)}/${encodeURIComponent(fuelId)}`)));
+  const loaded = settled.filter(item => item.status === 'fulfilled').map(item => item.value);
+  if (!loaded.length) throw settled[0].reason;
+
+  const located = loaded.flatMap(item => item.list).map(item => mapStation(item, origin))
+    .filter(station => station.distance !== null)
+    .sort((a, b) => a.distance - b.distance);
+  const near = located.filter(station => station.distance <= NEARBY_RADIUS_KM);
+  const fallback = near.length === 0;
+  return {
+    stations: fallback ? located.slice(0, NEARBY_FALLBACK_COUNT) : near,
+    date: loaded[0].date,
+    context: { geo: true, fallback },
+    title: 'Cerca de ti',
+    empty: 'No hay estaciones de este combustible cerca de ti.',
+    warning: loaded.length < ids.length ? 'Resultados incompletos: no se pudo consultar alguna provincia cercana.' : ''
+  };
+}
+
+async function load(search) {
+  lastSearch = search;
+  const fuelId = fuelSelect.value;
+  setBusy(true);
   tableWrap.hidden = true;
   pagination.hidden = true;
   sortField.hidden = true;
   resultsSummary.textContent = '';
-  showStatus('Consultando…');
+  showStatus(search.type === 'geo' ? 'Buscando estaciones cercanas…' : 'Consultando…');
 
   try {
-    const base = scope.type === 'province' ? PRICES_BY_PROVINCE_URL : PRICES_BY_CCAA_URL;
-    const data = await fetchJson(`${base}/${encodeURIComponent(scope.id)}/${encodeURIComponent(fuelId)}`);
-    const list = data.ListaEESSPrecio ?? data.listaEESSPrecio ?? data.ListaEESS ?? [];
-    if (!Array.isArray(list)) throw new Error('Respuesta del servicio no válida.');
-    stations = list.map(mapStation);
-    currentDate = String(data.Fecha ?? data.fecha ?? '').trim();
-    loadedScope = scope;
-    loadedFuel = fuelId;
+    const result = search.type === 'geo' ? await fetchNearby(search, fuelId) : await fetchTown(search.town, fuelId);
+    stations = result.stations;
+    currentDate = result.date;
+    context = result.context;
     currentPage = 1;
-    resultsTitle.textContent = `${scope.label} · ${selectedText(fuelSelect)}`;
-    loadMunicipalities();
+    sortSelect.querySelector('option[value="distance"]').disabled = !context.geo;
+    if (!context.geo && sortSelect.value === 'distance') sortSelect.value = 'price-asc';
+    resultsTitle.textContent = `${result.title} · ${selectedText(fuelSelect)}`;
     renderResults();
-    if (stations.length) hideStatus();
-    else showStatus('El servicio no devuelve estaciones para esta zona y combustible.');
+    if (result.warning) showStatus(result.warning, 'error');
+    else if (stations.length) hideStatus();
+    else showStatus(result.empty);
   } catch (error) {
-    stations = [];
-    currentDate = '';
-    loadedScope = null;
-    resultsTitle.textContent = 'Resultados';
-    loadMunicipalities();
-    renderResults();
-    showStatus(error instanceof TypeError ? 'No se pudo conectar con el servicio oficial.' : error.message, 'error');
+    clearResults();
+    showStatus(errorMessage(error), 'error');
   } finally {
-    setLoading(false);
+    setBusy(false);
   }
 }
 
-// Consulta el servicio solo si cambia la zona o el combustible (o se repite la búsqueda); si no, solo filtra.
-async function run(scope, refresh = false) {
-  const fuelId = fuelSelect.value;
-  const stale = !loadedScope || scopeKey(scope) !== scopeKey(loadedScope) || fuelId !== loadedFuel;
-  if (stale || refresh) {
-    await loadStations(scope, fuelId);
-  } else {
-    hideStatus();
-    currentPage = 1;
-    renderResults();
-  }
-}
+// ---------- Acciones ----------
 
 async function onSearch(event) {
   event.preventDefault();
   if (loading) return;
   const raw = queryInput.value.trim();
-  const parsed = parseQuery(raw);
-  if (parsed.territory) applyTerritory(parsed.territory);
-  const scope = scopeFromSelects();
-  if (!scope) {
-    showStatus('Escribe una provincia o comunidad, por ejemplo «Sevilla».', 'error');
+  hideChoices();
+  if (!raw) {
+    showStatus('Escribe una localidad o usa «Cerca de mí».', 'error');
     queryInput.focus();
     return;
   }
-  textQuery = parsed.text;
-  const key = `${words(raw)}|${fuelSelect.value}`;
-  const refresh = key === lastSubmitKey;
-  lastSubmitKey = key;
-  await run(scope, refresh);
-}
 
-async function onApplyFilters(event) {
-  event.preventDefault();
-  if (loading) return;
-  const scope = scopeFromSelects();
-  if (!scope) {
-    showStatus('Elige una comunidad autónoma.', 'error');
-    ccaaSelect.focus();
+  setBusy(true);
+  if (!towns) showStatus('Cargando localidades…');
+  try {
+    await loadTowns();
+  } catch (error) {
+    setBusy(false);
+    showStatus(errorMessage(error), 'error');
     return;
   }
-  // El buscador pasa a reflejar la zona de los filtros y conserva el texto libre.
-  textQuery = parseQuery(queryInput.value).text;
-  queryInput.value = [scope.label, textQuery].filter(Boolean).join(' ');
-  lastSubmitKey = `${words(queryInput.value)}|${fuelSelect.value}`;
-  await run(scope);
+  setBusy(false);
+
+  const matches = findTowns(raw);
+  if (!matches.length) {
+    showStatus(`No encontramos «${raw}». Prueba con otro nombre.`, 'error');
+    return;
+  }
+  const town = pickTown(matches);
+  if (town) {
+    queryInput.value = town.label;
+    await load({ type: 'town', town });
+  } else {
+    showChoices(matches);
+  }
+}
+
+function getPosition() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: false, timeout: 15000, maximumAge: 5 * 60 * 1000 });
+  });
+}
+
+function geolocationMessage(error) {
+  if (error?.code === 1) return 'No tienes permiso de ubicación. Actívalo o escribe una localidad.';
+  if (error?.code === 3) return 'Tu ubicación tarda demasiado. Inténtalo de nuevo.';
+  return 'No se pudo obtener tu ubicación.';
+}
+
+async function onLocate() {
+  if (loading) return;
+  hideChoices();
+  if (!('geolocation' in navigator)) {
+    showStatus('Tu navegador no permite la geolocalización.', 'error');
+    return;
+  }
+  setBusy(true);
+  showStatus('Obteniendo tu ubicación…');
+  let position;
+  try {
+    position = await getPosition();
+  } catch (error) {
+    setBusy(false);
+    showStatus(geolocationMessage(error), 'error');
+    return;
+  }
+  const { latitude, longitude } = position.coords;
+  if (!insideSpain(latitude, longitude)) {
+    setBusy(false);
+    showStatus('Tu ubicación está fuera de España.', 'error');
+    return;
+  }
+  queryInput.value = '';
+  townList.replaceChildren();
+  await load({ type: 'geo', lat: latitude, lng: longitude });
 }
 
 // ---------- Resultados ----------
 
-function filteredStations() {
-  const townTokens = tokens(municipalityInput.value);
-  const textTokens = tokens(textQuery);
-  if (!townTokens.length && !textTokens.length) return stations;
-  return stations.filter(station => townTokens.every(token => station.townSearch.includes(` ${token}`))
-    && textTokens.every(token => station.search.includes(` ${token}`)));
-}
-
 function sortedStations() {
-  const sorted = [...filteredStations()];
+  const sorted = [...stations];
   switch (sortSelect.value) {
     case 'price-desc': sorted.sort((a, b) => (b.price ?? -1) - (a.price ?? -1)); break;
-    case 'name-asc': sorted.sort((a, b) => a.name.localeCompare(b.name, 'es')); break;
-    case 'town-asc': sorted.sort((a, b) => a.town.localeCompare(b.town, 'es')); break;
+    case 'distance': sorted.sort((a, b) => (a.distance ?? Number.POSITIVE_INFINITY) - (b.distance ?? Number.POSITIVE_INFINITY)); break;
     default: sorted.sort((a, b) => (a.price ?? Number.POSITIVE_INFINITY) - (b.price ?? Number.POSITIVE_INFINITY));
   }
   return sorted;
@@ -420,21 +513,22 @@ function stationCell(station) {
   link.append(label, arrow, hint);
   name.append(link);
 
+  const distance = station.distance === null ? ''
+    : `${station.distance.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km`;
   const detail = document.createElement('span');
   detail.className = 'station-brand';
-  detail.textContent = [station.postcode ? `C.P. ${station.postcode}` : '', station.province].filter(Boolean).join(' · ') || 'Estación de servicio';
+  detail.textContent = [distance, station.postcode ? `C.P. ${station.postcode}` : '', station.province].filter(Boolean).join(' · ') || 'Estación de servicio';
 
   td.append(name, detail);
   return td;
 }
 
-function summaryText(shown, total) {
-  if (!loadedScope) return 'Busca una zona para ver precios.';
+function summaryText(total) {
+  if (!context) return 'Busca una localidad o usa «Cerca de mí».';
   if (!total) return 'Sin estaciones.';
   const date = currentDate ? ` · datos de ${currentDate}` : '';
-  if (!shown) return `Ninguna estación coincide (${total.toLocaleString('es-ES')} en total)${date}`;
-  if (shown !== total) return `${shown.toLocaleString('es-ES')} de ${countLabel(total)}${date}`;
-  return `${countLabel(total)}${date}`;
+  if (context.fallback) return `Ninguna a menos de ${NEARBY_RADIUS_KM} km: las ${total.toLocaleString('es-ES')} más cercanas${date}`;
+  return `${countLabel(total)}${context.geo ? ` a menos de ${NEARBY_RADIUS_KM} km` : ''}${date}`;
 }
 
 function renderResults() {
@@ -458,8 +552,8 @@ function renderResults() {
     resultsBody.append(row);
   });
 
-  resultsSummary.textContent = summaryText(sorted.length, stations.length);
-  sortField.hidden = !stations.length;
+  resultsSummary.textContent = summaryText(sorted.length);
+  sortField.hidden = !sorted.length;
   tableWrap.hidden = !pageItems.length;
   pagination.hidden = !sorted.length;
   pageSummary.textContent = `Página ${currentPage} de ${pageCount}`;
@@ -476,18 +570,13 @@ function changePage(delta) {
 // ---------- Eventos e inicio ----------
 
 searchForm.addEventListener('submit', onSearch);
-filtersPanel.addEventListener('submit', onApplyFilters);
-filtersToggle.addEventListener('click', () => setFiltersOpen(filtersPanel.hidden));
-ccaaSelect.addEventListener('change', () => loadProvinces(ccaaSelect.value));
-fuelSelect.addEventListener('change', updateFiltersSummary);
+locateButton.addEventListener('click', onLocate);
+queryInput.addEventListener('input', () => { hideChoices(); updateSuggestions(); });
+// La lista de localidades pesa bastante: se descarga (o se lee de la caché) al interesarse el usuario por el buscador.
+queryInput.addEventListener('focus', () => { loadTowns().then(updateSuggestions, () => {}); }, { once: true });
+fuelSelect.addEventListener('change', () => { if (lastSearch && !loading) load(lastSearch); });
 sortSelect.addEventListener('change', () => { currentPage = 1; renderResults(); });
-municipalityInput.addEventListener('input', () => { currentPage = 1; renderResults(); });
 previousButton.addEventListener('click', () => { if (currentPage > 1) changePage(-1); });
 nextButton.addEventListener('click', () => changePage(1));
 
-loadCcaa();
-loadProvinces('');
-loadTerritorySuggestions();
-updateFiltersSummary();
-setFiltersOpen(false);
 renderResults();

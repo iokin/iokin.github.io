@@ -1,12 +1,12 @@
 # Precios de carburantes en España
 
-Web estática para consultar los precios oficiales de carburantes (API REST del MITECO) con un buscador global, filtros plegables, ordenación y paginación. El nombre de cada estación enlaza a Google Maps.
+Web estática para consultar los precios oficiales de carburantes (API REST del MITECO) por localidad o cerca de ti. El nombre de cada estación enlaza a Google Maps.
 
 ## Archivos
 
 - `index.html`: estructura semántica y accesible.
 - `styles.css`: estilos responsive, sin dependencias.
-- `app.js`: búsqueda, filtros, consulta, ordenación y paginación.
+- `app.js`: buscador, geolocalización, consulta, ordenación y paginación.
 
 ## Probar en local
 
@@ -14,7 +14,7 @@ Web estática para consultar los precios oficiales de carburantes (API REST del 
 python -m http.server 8000
 ```
 
-Abre <http://localhost:8000>. No hay dependencias que instalar.
+Abre <http://localhost:8000>. No hay dependencias que instalar. La geolocalización solo funciona en `localhost` o con HTTPS (GitHub Pages lo es).
 
 ## Publicar en GitHub Pages
 
@@ -22,26 +22,32 @@ Sube los cuatro archivos a la raíz del repositorio y activa **Settings → Page
 
 ## Cómo funciona
 
-- **Buscador:** reconoce una provincia o comunidad dentro del texto y usa el resto para filtrar por dirección, estación, municipio o código postal. Ejemplos: `Sevilla`, `País Vasco`, `Gran Vía Madrid`. Si aparecen varias zonas, gana la última («Avenida de Madrid Valladolid» busca en Valladolid). No distingue tildes ni mayúsculas.
-- **Consulta:** solo se llama al servicio al cambiar de zona o combustible. Refinar el texto filtra al instante, y repetir la misma búsqueda vuelve a consultar.
-- **Filtros** (botón «Mostrar filtros»): comunidad, provincia, municipio (texto, filtra al escribir) y combustible. «Aplicar filtros» consulta con esa zona y refleja la zona en el buscador.
-- **Google Maps:** usa las coordenadas oficiales. Si faltan o quedan fuera de España, busca por nombre y dirección.
-- **Fecha:** es la que devuelve el servicio al responder, no la del último cambio de cada precio.
+- **Localidad:** escribe un municipio (sin tildes ni mayúsculas, con sugerencias). Si el nombre es único se consulta directamente; si hay varios («Zalla», «San Sebastián»), eliges cuál.
+- **Cerca de mí:** pide tu ubicación al navegador y muestra las estaciones a menos de 15 km. Si no hay ninguna, las 10 más cercanas. Las distancias se calculan en el navegador con las coordenadas de cada estación.
+- **Combustible:** el único filtro. Al cambiarlo se repite la última búsqueda.
+- **Orden:** más baratas (por defecto), más caras o, con «Cerca de mí», más cercanas.
+- **Google Maps:** usa las coordenadas oficiales; si faltan o quedan fuera de España, busca por nombre y dirección.
+- **Fecha:** la que devuelve el servicio al responder, no la del último cambio de cada precio.
 - **Móvil (≤ 640 px):** se ocultan dirección y horario para que el precio sea visible.
+
+### Detalles de «Cerca de mí»
+
+La API no consulta por radio, así que se piden las provincias cuyo centro queda más cerca de tu ubicación (hasta 3 y a menos de 160 km). Los centros de `PROVINCES` en `app.js` son aproximados y solo sirven para elegir provincias; la distancia final sale de cada estación. Las estaciones sin coordenadas válidas no aparecen en esta búsqueda.
 
 ## API oficial
 
 - Portal: <https://energia.serviciosmin.gob.es/ServiciosRestCarburantes/PreciosCarburantes/>
+- Localidades: `Listados/Municipios/` (se descarga al usar el buscador y se guarda 30 días en `localStorage`)
+- Por municipio: `EstacionesTerrestres/FiltroMunicipioProducto/{IDMUNICIPIO}/{IDPRODUCTO}`
 - Por provincia: `EstacionesTerrestres/FiltroProvinciaProducto/{IDPROVINCIA}/{IDPRODUCTO}`
-- Por comunidad: `EstacionesTerrestres/FiltroCCAAProducto/{IDCCAA}/{IDPRODUCTO}`
 - Los IDs de combustible y provincia coinciden con los listados oficiales (verificado el 10/10/2026). Gasolina 95 E10 es el ID 23.
 
 ## CORS
 
 La web llama a la API directamente desde el navegador y el servicio no garantiza CORS para todos los dominios. Pruébala en GitHub Pages (pestaña Network). Si el navegador la bloquea, hace falta un proxy sencillo (por ejemplo, una Cloudflare Worker) que reenvíe la consulta con las cabeceras CORS.
 
-Las peticiones tienen un límite de 30 segundos.
+Las peticiones tienen un límite de 30 segundos (60 la lista de localidades).
 
 ## Privacidad y licencia
 
-Sin cookies, analítica ni datos personales. Los enlaces a Google Maps abren una pestaña nueva y se anuncian a los lectores de pantalla. Código: MIT. Los datos siguen las condiciones del MITECO.
+Sin cookies ni analítica. Tu ubicación no se envía ni se guarda: solo se consultan provincias cercanas. Los enlaces a Google Maps abren una pestaña nueva y se anuncian a los lectores de pantalla. Código: MIT. Los datos siguen las condiciones del MITECO.

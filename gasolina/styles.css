@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
   --color-ink: #172b46;
   --color-muted: #60728b;
   --color-primary: #174b83;
@@ -112,3 +112,29 @@ tbody tr:hover { background: #f8fbfe; }
   th:nth-child(3), td:nth-child(3), th:nth-child(5), td:nth-child(5) { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+
+/* Tema oscuro: sigue la preferencia del sistema */
+@media (prefers-color-scheme: dark) {
+  :root{color-scheme:dark;--color-ink:#e6edf6;--color-muted:#93a4ba;--color-primary:#6fb0ff;--color-primary-dark:#8cc0ff;--color-border:#26364b;--color-surface:#141f2e;--color-success:#5fd39a;--shadow-panel:0 12px 32px rgb(0 0 0/35%)}
+  body{background:#0b121c;color:var(--color-ink)}
+  .site-header{background:linear-gradient(115deg,#0b1626,#14304f);border-bottom:1px solid #1f3350}
+  .brand__subtitle{color:#a9bdd6}
+  .search-panel{border-color:#22344b;background:var(--color-surface)}
+  .field select,.field input{background:#0e1826;border-color:#2c4160;color:var(--color-ink)}
+  .field input::placeholder{color:#8396ad}
+  .button--primary{background:#2f7fe0;color:#fff}.button--primary:hover:not(:disabled){background:#4a93ee}
+  .button--secondary{background:#0e1826;border-color:#33496a;color:#8cc0ff}.button--secondary:hover:not(:disabled){background:#182a42}
+  .pagination .button--secondary{color:var(--color-ink)}
+  .choices{background:#101b2a}.button--choice{background:#0e1826;color:var(--color-ink);border-color:#33496a}
+  .table-wrap{border-color:var(--color-border);background:#0e1826}
+  thead{background:#162336}th{color:#a9bdd6}
+  th,td{border-bottom-color:#1e2e44}
+  tbody tr:hover{background:#142034}
+  .station-link{color:#8cc0ff;text-decoration-color:rgb(140 192 255/40%)}
+  .price{background:#12372a;color:#5fd39a}.price--missing{background:#1b2636;color:#93a4ba}
+  .status{background:#12253b;border-color:#25456b;color:#b6d3f5}
+  .status--error{background:#35161a;border-color:#6b2a31;color:#ffb4b4}
+  .notice{color:#93a4ba}
+  .site-footer{border-top-color:#1e2e44;color:var(--color-muted)}
+  a{color:#8cc0ff}
+}

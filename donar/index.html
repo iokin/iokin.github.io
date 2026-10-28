@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dónde donar sangre</title>
+<style>
+  :root { --rojo:#b3001b; --rojo-osc:#8a0015; --fondo:#fafafa; --texto:#1b1b1b; --borde:#d9d9d9; --suave:#fff3f4; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--fondo); color:var(--texto); line-height:1.5; }
+  header { background:var(--rojo); color:#fff; padding:1rem; }
+  header h1 { margin:0; font-size:1.4rem; }
+  header p { margin:.25rem 0 0; }
+  main { max-width:760px; margin:0 auto; padding:1rem; }
+  .urgente { background:var(--suave); border:2px solid var(--rojo); border-radius:8px; padding:.75rem 1rem; margin-bottom:1rem; }
+  .urgente a.tel { display:inline-block; font-size:1.3rem; font-weight:700; color:var(--rojo-osc); }
+  form { display:grid; gap:.75rem; margin-bottom:1rem; }
+  label { font-weight:600; display:block; margin-bottom:.25rem; }
+  input[type=text] { width:100%; padding:.7rem; font-size:1rem; border:1px solid #777; border-radius:6px; }
+  fieldset { border:1px solid var(--borde); border-radius:6px; padding:.5rem .75rem; }
+  fieldset label { display:inline-block; font-weight:400; margin-right:1rem; }
+  .botones { display:flex; flex-wrap:wrap; gap:.5rem; }
+  button, .btn { font:inherit; padding:.7rem 1rem; border-radius:6px; border:2px solid var(--rojo); background:var(--rojo); color:#fff; cursor:pointer; text-decoration:none; display:inline-block; }
+  button.sec, .btn.sec { background:#fff; color:var(--rojo-osc); }
+  button:hover { background:var(--rojo-osc); color:#fff; }
+  :focus-visible { outline:3px solid #005fcc; outline-offset:2px; }
+  #estado { min-height:1.5rem; font-weight:600; }
+  ul#lista { list-style:none; padding:0; margin:0; display:grid; gap:.75rem; }
+  li.card { background:#fff; border:1px solid var(--borde); border-radius:8px; padding:.75rem 1rem; }
+  li.card h3 { margin:0 0 .25rem; font-size:1.05rem; }
+  .meta { color:#444; font-size:.95rem; margin:.1rem 0; }
+  .dist { font-weight:700; color:var(--rojo-osc); }
+  .acciones { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.5rem; }
+  .acciones a { padding:.4rem .7rem; font-size:.95rem; }
+  .aviso { font-size:.9rem; color:#444; margin-top:1.25rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Dónde donar sangre</h1>
+  <p>Busca puntos de donación y hospitales cerca de ti.</p>
+</header>
+<main>
+  <section class="urgente" aria-labelledby="urg">
+    <h2 id="urg" style="margin:0 0 .25rem;font-size:1.1rem">Antes de ir: confirma que hace falta</h2>
+    <p style="margin:.25rem 0">Si es por una emergencia concreta, llama primero al centro de transfusión de tu comunidad o a Cruz Roja: te dirán dónde, cuándo y qué grupo se necesita.</p>
+    <a class="tel" href="tel:900506819">Cruz Roja Atención al Donante: 900 506 819</a>
+    <p style="margin:.25rem 0"><a href="https://www.redaccionmedica.com/recursos-salud/donacion-sangre/madrid" target="_blank" rel="noopener">Guía de centros por ciudad</a> ·
+    <a href="https://www.comunidad.madrid/donarsangre" target="_blank" rel="noopener">Comunidad de Madrid</a></p>
+  </section>
+
+  <form id="form" novalidate>
+    <div>
+      <label for="localidad">Localidad</label>
+      <input type="text" id="localidad" name="localidad" autocomplete="address-level2" placeholder="Ej.: Madrid, Valencia, Santander">
+    </div>
+    <fieldset>
+      <legend>Qué buscar</legend>
+      <label><input type="radio" name="tipo" value="donacion" checked> Puntos de donación</label>
+      <label><input type="radio" name="tipo" value="hospital"> Hospitales</label>
+    </fieldset>
+    <div class="botones">
+      <button type="submit">Buscar</button>
+      <button type="button" class="sec" id="geo">Usar mi ubicación</button>
+    </div>
+  </form>
+
+  <p id="estado" role="status" aria-live="polite"></p>
+  <ul id="lista"></ul>
+  <div class="botones" id="mas" hidden style="margin-top:1rem">
+    <button type="button" class="sec" id="ampliar">Ampliar la búsqueda</button>
+  </div>
+
+  <p class="aviso">Datos de OpenStreetMap: pueden estar incompletos o desactualizados. Confirma siempre horario y disponibilidad por teléfono o en la web oficial de tu comunidad.</p>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const estado = $('estado'), lista = $('lista'), mas = $('mas');
+  const ENDPOINTS = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
+  let ultimo = null; // {lat, lon, etiqueta}
+  let radioKm = 25;
+
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const tipo = () => document.querySelector('input[name=tipo]:checked').value;
+
+  function km(a, b, c, d) {
+    const R = 6371, r = x => x * Math.PI / 180;
+    const dLat = r(c - a), dLon = r(d - b);
+    const h = Math.sin(dLat/2)**2 + Math.cos(r(a)) * Math.cos(r(c)) * Math.sin(dLon/2)**2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+
+  async function geocodificar(q) {
+    const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=es&q=' + encodeURIComponent(q);
+    const r = await fetch(url, { headers: { 'Accept-Language': 'es' } });
+    if (!r.ok) throw new Error('geocodificación');
+    const j = await r.json();
+    if (!j.length) return null;
+    return { lat: +j[0].lat, lon: +j[0].lon, etiqueta: j[0].display_name.split(',').slice(0, 2).join(',') };
+  }
+
+  async function overpass(lat, lon, rKm, t) {
+    const m = rKm * 1000;
+    const filtros = t === 'donacion'
+      ? `nwr["healthcare"="blood_donation"](around:${m},${lat},${lon});nwr["amenity"="blood_bank"](around:${m},${lat},${lon});`
+      : `nwr["amenity"="hospital"](around:${m},${lat},${lon});`;
+    const q = `[out:json][timeout:25];(${filtros});out center tags 80;`;
+    let ultimoError;
+    for (const ep of ENDPOINTS) {
+      try {
+        const r = await fetch(ep, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(q) });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return (await r.json()).elements || [];
+      } catch (e) { ultimoError = e; }
+    }
+    throw ultimoError;
+  }
+
+  function direccion(t) {
+    const calle = [t['addr:street'], t['addr:housenumber']].filter(Boolean).join(' ');
+    return [calle, t['addr:postcode'], t['addr:city']].filter(Boolean).join(', ');
+  }
+
+  function pintar(elementos, origen, t) {
+    const items = elementos.map(e => {
+      const lat = e.lat ?? e.center?.lat, lon = e.lon ?? e.center?.lon;
+      if (lat == null) return null;
+      const tg = e.tags || {};
+      return {
+        nombre: tg.name || (t === 'donacion' ? 'Punto de donación (sin nombre)' : 'Hospital (sin nombre)'),
+        dir: direccion(tg), horario: tg.opening_hours, tel: tg.phone || tg['contact:phone'], web: tg.website || tg['contact:website'],
+        lat, lon, d: km(origen.lat, origen.lon, lat, lon)
+      };
+    }).filter(Boolean).sort((a, b) => a.d - b.d).slice(0, 30);
+
+    lista.innerHTML = items.map(i => {
+      const tels = i.tel ? i.tel.split(/[;,]/).map(x => x.trim()).filter(Boolean) : [];
+      const telLinks = tels.map(x => `<a href="tel:${esc(x.replace(/[^+\d]/g, ''))}">${esc(x)}</a>`).join(' · ');
+      const web = /^https?:\/\//.test(i.web || '') ? i.web : '';
+      return `<li class="card">
+        <h3><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${i.lat},${i.lon}">${esc(i.nombre)}</a></h3>
+        <p class="meta"><span class="dist">${i.d.toFixed(1)} km</span>${i.dir ? ' · ' + esc(i.dir) : ''}</p>
+        ${i.horario ? `<p class="meta">Horario: ${esc(i.horario)}</p>` : ''}
+        <p class="meta">${tels.length ? 'Teléfono: ' + telLinks : 'Sin teléfono registrado. Información: <a href="tel:900506819">Cruz Roja 900 506 819</a>'}</p>
+        <div class="acciones">
+          <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${i.lat},${i.lon}">Ver en Google Maps</a>
+          <a class="btn sec" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${i.lat},${i.lon}">Cómo llegar</a>
+          ${tels.length ? `<a class="btn sec" href="tel:${esc(tels[0].replace(/[^+\d]/g, ''))}">Llamar</a>` : ''}
+          ${web ? `<a class="btn sec" target="_blank" rel="noopener" href="${esc(web)}">Web</a>` : ''}
+        </div></li>`;
+    }).join('');
+
+    const nombre = t === 'donacion' ? 'puntos de donación' : 'hospitales';
+    estado.textContent = items.length
+      ? `${items.length} ${nombre} a menos de ${radioKm} km de ${origen.etiqueta}.`
+      : `No hay ${nombre} registrados a menos de ${radioKm} km de ${origen.etiqueta}.`;
+    mas.hidden = radioKm >= 100;
+  }
+
+  async function buscar() {
+    if (!ultimo) return;
+    const t = tipo();
+    estado.textContent = 'Buscando…';
+    lista.innerHTML = '';
+    try {
+      pintar(await overpass(ultimo.lat, ultimo.lon, radioKm, t), ultimo, t);
+    } catch (e) {
+      estado.textContent = 'No se pudo consultar el servicio de datos. Inténtalo de nuevo en unos segundos o llama a Cruz Roja: 900 506 819.';
+    }
+  }
+
+  $('form').addEventListener('submit', async ev => {
+    ev.preventDefault();
+    const q = $('localidad').value.trim();
+    if (!q) { estado.textContent = 'Escribe una localidad o usa tu ubicación.'; $('localidad').focus(); return; }
+    estado.textContent = 'Localizando…';
+    try {
+      const g = await geocodificar(q);
+      if (!g) { estado.textContent = 'No encuentro esa localidad. Prueba con otro nombre.'; return; }
+      ultimo = g; radioKm = 25; await buscar();
+    } catch (e) { estado.textContent = 'No se pudo localizar la ciudad. Inténtalo de nuevo.'; }
+  });
+
+  $('geo').addEventListener('click', () => {
+    if (!navigator.geolocation) { estado.textContent = 'Tu navegador no permite geolocalización.'; return; }
+    estado.textContent = 'Obteniendo tu ubicación…';
+    navigator.geolocation.getCurrentPosition(
+      p => { ultimo = { lat: p.coords.latitude, lon: p.coords.longitude, etiqueta: 'tu ubicación' }; radioKm = 25; buscar(); },
+      () => { estado.textContent = 'No se pudo obtener la ubicación. Escribe la localidad.'; },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  });
+
+  $('ampliar').addEventListener('click', () => { radioKm = radioKm < 60 ? 60 : 100; buscar(); });
+})();
+</script>
+</body>
+</html>

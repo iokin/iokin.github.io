@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora de descuento en nómina por huelga</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1b1f27; --muted: #566070;
+    --border: #cfd5df; --accent: #b3261e; --accent-text: #ffffff; --focus: #0b57d0;
+    --soft: #fdecea;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171c; --card: #1e232b; --text: #eef1f6; --muted: #aeb7c4;
+      --border: #3a4250; --accent: #ff8a80; --accent-text: #1b1f27; --focus: #8ab4ff;
+      --soft: #3a2422;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .skip { position: absolute; left: -999px; top: 0; background: var(--card); padding: .5rem 1rem; z-index: 10; }
+  .skip:focus { left: .5rem; top: .5rem; }
+  header, main, footer { max-width: 920px; margin: 0 auto; padding: 0 1rem; }
+  header { padding-top: 1.5rem; }
+  h1 { font-size: 1.6rem; margin: 0 0 .25rem; line-height: 1.2; }
+  h2 { font-size: 1.15rem; margin: 0 0 .75rem; }
+  h3 { font-size: 1.05rem; margin: 1.5rem 0 .5rem; }
+  .lead { color: var(--muted); margin: 0 0 1rem; }
+  .layout { display: grid; gap: 1rem; margin-top: 1rem; }
+  @media (min-width: 860px) { .layout { grid-template-columns: 1fr 1fr; align-items: start; } .resultado { position: sticky; top: 1rem; } }
+  fieldset, .resultado {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1rem; margin: 0 0 1rem;
+  }
+  .resultado { margin: 0; }
+  legend { font-weight: 700; padding: 0 .4rem; }
+  .campo { margin: 0 0 .9rem; }
+  label { display: block; font-weight: 600; margin-bottom: .25rem; }
+  .ayuda-txt { display: block; color: var(--muted); font-size: .875rem; margin-top: .2rem; font-weight: 400; }
+  input[type="text"], input[type="number"], select {
+    width: 100%; font: inherit; padding: .55rem .65rem; color: var(--text);
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  }
+  .opciones label { display: flex; gap: .5rem; align-items: center; font-weight: 400; margin: .25rem 0; }
+  .opciones input { width: 1.1rem; height: 1.1rem; accent-color: var(--accent); }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .fila { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .grid-meses { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+  @media (min-width: 520px) { .grid-meses { grid-template-columns: repeat(4, 1fr); } }
+  .mes label { font-size: .85rem; font-weight: 500; }
+  .tarjetas { display: grid; gap: .6rem; margin: 0; }
+  .tarjeta { border: 1px solid var(--border); border-radius: 10px; padding: .7rem .9rem; }
+  .tarjeta dt { color: var(--muted); font-size: .9rem; }
+  .tarjeta dd { margin: .15rem 0 0; font-size: 1.35rem; font-weight: 700; }
+  .tarjeta small { font-size: .8rem; font-weight: 400; color: var(--muted); }
+  .tarjeta.principal { background: var(--soft); border-color: var(--accent); }
+  .tarjeta.principal dd { font-size: 2rem; color: var(--accent); }
+  .barra { height: .7rem; border-radius: 99px; background: var(--border); overflow: hidden; }
+  .barra span { display: block; height: 100%; background: var(--accent); }
+  .barra-txt { margin: 1rem 0 .4rem; }
+  .tabla-scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+  th, td { padding: .4rem .5rem; border-bottom: 1px solid var(--border); text-align: right; }
+  th[scope="row"], thead th:first-child { text-align: left; }
+  thead th { font-size: .85rem; color: var(--muted); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .aviso { background: var(--soft); border-radius: 8px; padding: .75rem; margin: 0; }
+  details { margin-top: 1rem; }
+  summary { cursor: pointer; font-weight: 600; }
+  details ol { padding-left: 1.2rem; }
+  button {
+    font: inherit; font-weight: 600; cursor: pointer; margin-top: 1rem;
+    padding: .6rem 1rem; border-radius: 8px; border: 0;
+    background: var(--accent); color: var(--accent-text);
+  }
+  footer { padding-bottom: 2rem; color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<a class="skip" href="#resultado">Ir al resultado</a>
+
+<header>
+  <h1>¿Cuánto me descuentan por hacer huelga?</h1>
+  <p class="lead">Calcula de forma aproximada cuánto dejarás de cobrar en tu nómina según los días (o las horas) de huelga. Los valores iniciales son un ejemplo: cámbialos por los tuyos.</p>
+</header>
+
+<main>
+  <div class="layout">
+    <form id="form" novalidate aria-label="Datos para el cálculo">
+
+      <fieldset>
+        <legend>1. Tu salario</legend>
+        <div class="campo opciones" role="radiogroup" aria-label="Tipo de salario que vas a introducir">
+          <label><input type="radio" name="tipoSalario" value="anual" checked> Conozco mi bruto anual</label>
+          <label><input type="radio" name="tipoSalario" value="mensual"> Conozco mi bruto mensual</label>
+        </div>
+        <div class="campo">
+          <label for="salario" id="lblSalario">Salario bruto anual (€)</label>
+          <input id="salario" type="text" inputmode="decimal" value="24000" autocomplete="off">
+          <span class="ayuda-txt">Lo encuentras en tu nómina o contrato. Incluye todos los conceptos salariales.</span>
+        </div>
+        <div class="campo">
+          <label for="pagas">Número de pagas al año</label>
+          <select id="pagas">
+            <option value="12">12 (pagas extra prorrateadas)</option>
+            <option value="14" selected>14 (2 pagas extra)</option>
+            <option value="15">15</option>
+          </select>
+          <span class="ayuda-txt">Solo se usa si introduces el salario mensual.</span>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. La huelga</legend>
+        <div class="campo opciones" role="radiogroup" aria-label="Tipo de huelga">
+          <label><input type="radio" name="tipoHuelga" value="completa" checked> Jornada completa</label>
+          <label><input type="radio" name="tipoHuelga" value="parcial"> Paros parciales (unas horas al día)</label>
+        </div>
+
+        <div id="bloqueParcial" class="fila" hidden>
+          <div class="campo">
+            <label for="jornada">Horas de tu jornada diaria</label>
+            <input id="jornada" type="text" inputmode="decimal" value="8">
+          </div>
+          <div class="campo">
+            <label for="horas">Horas de paro por día</label>
+            <input id="horas" type="text" inputmode="decimal" value="2">
+          </div>
+        </div>
+
+        <div class="campo opciones">
+          <label><input type="checkbox" id="porMes"> Repartir los días por meses (para ver el efecto en cada nómina)</label>
+        </div>
+
+        <div id="bloqueDias" class="campo">
+          <label for="dias" id="lblDias">Número de días de huelga</label>
+          <input id="dias" type="number" min="0" max="366" step="1" inputmode="numeric" value="1">
+        </div>
+
+        <div id="bloqueMeses" class="campo" hidden>
+          <fieldset style="margin:0;border-style:dashed">
+            <legend>Días de huelga en cada mes</legend>
+            <div id="gridMeses" class="grid-meses"></div>
+          </fieldset>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Ajustes del cálculo</legend>
+        <div class="campo">
+          <label for="metodo">Valor de un día de salario</label>
+          <select id="metodo">
+            <option value="365" selected>Anual ÷ 365 días naturales (el más habitual)</option>
+            <option value="360">Mensual ÷ 30 (equivale a anual ÷ 360)</option>
+            <option value="lab">Anual ÷ días de trabajo efectivo (según convenio)</option>
+          </select>
+          <span class="ayuda-txt">Tu convenio o la práctica de tu empresa pueden fijar uno concreto.</span>
+        </div>
+        <div id="bloqueLab" class="campo" hidden>
+          <label for="diasLab">Días de trabajo efectivo al año</label>
+          <input id="diasLab" type="text" inputmode="numeric" value="220">
+        </div>
+        <div class="fila">
+          <div class="campo">
+            <label for="ss">Seguridad Social del trabajador (%)</label>
+            <input id="ss" type="text" inputmode="decimal" value="6,5">
+          </div>
+          <div class="campo">
+            <label for="irpf">Retención IRPF (%)</label>
+            <input id="irpf" type="text" inputmode="decimal" value="15">
+          </div>
+        </div>
+        <span class="ayuda-txt" style="margin-bottom:.9rem">Ambos aparecen en tu nómina. Sirven para estimar el efecto neto: en los días de huelga no se cotiza ni se retiene sobre lo descontado.</span>
+        <div class="campo">
+          <label for="ayuda">Ayuda de caja de resistencia (€ por jornada, opcional)</label>
+          <input id="ayuda" type="text" inputmode="decimal" value="0">
+        </div>
+      </fieldset>
+    </form>
+
+    <section id="resultado" class="resultado" tabindex="-1" aria-labelledby="tituloRes">
+      <h2 id="tituloRes">Resultado</h2>
+      <div id="contenidoResultado" aria-live="polite"></div>
+      <button type="button" id="btnCopiar" hidden>Copiar resumen</button>
+      <p id="estadoCopia" class="ayuda-txt" role="status"></p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <p><strong>Importante:</strong> es una estimación orientativa. El descuento real depende de tu convenio, de los conceptos que formen tu salario, de cómo calcule la empresa el valor del día y de la regularización del IRPF a final de año. Para un dato exacto, consulta tu nómina o a tu sindicato.</p>
+</footer>
+
+<script src="calculadora-huelga.js"></script>
+</body>
+</html>

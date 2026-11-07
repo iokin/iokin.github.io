@@ -6,11 +6,14 @@ on:
   workflow_dispatch:          # botón "Run workflow" en la pestaña Actions
 
 permissions:
-  contents: write
+  contents: write             # commit de tours.json
+  issues: write               # aviso por Issue
 
 jobs:
   update:
     runs-on: ubuntu-latest
+    env:
+      NEW_DATES_FILE: ${{ runner.temp }}/new-dates.md
     steps:
       - uses: actions/checkout@v4
 
@@ -31,4 +34,30 @@ jobs:
             git push
           else
             echo "Sin cambios"
+          fi
+
+      # Aviso 1: un Issue (GitHub te lo manda por email y a la app móvil de GitHub)
+      - name: Avisar con un Issue
+        if: hashFiles(format('{0}/new-dates.md', runner.temp)) != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          N=$(wc -l < "$NEW_DATES_FILE")
+          gh issue create \
+            --title "U2: $N fecha(s) nueva(s) en la gira" \
+            --body-file "$NEW_DATES_FILE"
+
+      # Aviso 2 (opcional): push al móvil con ntfy.sh. Solo si existe el secreto NTFY_TOPIC.
+      - name: Avisar por ntfy
+        if: hashFiles(format('{0}/new-dates.md', runner.temp)) != ''
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          if [ -n "$NTFY_TOPIC" ]; then
+            N=$(wc -l < "$NEW_DATES_FILE")
+            curl -sS -H "Title: U2: $N fecha(s) nueva(s)" -H "Tags: guitar" \
+              -H "Click: https://github.com/${{ github.repository }}/issues" \
+              --data-binary @"$NEW_DATES_FILE" "https://ntfy.sh/$NTFY_TOPIC"
+          else
+            echo "NTFY_TOPIC no configurado, se omite"
           fi

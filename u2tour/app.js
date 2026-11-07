@@ -8,6 +8,8 @@
 
 const SOURCE_URL = 'https://www.u2.com/pages/tours';
 const PROXIES = [
+  'tours.json',                        // generado por la GitHub Action (funciona en GitHub Pages)
+  'http://localhost:3000/api/tours',   // servidor propio (node server.js), para uso local
   'https://api.allorigins.win/raw?url={url}',
   'https://corsproxy.io/?url={url}',
 ];
@@ -173,10 +175,12 @@ async function fetchWithTimeout(url, ms = 12000) {
 async function fetchRemoteShows() {
   for (const p of PROXIES) {
     try {
-      const html = await fetchWithTimeout(p.replace('{url}', encodeURIComponent(SOURCE_URL)));
-      const shows = parseTourHtml(html);
+      const body = await fetchWithTimeout(p.replace('{url}', encodeURIComponent(SOURCE_URL)));
+      // tours.json lo genera la GitHub Action; el resto devuelven el HTML de u2.com
+      const shows = p.endsWith('.json') ? (JSON.parse(body).shows || []) : parseTourHtml(body);
       if (shows.length >= 5) return shows;   // lectura razonable
-    } catch (_) { /* probar el siguiente proxy */ }
+      console.warn('[u2] Respuesta sin fechas reconocibles desde', p);
+    } catch (e) { console.warn('[u2] Falló', p, e.message); }
   }
   throw new Error('No se pudo leer u2.com');
 }

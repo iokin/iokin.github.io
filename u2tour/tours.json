@@ -1,0 +1,251 @@
+{
+  "updated": "2026-11-07T14:49:44.188Z",
+  "source": "https://www.u2.com/pages/tours",
+  "shows": [
+    {
+      "date": "2027-02-23",
+      "city": "Mexico City",
+      "venue": "Estadio GNP Seguros",
+      "cc": "MX",
+      "soldOut": true
+    },
+    {
+      "date": "2027-02-26",
+      "city": "Mexico City",
+      "venue": "Estadio GNP Seguros",
+      "cc": "MX",
+      "soldOut": true
+    },
+    {
+      "date": "2027-02-28",
+      "city": "Mexico City",
+      "venue": "Estadio GNP Seguros",
+      "cc": "MX",
+      "soldOut": true
+    },
+    {
+      "date": "2027-03-02",
+      "city": "Mexico City",
+      "venue": "Estadio GNP Seguros",
+      "cc": "MX",
+      "soldOut": false
+    },
+    {
+      "date": "2027-03-10",
+      "city": "São Paulo",
+      "venue": "Estádio MorumBIS",
+      "cc": "BR",
+      "soldOut": true
+    },
+    {
+      "date": "2027-03-12",
+      "city": "São Paulo",
+      "venue": "Estádio MorumBIS",
+      "cc": "BR",
+      "soldOut": true
+    },
+    {
+      "date": "2027-03-14",
+      "city": "São Paulo",
+      "venue": "Estádio MorumBIS",
+      "cc": "BR",
+      "soldOut": true
+    },
+    {
+      "date": "2027-03-16",
+      "city": "São Paulo",
+      "venue": "Estádio MorumBIS",
+      "cc": "BR",
+      "soldOut": false
+    },
+    {
+      "date": "2027-03-23",
+      "city": "Buenos Aires",
+      "venue": "Estadio River Plate",
+      "cc": "AR",
+      "soldOut": true
+    },
+    {
+      "date": "2027-03-25",
+      "city": "Buenos Aires",
+      "venue": "Estadio River Plate",
+      "cc": "AR",
+      "soldOut": true
+    },
+    {
+      "date": "2027-03-27",
+      "city": "Buenos Aires",
+      "venue": "Estadio River Plate",
+      "cc": "AR",
+      "soldOut": true
+    },
+    {
+      "date": "2027-04-26",
+      "city": "Stockholm",
+      "venue": "Strawberry Arena",
+      "cc": "SE",
+      "soldOut": false
+    },
+    {
+      "date": "2027-04-28",
+      "city": "Stockholm",
+      "venue": "Strawberry Arena",
+      "cc": "SE",
+      "soldOut": false
+    },
+    {
+      "date": "2027-04-30",
+      "city": "Stockholm",
+      "venue": "Strawberry Arena",
+      "cc": "SE",
+      "soldOut": false
+    },
+    {
+      "date": "2027-05-05",
+      "city": "Paris",
+      "venue": "Stade de France",
+      "cc": "FR",
+      "soldOut": false
+    },
+    {
+      "date": "2027-05-08",
+      "city": "Paris",
+      "venue": "Stade de France",
+      "cc": "FR",
+      "soldOut": false
+    },
+    {
+      "date": "2027-05-09",
+      "city": "Paris",
+      "venue": "Stade de France",
+      "cc": "FR",
+      "soldOut": false
+    },
+    {
+      "date": "2027-05-13",
+      "city": "Barcelona",
+      "venue": "Estadi Olímpic Lluís Companys",
+      "cc": "ES",
+      "soldOut": false
+    },
+    {
+      "date": "2027-05-15",
+      "city": "Barcelona",
+      "venue": "Estadi Olímpic Lluís Companys",
+      "cc": "ES",
+      "soldOut": false
+    },
+    {
+      "date": "2027-05-22",
+      "city": "Seville",
+      "venue": "Estadio La Cartuja",
+      "cc": "ES",
+      "soldOut": false
+    },
+    {
+      "date": "2027-05-27",
+      "city": "Lisbon",
+      "venue": "Estadio da Luz",
+      "cc": "PT",
+      "soldOut": false
+    },
+    {
+      "date": "2027-05-28",
+      "city": "Lisbon",
+      "venue": "Estadio da Luz",
+      "cc": "PT",
+      "soldOut": false
+    },
+    {
+      "date": "2027-06-05",
+      "city": "Amsterdam",
+      "venue": "Johan Cruijff ArenA",
+      "cc": "NL",
+      "soldOut": false
+    },
+    {
+      "date": "2027-06-06",
+      "city": "Amsterdam",
+      "venue": "Johan Cruijff ArenA",
+      "cc": "NL",
+      "soldOut": false
+    },
+    {
+      "date": "2027-06-09",
+      "city": "Amsterdam",
+      "venue": "Johan Cruijff ArenA",
+      "cc": "NL",
+      "soldOut": false
+    },
+    {
+      "date": "2027-06-11",
+      "city": "Amsterdam",
+      "venue": "Johan Cruijff ArenA",
+      "cc": "NL",
+      "soldOut": false
+    },
+    {
+      "date": "2027-06-18",
+      "city": "London",
+      "venue": "Tottenham Hotspur Stadium",
+      "cc": "GB",
+      "soldOut": false
+    },
+    {
+      "date": "2027-06-19",
+      "city": "London",
+      "venue": "Tottenham Hotspur Stadium",
+      "cc": "GB",
+      "soldOut": false
+    },
+    {
+      "date": "2027-06-22",
+      "city": "London",
+      "venue": "Tottenham Hotspur Stadium",
+      "cc": "GB",
+      "soldOut": false
+    },
+    {
+      "date": "2027-06-25",
+      "city": "London",
+      "venue": "Tottenham Hotspur Stadium",
+      "cc": "GB",
+      "soldOut": false
+    },
+    {
+      "date": "2027-06-30",
+      "city": "Berlin",
+      "venue": "Olympiastadion",
+      "cc": "DE",
+      "soldOut": false
+    },
+    {
+      "date": "2027-07-01",
+      "city": "Berlin",
+      "venue": "Olympiastadion",
+      "cc": "DE",
+      "soldOut": false
+    },
+    {
+      "date": "2027-07-05",
+      "city": "Milan",
+      "venue": "Stadio San Siro",
+      "cc": "IT",
+      "soldOut": false
+    },
+    {
+      "date": "2027-07-06",
+      "city": "Milan",
+      "venue": "Stadio San Siro",
+      "cc": "IT",
+      "soldOut": false
+    },
+    {
+      "date": "2027-07-09",
+      "city": "Milan",
+      "venue": "Stadio San Siro",
+      "cc": "IT",
+      "soldOut": false
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Greatest Show On Earth World Tour · Fechas</title>
+<style>
+  :root {
+    --bg: #000;
+    --fg: #fff;
+    --muted: #9a9a9a;
+    --line: #2a2a2a;
+    --panel: #0d0d0d;
+    --accent: #fff;
+    --new: #ffd400;
+    --sold: #666;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* Navegación */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 18px 24px; border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; background: rgba(0,0,0,.92); backdrop-filter: blur(6px); z-index: 10;
+  }
+  .brand { font-weight: 800; letter-spacing: .3em; font-size: 1.1rem; }
+  .nav { display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; }
+  .nav a { color: var(--muted); padding: 4px 0; border-bottom: 1px solid transparent; }
+  .nav a:hover, .nav a.active { color: var(--fg); border-color: var(--fg); }
+
+  /* Cabecera */
+  .hero {
+    padding: 72px 24px 40px; text-align: center; border-bottom: 1px solid var(--line);
+    background: radial-gradient(ellipse at 50% 0%, #1c1c1c 0%, #000 65%);
+  }
+  .hero small { letter-spacing: .4em; text-transform: uppercase; color: var(--muted); font-size: .72rem; }
+  .hero h1 {
+    margin: 14px 0 6px; font-size: clamp(2rem, 7vw, 4.6rem); line-height: .98;
+    text-transform: uppercase; letter-spacing: .04em; font-weight: 900;
+  }
+  .hero p { margin: 0; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; font-size: .8rem; }
+
+  /* Estado */
+  .status {
+    max-width: 1000px; margin: 22px auto 0; padding: 0 24px;
+    display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between;
+    font-size: .78rem; letter-spacing: .08em; color: var(--muted); text-transform: uppercase;
+  }
+  .status .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); margin-right: 8px; }
+  .status.ok .dot { background: #3ddc84; }
+  .status.new .dot { background: var(--new); }
+  .status.err .dot { background: #ff5a5a; }
+  .btn-link {
+    background: none; border: 1px solid var(--line); color: var(--fg);
+    padding: 8px 14px; font: inherit; letter-spacing: .14em; cursor: pointer; text-transform: uppercase;
+  }
+  .btn-link:hover { border-color: var(--fg); }
+
+  /* Listado */
+  main { max-width: 1000px; margin: 0 auto; padding: 8px 24px 80px; }
+  .leg { margin-top: 44px; }
+  .leg h2 {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin: 0 0 6px; padding-bottom: 12px; border-bottom: 2px solid var(--fg);
+    font-size: 1.15rem; text-transform: uppercase; letter-spacing: .24em; font-weight: 800;
+  }
+  .leg h2 span { color: var(--muted); font-size: .72rem; letter-spacing: .2em; font-weight: 400; }
+
+  .show {
+    display: grid; grid-template-columns: 92px 1fr auto; gap: 8px 22px; align-items: center;
+    padding: 20px 4px; border-bottom: 1px solid var(--line);
+  }
+  .show:hover { background: var(--panel); }
+  .date { text-align: center; line-height: 1; }
+  .date .d { font-size: 2.1rem; font-weight: 900; }
+  .date .m { display: block; margin-top: 4px; font-size: .78rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+  .date .y { display: block; margin-top: 2px; font-size: .66rem; letter-spacing: .2em; color: var(--sold); }
+  .place .city { font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+  .place .venue { margin-top: 4px; color: var(--muted); font-size: .9rem; }
+  .place .venue a { border-bottom: 1px dotted var(--muted); }
+  .place .venue a:hover { color: var(--fg); border-color: var(--fg); }
+  .place .dow { color: var(--muted); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; margin-top: 3px; }
+  .actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+  .btn {
+    display: inline-block; border: 1px solid var(--fg); padding: 11px 18px;
+    font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; white-space: nowrap;
+  }
+  .btn:hover { background: var(--fg); color: var(--bg); }
+  .btn.ghost { border-color: var(--line); color: var(--muted); }
+  .btn.ghost:hover { border-color: var(--fg); background: transparent; color: var(--fg); }
+  .tag { font-size: .66rem; letter-spacing: .2em; padding: 5px 9px; text-transform: uppercase; font-weight: 800; }
+  .tag.sold { border: 1px solid var(--sold); color: var(--sold); }
+  .tag.new { background: var(--new); color: #000; }
+
+  footer { border-top: 1px solid var(--line); padding: 28px 24px; text-align: center; color: var(--muted); font-size: .74rem; letter-spacing: .1em; line-height: 1.7; }
+  footer a { border-bottom: 1px dotted var(--muted); }
+
+  /* Modal de fechas nuevas */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,.8); display: none;
+    align-items: center; justify-content: center; padding: 20px; z-index: 50;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    width: 100%; max-width: 460px; max-height: 80vh; overflow: auto;
+    background: #0d0d0d; border: 1px solid var(--fg); padding: 28px 26px 22px;
+  }
+  .modal h3 { margin: 0 0 6px; font-size: 1.1rem; letter-spacing: .22em; text-transform: uppercase; font-weight: 900; }
+  .modal .sub { margin: 0 0 18px; color: var(--muted); font-size: .82rem; letter-spacing: .06em; }
+  .modal ul { list-style: none; margin: 0 0 22px; padding: 0; border-top: 1px solid var(--line); }
+  .modal li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+  .modal li b { text-transform: uppercase; letter-spacing: .08em; }
+  .modal li span { color: var(--muted); text-align: right; }
+  .modal .btn { width: 100%; text-align: center; background: var(--fg); color: var(--bg); cursor: pointer; font-family: inherit; }
+
+  @media (max-width: 680px) {
+    .show { grid-template-columns: 70px 1fr; }
+    .actions { grid-column: 1 / -1; justify-content: flex-start; padding-left: 92px; }
+    .date .d { font-size: 1.7rem; }
+    .topbar { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">U2</div>
+    <nav class="nav">
+      <a href="https://www.u2.com/" target="_blank" rel="noopener">Home</a>
+      <a href="https://www.u2.com/blogs/news" target="_blank" rel="noopener">News</a>
+      <a href="https://www.u2.com/pages/tours" class="active" target="_blank" rel="noopener">Tours</a>
+      <a href="https://www.u2.com/collections/album" target="_blank" rel="noopener">Music</a>
+      <a href="https://www.u2.com/pages/media" target="_blank" rel="noopener">Media</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <small>Carnaval De Luz presents</small>
+    <h1>The Greatest Show<br>On Earth World Tour</h1>
+    <p id="count">Cargando fechas…</p>
+  </section>
+
+  <div class="status" id="status">
+    <span><i class="dot"></i><span id="status-text">Comprobando u2.com…</span></span>
+    <button class="btn-link" id="refresh" type="button">Comprobar ahora</button>
+  </div>
+
+  <main id="shows" aria-live="polite"></main>
+
+  <footer>
+    Datos de <a href="https://www.u2.com/pages/tours" target="_blank" rel="noopener">u2.com/pages/tours</a>.
+    Los enlaces de entradas abren una búsqueda en Google; para comprar usa siempre los enlaces oficiales de u2.com.<br>
+    Página no oficial.
+  </footer>
+
+  <div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <h3 id="modal-title">¡Fechas nuevas!</h3>
+      <p class="sub" id="modal-sub"></p>
+      <ul id="modal-list"></ul>
+      <button class="btn" id="modal-close" type="button">Ver fechas</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

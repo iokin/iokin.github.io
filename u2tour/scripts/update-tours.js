@@ -34,4 +34,17 @@ async function getHtml() {
   fs.writeFileSync(OUT, JSON.stringify({ updated: new Date().toISOString(), source: SOURCE, shows }, null, 2) + '\n');
   const before = prev ? prev.shows.length : 0;
   console.log(`tours.json actualizado: ${before} → ${shows.length} fechas.`);
+
+  // Aviso: lista de fechas que no estaban en la versión anterior (no se avisa en la primera ejecución).
+  if (prev && process.env.NEW_DATES_FILE) {
+    const key = s => `${s.date}|${s.city}`;
+    const known = new Set(prev.shows.map(key));
+    const added = shows.filter(s => !known.has(key(s)));
+    if (added.length) {
+      const fmt = new Intl.DateTimeFormat('es-ES', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+      const lines = added.map(s => `- ${fmt.format(new Date(s.date + 'T12:00:00'))} · ${s.city} (${s.cc}) · ${s.venue}`);
+      fs.writeFileSync(process.env.NEW_DATES_FILE, lines.join('\n') + '\n');
+      console.log(`${added.length} fecha(s) nueva(s):\n` + lines.join('\n'));
+    }
+  }
 })().catch(e => { console.error(e.message); process.exit(1); });

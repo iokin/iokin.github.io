@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Real Sociedad · Seguimiento</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#00487d">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Real">
+<style>
+  :root {
+    --azul: #0067b1;
+    --azul-osc: #00487d;
+    --fondo: #f3f6fa;
+    --tarjeta: #ffffff;
+    --texto: #1b2733;
+    --suave: #6b7a89;
+    --linea: #e1e8ef;
+    --verde: #1f9d55;
+    --rojo: #d64545;
+    --gris: #9aa7b4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #0e141b; --tarjeta: #17202a; --texto: #e8eef4;
+      --suave: #8fa0b2; --linea: #263341; --azul: #4aa3e8; --azul-osc: #1d5f94;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fondo); color: var(--texto);
+         font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { background: linear-gradient(135deg, var(--azul-osc), var(--azul)); color: #fff; padding: 20px 16px; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+  header .wrap { display: flex; align-items: center; gap: 16px; padding: 0; }
+  header img { width: 64px; height: 64px; object-fit: contain; background: #fff; border-radius: 50%; padding: 6px; }
+  header h1 { margin: 0; font-size: 1.5rem; }
+  header p { margin: 2px 0 0; opacity: .85; font-size: .9rem; }
+  main { padding: 16px 0 40px; }
+  section { background: var(--tarjeta); border: 1px solid var(--linea); border-radius: 14px;
+            padding: 16px; margin-bottom: 16px; }
+  h2 { margin: 0 0 12px; font-size: 1rem; text-transform: uppercase; letter-spacing: .05em; color: var(--suave); }
+  .partido { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; text-align: center; }
+  .equipo img { width: 56px; height: 56px; object-fit: contain; }
+  .equipo div { font-weight: 600; margin-top: 4px; font-size: .95rem; }
+  .centro { font-size: 1.8rem; font-weight: 700; }
+  .centro small { display: block; font-size: .8rem; font-weight: 400; color: var(--suave); }
+  .meta { text-align: center; color: var(--suave); font-size: .9rem; margin-top: 12px; }
+  .cuenta { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+  .cuenta div { background: var(--fondo); border-radius: 10px; padding: 8px 12px; min-width: 62px; text-align: center; }
+  .cuenta b { display: block; font-size: 1.4rem; }
+  .cuenta span { font-size: .7rem; color: var(--suave); text-transform: uppercase; }
+  .vivo { display: inline-block; background: var(--rojo); color: #fff; border-radius: 6px; padding: 2px 8px;
+          font-size: .75rem; font-weight: 700; animation: parpadeo 1.4s infinite; }
+  @keyframes parpadeo { 50% { opacity: .45; } }
+  .forma { display: flex; gap: 6px; margin-bottom: 10px; }
+  .forma span { width: 26px; height: 26px; border-radius: 50%; color: #fff; font-size: .75rem; font-weight: 700;
+                display: grid; place-items: center; }
+  .G { background: var(--verde); } .E { background: var(--gris); } .P { background: var(--rojo); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li.res, li.prox { display: grid; grid-template-columns: 62px 1fr auto; gap: 8px; align-items: center;
+                    padding: 10px 0; border-top: 1px solid var(--linea); font-size: .92rem; }
+  li:first-child { border-top: 0; }
+  li .fecha { color: var(--suave); font-size: .8rem; }
+  li .marcador { font-weight: 700; white-space: nowrap; }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  th, td { padding: 7px 4px; text-align: center; border-top: 1px solid var(--linea); }
+  th { color: var(--suave); font-weight: 500; font-size: .75rem; border-top: 0; }
+  td.nombre, th.nombre { text-align: left; }
+  td.nombre img { width: 18px; height: 18px; vertical-align: middle; margin-right: 6px; object-fit: contain; }
+  tr.yo { background: color-mix(in srgb, var(--azul) 14%, transparent); font-weight: 700; }
+  .oculto-movil { display: none; }
+  @media (min-width: 560px) { .oculto-movil { display: table-cell; } }
+  .estado { text-align: center; color: var(--suave); font-size: .8rem; margin-top: 8px; }
+  .error { color: var(--rojo); font-size: .9rem; }
+  button { background: var(--azul); color: #fff; border: 0; border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+
+  /* Mini-barra flotante */
+  body { padding-bottom: 76px; }
+  .mini { position: fixed; left: 50%; bottom: calc(12px + env(safe-area-inset-bottom));
+          transform: translate(-50%, 140%); transition: transform .25s ease;
+          width: min(92vw, 420px); display: flex; align-items: center; justify-content: space-between; gap: 12px;
+          background: var(--azul-osc); color: #fff; border-radius: 999px; padding: 8px 16px;
+          box-shadow: 0 6px 20px rgba(0,0,0,.3); cursor: pointer; z-index: 50; }
+  .mini.visible { transform: translate(-50%, 0); }
+  .mini img { width: 32px; height: 32px; object-fit: contain; background: #fff; border-radius: 50%; padding: 3px; }
+  .mini-c { text-align: center; line-height: 1.15; min-width: 0; }
+  .mini-c b { display: block; font-size: 1rem; }
+  .mini-c small { font-size: .72rem; opacity: .85; }
+  .mini .vivo { font-size: .7rem; }
+  @media (prefers-reduced-motion: reduce) { .mini { transition: none; } .vivo { animation: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <img id="escudo" alt="Escudo de la Real Sociedad" src="" hidden>
+    <div>
+      <h1>Real Sociedad</h1>
+      <p id="subtitulo">LaLiga · Cargando…</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="proximo">
+    <h2>Próximo partido</h2>
+    <div id="proximo-cuerpo">Cargando…</div>
+  </section>
+
+  <section id="ultimos">
+    <h2>Últimos resultados</h2>
+    <div id="ultimos-cuerpo">Cargando…</div>
+  </section>
+
+  <section id="calendario">
+    <h2>Calendario</h2>
+    <div id="calendario-cuerpo">Cargando…</div>
+  </section>
+
+  <section id="clasificacion">
+    <h2>Clasificación LaLiga</h2>
+    <div id="clasificacion-cuerpo">Cargando…</div>
+  </section>
+
+  <p class="estado" id="estado"></p>
+  <p class="estado" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+    <button id="refrescar">Actualizar ahora</button>
+    <button id="avisos" hidden>Activar avisos</button>
+    <button id="instalar" hidden>Instalar app</button>
+  </p>
+  <p class="estado" id="avisos-estado"></p>
+  <p class="estado">Datos: TheSportsDB (clave gratuita). Pueden tener retraso o estar incompletos.</p>
+</main>
+
+<div class="mini" id="mini" role="button" tabindex="0" aria-label="Volver al próximo partido">
+  <img id="mini-h" alt="" src="">
+  <div class="mini-c"><b id="mini-t">--</b><small id="mini-s"></small></div>
+  <img id="mini-a" alt="" src="">
+</div>
+
+<script>
+(() => {
+  // ===== Configuración =====
+  const API_KEY   = "123";      // clave gratuita de TheSportsDB
+  const TEAM_ID   = "133724";   // Real Sociedad
+  const LEAGUE_ID = "4335";     // LaLiga (España)
+  const BASE      = `https://www.thesportsdb.com/api/v1/json/${API_KEY}`;
+  const CACHE_MIN = 10;         // minutos de caché normal (límite gratuito: 30 peticiones/min)
+  const CACHE_VIVO_S = 60;      // segundos de caché cuando hay partido en juego
+
+  // Temporada actual: de julio a junio (ej. 2026-2027)
+  const hoy = new Date();
+  const anio = hoy.getMonth() >= 6 ? hoy.getFullYear() : hoy.getFullYear() - 1;
+  const TEMPORADA = `${anio}-${anio + 1}`;
+
+  const $ = (id) => document.getElementById(id);
+  const fmtFecha = new Intl.DateTimeFormat("es-ES", { weekday: "short", day: "numeric", month: "short" });
+  const fmtHora  = new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit" });
+  const fmtLarga = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
+
+  // ===== Utilidades =====
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  // TheSportsDB da la hora en UTC sin "Z"
+  function fechaEvento(e) {
+    if (e.strTimestamp) return new Date(e.strTimestamp.endsWith("Z") ? e.strTimestamp : e.strTimestamp + "Z");
+    if (e.dateEvent) return new Date(`${e.dateEvent}T${e.strTime || "00:00:00"}Z`);
+    return null;
+  }
+
+  async function pedir(ruta, ttlSeg) {
+    const clave = "rs_cache_" + ruta;
+    try {
+      const guardado = JSON.parse(localStorage.getItem(clave) || "null");
+      if (guardado && Date.now() - guardado.t < ttlSeg * 1000) return guardado.d;
+    } catch (_) {}
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 10000);
+    try {
+      const r = await fetch(BASE + "/" + ruta, { signal: ctrl.signal });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const d = await r.json();
+      try { localStorage.setItem(clave, JSON.stringify({ t: Date.now(), d })); } catch (_) {}
+      return d;
+    } finally { clearTimeout(timer); }
+  }
+
+  function esLocal(e) { return e.idHomeTeam === TEAM_ID; }
+
+  function resultado(e) {
+    const h = Number(e.intHomeScore), a = Number(e.intAwayScore);
+    if (Number.isNaN(h) || Number.isNaN(a) || e.intHomeScore === null) return null;
+    const mios = esLocal(e) ? h : a, suyos = esLocal(e) ? a : h;
+    return mios > suyos ? "G" : mios < suyos ? "P" : "E";
+  }
+
+  // ===== Estado global =====
+  let proximo = null;
+  let hayPartidoEnJuego = false;
+
+  // ===== Pintado =====
+  function pintarCabecera(equipo) {
+    if (!equipo) return;
+    if (equipo.strBadge) { $("escudo").src = equipo.strBadge + "/small"; $("escudo").hidden = false; }
+    const partes = [equipo.strLeague || "LaLiga", equipo.strStadium].filter(Boolean);
+    $("subtitulo").textContent = partes.join(" · ");
+  }
+
+  function bloquePartido(e) {
+    const f = fechaEvento(e);
+    const res = resultado(e);
+    const centro = res !== null || e.strStatus === "Match Finished"
+      ? `${esc(e.intHomeScore)} - ${esc(e.intAwayScore)}`
+      : `${f ? fmtHora.format(f) : "--:--"}<small>${f ? fmtFecha.format(f) : ""}</small>`;
+    return `
+      <div class="partido">
+        <div class="equipo"><img src="${esc(e.strHomeTeamBadge || "")}/small" alt="" onerror="this.style.visibility='hidden'"><div>${esc(e.strHomeTeam)}</div></div>
+        <div class="centro">${centro}</div>
+        <div class="equipo"><img src="${esc(e.strAwayTeamBadge || "")}/small" alt="" onerror="this.style.visibility='hidden'"><div>${esc(e.strAwayTeam)}</div></div>
+      </div>`;
+  }
+
+  function pintarProximo(e) {
+    proximo = e;
+    if (!e) { $("proximo-cuerpo").textContent = "No hay próximos partidos disponibles."; return; }
+    const f = fechaEvento(e);
+    $("proximo-cuerpo").innerHTML = bloquePartido(e) + `
+      <div class="meta">${esc(e.strLeague || "")}${e.strVenue ? " · " + esc(e.strVenue) : ""}<br>${f ? esc(fmtLarga.format(f)) : ""}</div>
+      <div class="cuenta" id="cuenta"></div>`;
+    actualizarCuenta();
+    actualizarMini();
+  }
+
+  // Mini-barra flotante: muestra el próximo partido y su cuenta atrás compacta
+  function actualizarMini() {
+    const mini = $("mini");
+    if (!proximo) { mini.classList.remove("visible"); return; }
+    const f = fechaEvento(proximo);
+    const ms = f ? f - Date.now() : NaN;
+    $("mini-h").src = (proximo.strHomeTeamBadge || "") + "/tiny";
+    $("mini-a").src = (proximo.strAwayTeamBadge || "") + "/tiny";
+    const t = $("mini-t"), s = $("mini-s");
+    if (Number.isNaN(ms)) { t.textContent = "Próximo partido"; s.textContent = ""; return; }
+    if (ms <= 0 && ms > -2.25 * 3600 * 1000) {
+      t.innerHTML = '<span class="vivo">EN JUEGO</span>';
+      s.textContent = `${proximo.strHomeTeam} – ${proximo.strAwayTeam}`;
+    } else if (ms > 0) {
+      const sg = Math.floor(ms / 1000);
+      const d = Math.floor(sg / 86400), h = Math.floor(sg % 86400 / 3600), m = Math.floor(sg % 3600 / 60), seg = sg % 60;
+      const p = (n) => String(n).padStart(2, "0");
+      t.textContent = d > 0 ? `${d}d ${h}h ${m}m` : `${p(h)}:${p(m)}:${p(seg)}`;
+      s.textContent = `${fmtFecha.format(f)} · ${fmtHora.format(f)}`;
+    } else {
+      t.textContent = "Finalizado";
+      s.textContent = `${proximo.strHomeTeam} – ${proximo.strAwayTeam}`;
+    }
+  }
+
+  function actualizarCuenta() {
+    const caja = $("cuenta");
+    if (!caja || !proximo) return;
+    const f = fechaEvento(proximo);
+    if (!f) { caja.innerHTML = ""; return; }
+    const ms = f - Date.now();
+    hayPartidoEnJuego = ms <= 0 && ms > -2.25 * 3600 * 1000;
+    if (hayPartidoEnJuego) { caja.innerHTML = '<span class="vivo">EN JUEGO / RECIÉN EMPEZADO</span>'; return; }
+    if (ms <= 0) { caja.innerHTML = ""; return; }
+    const s = Math.floor(ms / 1000);
+    const d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), seg = s % 60;
+    caja.innerHTML = [["días", d], ["horas", h], ["min", m], ["seg", seg]]
+      .map(([n, v]) => `<div><b>${String(v).padStart(2, "0")}</b><span>${n}</span></div>`).join("");
+  }
+
+  function pintarUltimos(lista) {
+    if (!lista.length) { $("ultimos-cuerpo").textContent = "Sin resultados recientes."; return; }
+    const ordenados = [...lista].sort((a, b) => fechaEvento(b) - fechaEvento(a));
+    const forma = ordenados.slice(0, 5).map(resultado).filter(Boolean).reverse();
+    $("ultimos-cuerpo").innerHTML = `
+      <div class="forma" title="Forma reciente (de más antiguo a más reciente)">${forma.map((r) => `<span class="${r}">${r}</span>`).join("")}</div>
+      <ul>${ordenados.map((e) => {
+        const f = fechaEvento(e);
+        return `<li class="res">
+          <span class="fecha">${f ? fmtFecha.format(f) : ""}</span>
+          <span>${esc(e.strHomeTeam)} – ${esc(e.strAwayTeam)}<br><span class="fecha">${esc(e.strLeague || "")}</span></span>
+          <span class="marcador">${esc(e.intHomeScore)} - ${esc(e.intAwayScore)}</span>
+        </li>`;
+      }).join("")}</ul>`;
+  }
+
+  function pintarCalendario(lista) {
+    if (!lista.length) { $("calendario-cuerpo").textContent = "Sin partidos programados disponibles."; return; }
+    const ordenados = [...lista].sort((a, b) => fechaEvento(a) - fechaEvento(b));
+    $("calendario-cuerpo").innerHTML = `<ul>${ordenados.map((e) => {
+      const f = fechaEvento(e);
+      return `<li class="prox">
+        <span class="fecha">${f ? fmtFecha.format(f) : ""}</span>
+        <span>${esc(e.strHomeTeam)} – ${esc(e.strAwayTeam)}<br><span class="fecha">${esc(e.strLeague || "")}</span></span>
+        <span class="marcador">${f ? fmtHora.format(f) : ""}</span>
+      </li>`;
+    }).join("")}</ul>`;
+  }
+
+  function pintarTabla(filas) {
+    if (!filas.length) { $("clasificacion-cuerpo").textContent = "Clasificación no disponible ahora mismo."; return; }
+    const orden = [...filas].sort((a, b) => Number(a.intRank) - Number(b.intRank));
+    $("clasificacion-cuerpo").innerHTML = `
+      <table>
+        <thead><tr>
+          <th>#</th><th class="nombre">Equipo</th><th>PJ</th>
+          <th class="oculto-movil">G</th><th class="oculto-movil">E</th><th class="oculto-movil">P</th>
+          <th class="oculto-movil">GF</th><th class="oculto-movil">GC</th><th>DG</th><th>Pts</th>
+        </tr></thead>
+        <tbody>${orden.map((t) => `
+          <tr class="${t.idTeam === TEAM_ID ? "yo" : ""}">
+            <td>${esc(t.intRank)}</td>
+            <td class="nombre"><img src="${esc(t.strBadge || "")}/tiny" alt="" onerror="this.style.display='none'">${esc(t.strTeam)}</td>
+            <td>${esc(t.intPlayed)}</td>
+            <td class="oculto-movil">${esc(t.intWin)}</td><td class="oculto-movil">${esc(t.intDraw)}</td><td class="oculto-movil">${esc(t.intLoss)}</td>
+            <td class="oculto-movil">${esc(t.intGoalsFor)}</td><td class="oculto-movil">${esc(t.intGoalsAgainst)}</td>
+            <td>${esc(t.intGoalDifference)}</td><td><b>${esc(t.intPoints)}</b></td>
+          </tr>`).join("")}</tbody>
+      </table>`;
+  }
+
+  function fallo(id, msg) { $(id).innerHTML = `<span class="error">${esc(msg)}</span>`; }
+
+  // ===== Carga de datos =====
+  async function cargar() {
+    const ttl = hayPartidoEnJuego ? CACHE_VIVO_S : CACHE_MIN * 60;
+    $("estado").textContent = "Actualizando…";
+
+    const [equipo, proximos, ultimos, tabla] = await Promise.allSettled([
+      pedir(`lookupteam.php?id=${TEAM_ID}`, 24 * 3600),
+      pedir(`eventsnext.php?id=${TEAM_ID}`, ttl),
+      pedir(`eventslast.php?id=${TEAM_ID}`, ttl),
+      pedir(`lookuptable.php?l=${LEAGUE_ID}&s=${TEMPORADA}`, ttl),
+    ]);
+
+    if (equipo.status === "fulfilled") pintarCabecera(equipo.value?.teams?.[0]);
+
+    if (proximos.status === "fulfilled") {
+      const lista = (proximos.value?.events || []).filter((e) => fechaEvento(e));
+      lista.sort((a, b) => fechaEvento(a) - fechaEvento(b));
+      pintarProximo(lista[0] || null);
+      pintarCalendario(lista);
+    } else { fallo("proximo-cuerpo", "No se pudo cargar el próximo partido."); fallo("calendario-cuerpo", "No se pudo cargar el calendario."); }
+
+    if (ultimos.status === "fulfilled") pintarUltimos(ultimos.value?.results || []);
+    else fallo("ultimos-cuerpo", "No se pudieron cargar los resultados.");
+
+    if (tabla.status === "fulfilled") pintarTabla(tabla.value?.table || []);
+    else fallo("clasificacion-cuerpo", "No se pudo cargar la clasificación.");
+
+    $("estado").textContent = "Última actualización: " + fmtHora.format(new Date());
+
+    // Pasa los datos al service worker para que decida si toca avisar
+    enviarDatos(
+      proximos.status === "fulfilled" ? (proximos.value?.events || []) : null,
+      ultimos.status === "fulfilled" ? (ultimos.value?.results || []) : null
+    );
+  }
+
+  // ===== PWA: instalación y avisos =====
+  // Requiere https:// (o localhost). Desde un archivo local (file://) se desactiva.
+  const PWA_OK = "serviceWorker" in navigator && /^https?:$/.test(location.protocol);
+  let swReg = null;
+
+  const avisosActivos = () =>
+    localStorage.getItem("rs_avisos") === "1" && "Notification" in window && Notification.permission === "granted";
+
+  async function mensajeSW(msg) {
+    if (!PWA_OK) return;
+    try {
+      const reg = swReg || await navigator.serviceWorker.ready;
+      (reg.active || navigator.serviceWorker.controller)?.postMessage(msg);
+    } catch (_) {}
+  }
+  function enviarConfig() { mensajeSW({ tipo: "config", activo: avisosActivos() }); }
+  function enviarDatos(proximos, ultimos) { if (avisosActivos()) mensajeSW({ tipo: "datos", proximos, ultimos }); }
+
+  function pintarAvisos() {
+    const b = $("avisos"), t = $("avisos-estado");
+    if (!PWA_OK) {
+      b.hidden = true;
+      t.textContent = "Para instalar la app y recibir avisos hay que abrir la página desde una dirección https:// (por ejemplo, GitHub Pages), no desde un archivo local.";
+      return;
+    }
+    if (!("Notification" in window)) { b.hidden = true; t.textContent = "Este navegador no admite notificaciones (en iPhone, instala primero la app: Compartir → Añadir a pantalla de inicio)."; return; }
+    if (Notification.permission === "denied") { b.hidden = true; t.textContent = "Las notificaciones están bloqueadas en los ajustes del navegador."; return; }
+    b.hidden = false;
+    const on = avisosActivos();
+    b.textContent = on ? "Desactivar avisos" : "Activar avisos";
+    t.textContent = on ? "Avisos activos: una hora antes, al empezar y al terminar el partido." : "";
+  }
+
+  if (PWA_OK) {
+    navigator.serviceWorker.register("sw.js").then((r) => { swReg = r; enviarConfig(); }).catch(() => {});
+  }
+  pintarAvisos();
+
+  $("avisos").addEventListener("click", async () => {
+    try {
+      if (avisosActivos()) {
+        localStorage.setItem("rs_avisos", "0");
+        try { const reg = swReg || await navigator.serviceWorker.ready; if ("periodicSync" in reg) await reg.periodicSync.unregister("rs-check"); } catch (_) {}
+      } else {
+        const permiso = Notification.permission === "granted" ? "granted" : await Notification.requestPermission();
+        if (permiso === "granted") {
+          localStorage.setItem("rs_avisos", "1");
+          // Revisión en segundo plano (solo Chrome/Edge en Android con la app instalada)
+          try { const reg = swReg || await navigator.serviceWorker.ready; if ("periodicSync" in reg) await reg.periodicSync.register("rs-check", { minInterval: 15 * 60 * 1000 }); } catch (_) {}
+        }
+      }
+    } catch (_) {}
+    pintarAvisos();
+    enviarConfig();
+    if (avisosActivos()) cargar();
+  });
+
+  let promptInstalar = null;
+  window.addEventListener("beforeinstallprompt", (ev) => { ev.preventDefault(); promptInstalar = ev; $("instalar").hidden = false; });
+  window.addEventListener("appinstalled", () => { promptInstalar = null; $("instalar").hidden = true; });
+  $("instalar").addEventListener("click", async () => {
+    if (!promptInstalar) return;
+    promptInstalar.prompt();
+    try { await promptInstalar.userChoice; } catch (_) {}
+    promptInstalar = null;
+    $("instalar").hidden = true;
+  });
+
+  $("refrescar").addEventListener("click", () => {
+    Object.keys(localStorage).filter((k) => k.startsWith("rs_cache_")).forEach((k) => localStorage.removeItem(k));
+    cargar();
+  });
+
+  setInterval(() => { actualizarCuenta(); actualizarMini(); }, 1000);
+
+  // La barra aparece cuando la tarjeta del próximo partido sale de pantalla
+  const mini = $("mini");
+  const irArriba = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  mini.addEventListener("click", irArriba);
+  mini.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); irArriba(); } });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entrada]) => {
+      mini.classList.toggle("visible", !entrada.isIntersecting && !!proximo);
+    }).observe($("proximo"));
+  }
+  // Refresco automático: cada minuto si hay partido, cada 10 min si no
+  setInterval(() => { if (!document.hidden) cargar(); }, 60 * 1000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) cargar(); });
+
+  cargar();
+})();
+</script>
+</body>
+</html>

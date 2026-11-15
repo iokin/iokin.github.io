@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-07T14:49:44.188Z",
+  "updated": "2026-11-15T08:18:58.094Z",
   "source": "https://www.u2.com/pages/tours",
   "shows": [
     {
@@ -136,7 +136,21 @@
       "soldOut": false
     },
     {
+      "date": "2027-05-17",
+      "city": "Barcelona",
+      "venue": "Estadi Olímpic Lluís Companys",
+      "cc": "ES",
+      "soldOut": false
+    },
+    {
       "date": "2027-05-22",
+      "city": "Seville",
+      "venue": "Estadio La Cartuja",
+      "cc": "ES",
+      "soldOut": false
+    },
+    {
+      "date": "2027-05-24",
       "city": "Seville",
       "venue": "Estadio La Cartuja",
       "cc": "ES",

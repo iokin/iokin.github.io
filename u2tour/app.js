@@ -38,7 +38,9 @@ const BASE = [
   ['2027-05-09', 'Paris', 'Stade de France', 'FR', false],
   ['2027-05-13', 'Barcelona', 'Estadi Olímpic Lluís Companys', 'ES', false],
   ['2027-05-15', 'Barcelona', 'Estadi Olímpic Lluís Companys', 'ES', false],
+  ['2027-05-17', 'Barcelona', 'Estadi Olímpic Lluís Companys', 'ES', false],
   ['2027-05-22', 'Seville', 'Estadio La Cartuja', 'ES', false],
+  ['2027-05-24', 'Seville', 'Estadio La Cartuja', 'ES', false],
   ['2027-05-27', 'Lisbon', 'Estadio da Luz', 'PT', false],
   ['2027-05-28', 'Lisbon', 'Estadio da Luz', 'PT', false],
   ['2027-06-05', 'Amsterdam', 'Johan Cruijff ArenA', 'NL', false],
@@ -57,8 +59,9 @@ const BASE = [
 ].map(([date, city, venue, cc, soldOut]) => ({ date, city, venue, cc, soldOut }));
 
 // ---------- Utilidades ----------
-const MONTHS = { JAN: 1, FEB: 2, MAR: 3, APR: 4, MAY: 5, JUN: 6, JUL: 7, AUG: 8, SEP: 9, OCT: 10, NOV: 11, DEC: 12 };
-const MONTH_RE = '(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)';
+// Abreviaturas en inglés y en español (por si u2.com sirve la página localizada)
+const MONTHS = { JAN: 1, ENE: 1, FEB: 2, MAR: 3, APR: 4, ABR: 4, MAY: 5, JUN: 6, JUL: 7, AUG: 8, AGO: 8, SEP: 9, OCT: 10, NOV: 11, DEC: 12, DIC: 12 };
+const MONTH_RE = '(JAN|ENE|FEB|MAR|APR|ABR|MAY|JUN|JUL|AUG|AGO|SEP|OCT|NOV|DEC|DIC)';
 const CITY_ES = {
   'Mexico City': 'Ciudad de México', 'Stockholm': 'Estocolmo', 'Paris': 'París', 'Seville': 'Sevilla',
   'Lisbon': 'Lisboa', 'Amsterdam': 'Ámsterdam', 'London': 'Londres', 'Milan': 'Milán',

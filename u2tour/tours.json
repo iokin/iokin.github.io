@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-15T08:18:58.094Z",
+  "updated": "2026-11-16T17:33:10.009Z",
   "source": "https://www.u2.com/pages/tours",
   "shows": [
     {
@@ -78,6 +78,13 @@
       "venue": "Estadio River Plate",
       "cc": "AR",
       "soldOut": true
+    },
+    {
+      "date": "2027-03-29",
+      "city": "Buenos Aires",
+      "venue": "Estadio River Plate",
+      "cc": "AR",
+      "soldOut": false
     },
     {
       "date": "2027-04-26",

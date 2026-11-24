@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16T17:33:10.009Z",
+  "updated": "2026-11-24T22:54:49.404Z",
   "source": "https://www.u2.com/pages/tours",
   "shows": [
     {
@@ -56,7 +56,7 @@
       "city": "São Paulo",
       "venue": "Estádio MorumBIS",
       "cc": "BR",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-03-23",
@@ -91,14 +91,14 @@
       "city": "Stockholm",
       "venue": "Strawberry Arena",
       "cc": "SE",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-04-28",
       "city": "Stockholm",
       "venue": "Strawberry Arena",
       "cc": "SE",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-04-30",
@@ -112,35 +112,35 @@
       "city": "Paris",
       "venue": "Stade de France",
       "cc": "FR",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-05-08",
       "city": "Paris",
       "venue": "Stade de France",
       "cc": "FR",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-05-09",
       "city": "Paris",
       "venue": "Stade de France",
       "cc": "FR",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-05-13",
       "city": "Barcelona",
       "venue": "Estadi Olímpic Lluís Companys",
       "cc": "ES",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-05-15",
       "city": "Barcelona",
       "venue": "Estadi Olímpic Lluís Companys",
       "cc": "ES",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-05-17",
@@ -154,7 +154,7 @@
       "city": "Seville",
       "venue": "Estadio La Cartuja",
       "cc": "ES",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-05-24",
@@ -168,104 +168,209 @@
       "city": "Lisbon",
       "venue": "Estadio da Luz",
       "cc": "PT",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-05-28",
       "city": "Lisbon",
       "venue": "Estadio da Luz",
       "cc": "PT",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-06-05",
       "city": "Amsterdam",
       "venue": "Johan Cruijff ArenA",
       "cc": "NL",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-06-06",
       "city": "Amsterdam",
       "venue": "Johan Cruijff ArenA",
       "cc": "NL",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-06-09",
       "city": "Amsterdam",
       "venue": "Johan Cruijff ArenA",
       "cc": "NL",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-06-11",
       "city": "Amsterdam",
       "venue": "Johan Cruijff ArenA",
       "cc": "NL",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-06-18",
       "city": "London",
       "venue": "Tottenham Hotspur Stadium",
       "cc": "GB",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-06-19",
       "city": "London",
       "venue": "Tottenham Hotspur Stadium",
       "cc": "GB",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-06-22",
       "city": "London",
       "venue": "Tottenham Hotspur Stadium",
       "cc": "GB",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-06-25",
       "city": "London",
       "venue": "Tottenham Hotspur Stadium",
       "cc": "GB",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-06-30",
       "city": "Berlin",
       "venue": "Olympiastadion",
       "cc": "DE",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-07-01",
       "city": "Berlin",
       "venue": "Olympiastadion",
       "cc": "DE",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-07-05",
       "city": "Milan",
       "venue": "Stadio San Siro",
       "cc": "IT",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-07-06",
       "city": "Milan",
       "venue": "Stadio San Siro",
       "cc": "IT",
-      "soldOut": false
+      "soldOut": true
     },
     {
       "date": "2027-07-09",
       "city": "Milan",
       "venue": "Stadio San Siro",
       "cc": "IT",
+      "soldOut": false
+    },
+    {
+      "date": "2027-08-13",
+      "city": "Miami",
+      "venue": "Hard Rock Stadium",
+      "cc": "FL",
+      "soldOut": false
+    },
+    {
+      "date": "2027-08-17",
+      "city": "Atlanta",
+      "venue": "Mercedes-Benz Stadium",
+      "cc": "GA",
+      "soldOut": false
+    },
+    {
+      "date": "2027-08-20",
+      "city": "Baltimore",
+      "venue": "M&T Bank Stadium",
+      "cc": "MD",
+      "soldOut": false
+    },
+    {
+      "date": "2027-08-26",
+      "city": "East Rutherford",
+      "venue": "MetLife Stadium",
+      "cc": "NJ",
+      "soldOut": false
+    },
+    {
+      "date": "2027-08-28",
+      "city": "East Rutherford",
+      "venue": "MetLife Stadium",
+      "cc": "NJ",
+      "soldOut": false
+    },
+    {
+      "date": "2027-09-03",
+      "city": "Chicago",
+      "venue": "Soldier Field",
+      "cc": "IL",
+      "soldOut": false
+    },
+    {
+      "date": "2027-09-07",
+      "city": "Toronto",
+      "venue": "Rogers Stadium",
+      "cc": "ON",
+      "soldOut": false
+    },
+    {
+      "date": "2027-09-09",
+      "city": "Toronto",
+      "venue": "Rogers Stadium",
+      "cc": "ON",
+      "soldOut": false
+    },
+    {
+      "date": "2027-09-14",
+      "city": "Foxborough",
+      "venue": "Gillette Stadium",
+      "cc": "MA",
+      "soldOut": false
+    },
+    {
+      "date": "2027-09-27",
+      "city": "Arlington",
+      "venue": "AT&T Stadium",
+      "cc": "TX",
+      "soldOut": false
+    },
+    {
+      "date": "2027-10-01",
+      "city": "Los Angeles",
+      "venue": "SoFi Stadium",
+      "cc": "CA",
+      "soldOut": false
+    },
+    {
+      "date": "2027-10-02",
+      "city": "Los Angeles",
+      "venue": "SoFi Stadium",
+      "cc": "CA",
+      "soldOut": false
+    },
+    {
+      "date": "2027-10-09",
+      "city": "Las Vegas",
+      "venue": "Allegiant Stadium",
+      "cc": "NV",
+      "soldOut": false
+    },
+    {
+      "date": "2027-10-15",
+      "city": "Santa Clara",
+      "venue": "Levi's Stadium",
+      "cc": "CA",
+      "soldOut": false
+    },
+    {
+      "date": "2027-10-18",
+      "city": "Vancouver",
+      "venue": "BC Place",
+      "cc": "BC",
       "soldOut": false
     }
   ]
